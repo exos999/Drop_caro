@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: black;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <span style="font-weight: bold; font-size: 1.2em;">Dropcaro</span>
+        </div>
+    </header>
+    <main>
+        <h1>My Bookings</h1>
+        <table>
+            <thead>
+                <tr style="color: #fcf7f7;">
+                    <th>Full Name</th>
+                    <th>User Name</th>
+                    <th>Address</th>
+                    <th>Email Address</th>
+                    <th>Status</th>
+                    <th>Password</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.fullname }}</td>
+                    <td>{{ user.user.username }}</td>
+                    <td>{{ user.address_line1 }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.user.is_active|yesno:"Active,Inactive" }}</td>
+                    <td>{{ user.password }}</td> <!-- Consider not displaying plain text passwords -->
+                    <td>{{ user.phone }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+ 
+    </main>
+
+</body>
+</html>

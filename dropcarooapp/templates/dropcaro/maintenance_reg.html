@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Request</title>
+    <link rel="stylesheet" href="{% static 'css/MaintenanceRegi.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">Dropcaro</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">How It Works</a></li>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+        <button class="logout-btn">Log Out</button>
+    </header>
+    <main>
+        <section class="maintenance-container">
+            <h1>Maintenance Request</h1>
+            <form action="{% url 'maintenance_reg' %}" method="POST" class="maintenance-form" action="{% url 'maintenance_reg'%}">
+            {% csrf_token %}  
+              <label for="full_name">Full Name:</label>
+                <input type="text" id="full-name" name="full_name" placeholder="Enter your full name" required>
+
+                <label for="vehicle-number">Vehicle Number:</label>
+                <input type="text" id="vehicle-number" name="vehicle_number" placeholder="Enter vehicle number" required>
+<!-- Service Options -->
+      <h2>Services</h2>
+      <label for="services">Select Services:</label>
+      <div class="checkbox-group">
+        <div>
+          <input type="checkbox" id="fuelRefill" name="services" value="fuelRefill">
+          <label for="fuelRefill">Fuel Refill</label>
+        </div>
+        <div>
+          <input type="checkbox" id="basicCheckup" name="services" value="basicCheckup">
+          <label for="basicCheckup">Basic Checkup</label>
+        </div>
+        <div>
+          <input type="checkbox" id="engineStart" name="services" value="engineStart">
+          <label for="engineStart">Engine Start</label>
+        </div>
+        <div>
+          <input type="checkbox" id="washing" name="services" value="washing">
+          <label for="washing">Washing</label>
+        </div>
+            <br>
+                <label for="description">Description (Optional):</label>
+                <textarea id="description" name="description" placeholder="Add additional details (if any)" rows="4"></textarea>
+
+                <label for="request-date">Preferred Date:</label>
+                <input type="date" id="request-date" name="request_date" required>
+
+                <label for="request-time">Preferred Time:</label>
+                <input type="time" id="request-time" name="request_time" required>
+
+                <button type="submit" class="submit-btn">Submit Request</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

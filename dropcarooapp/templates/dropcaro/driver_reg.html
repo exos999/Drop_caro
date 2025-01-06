@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Registration</title>
+  <link rel="stylesheet" href="{% static 'css/newa.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>Driver Registration</h1>
+    <form id="driverRegistrationForm" method="post" action="{% url 'driver_reg' %}">
+      {% csrf_token %}
+
+      <label for="fullName">Full Name:</label>
+      <input type="text" id="full_name" name="fullname" placeholder="Enter your full name" required>
+
+      <!-- Username -->
+      <label for="id_username">User Name:</label>
+      <input type="text" id="id_username" name="username" placeholder="Enter  your user name" value="{{ form.username.value|default_if_none:'' }}" required>
+
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+
+      <!-- Password Section -->
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Create a password" required>
+
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+
+      <label for="license_number">Driver's License Number:</label>
+      <input type="text" id="license_number" name="license_number" placeholder="Enter your license number" required>
+
+
+      <label for="uploadPhoto">Upload Driver Photo:</label>
+      <input type="file" id="uploadPhoto" name="uploadPhoto" accept="image/*" required>
+
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="date_of_birth" required>
+
+      <button type="submit">submit</button>
+    </form>
+  </div>
+</body>
+</html>

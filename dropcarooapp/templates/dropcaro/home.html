@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>DROPCARO</title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+  <!-- font awesome style -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"/>
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{% static 'css/style.scss' %}" rel="stylesheet" />
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+
+</head>
+
+<body>
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="header_top">
+        <div class="container-fluid">
+          <div class="contact_nav">
+            <a href="">
+              <i class="fa fa-phone"aria-hidden="true"></i>
+              <span>
+                Call : +91 6238005522
+              </span>
+            </a>
+            <a href="">
+              <span>
+                Email : dropcaro@gmail.com
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="header_bottom" >
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container ">
+            <a class="navbar-brand" href="{% url 'home' %}">
+              <span>
+                DROPCARO
+              </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class=""> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ">
+                <li class="nav-item active">
+                  <a class="nav-link" href={% url 'home' %}>Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href={% url 'about' %}> About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href={% url 'service' %}>Service</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href={% url 'contact' %}>Contact Us</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href={% url 'login' %}>Login</a>
+                </li>
+              </ul>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- slider section -->
+    <section class="slider_section"style="background-image: url({% static 'images/ndj.peg' %}); background-size: cover; background-position: center;">
+      <div class="container ">
+        <div class="row">
+          <div class="col-md-6 ">
+            <div class="detail-box">
+            <h1>
+            <div class="next-style-container">
+              <div class="next-text">
+                <h1 style="color: #fff7fa;">Where Your Journey Starts, Our Service Begins</h1>
+              </div>
+            </div>
+            </h1>
+              {% comment %} <a href={% static "login\ujk.html" %}>
+                Login
+              </a> {% endcomment %}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="img-box">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end slider section -->
+  </div>
+
+  <!-- feature section -->
+  <section class="feature_section">
+    <div class="container">
+      <div class="feature_container">
+        <div class="box">
+          <div class="img-box">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="1000px" y="1000px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve"><g><path d="M50.25,45.008c10.468,0,18.984-8.516,18.984-18.983c0-10.468-8.517-18.984-18.984-18.984   c-10.468,0-18.985,8.516-18.985,18.984C31.265,36.492,39.782,45.008,50.25,45.008z"/><path d="M17.89,60.125c-0.048-1.666-1.554-3.004-3.415-3.004c-1.89,0-3.423,1.381-3.423,3.085v6.646h2.122   C14.519,64.481,16.095,62.229,17.89,60.125z"/><path d="M90.032,67.855v-6.646c0-1.704-1.533-3.086-3.424-3.086c-1.549,0-2.842,0.934-3.265,2.205   c1.97,2.337,3.657,4.865,5.074,7.527H90.032z"/><path d="M73.358,86.121c0-0.857,0.211-1.664,0.569-2.384h-9.063c-0.291-0.836-0.641-1.644-1.064-2.407l9.601-8.52   c0.219-2.766,2.512-4.955,5.331-4.955h4.454h1.819c-0.568-0.969-1.175-1.914-1.819-2.829c-0.896-1.272-1.857-2.495-2.892-3.652   c-0.048-0.061-0.083-0.128-0.136-0.187c-0.046-0.053-0.102-0.09-0.149-0.139c-7.306-8-17.815-13.028-29.478-13.028   c-11.658,0-22.163,5.024-29.468,13.02c-0.051,0.053-0.11,0.092-0.159,0.147c-0.049,0.055-0.082,0.119-0.128,0.178   c-1.029,1.15-1.985,2.367-2.877,3.631c-0.427,0.605-0.832,1.228-1.226,1.856h1.226h4.454c2.963,0,5.374,2.411,5.374,5.375   c0,0.203-0.027,0.399-0.049,0.596l9.219,8.183c-0.505,0.861-0.928,1.774-1.261,2.731h-8.107c0.119,0.443,0.198,0.902,0.198,1.382   c0,2.963-2.411,5.374-5.374,5.374H11.49c0.769,1.002,1.966,1.658,3.326,1.658h71.432c0.005,0.001,0.008,0.001,0.012,0.001   s0.007,0,0.009-0.001c0.824,0,1.587-0.246,2.236-0.655h-9.773C75.769,91.496,73.358,89.085,73.358,86.121z M50.25,73.334   c-2.63,0-5.105,0.66-7.274,1.817L30.25,63.857c5.485-4.626,12.561-7.423,20.281-7.423s14.796,2.797,20.281,7.423L57.867,75.347   C55.617,74.071,53.021,73.334,50.25,73.334z"/><path d="M25.227,85.119c0-0.504-0.141-0.97-0.369-1.382c-0.49-0.886-1.421-1.492-2.505-1.492h-2.804h-5.813v-0.742h5.958h2.658   c0.751,0,1.429-0.294,1.94-0.766c0.57-0.525,0.934-1.271,0.934-2.108c0-0.788-0.318-1.501-0.832-2.021   c-0.521-0.526-1.243-0.854-2.042-0.854h-0.857h-4.596h-3.163v-0.653h3.698h4.338h0.58c1.588,0,2.874-1.287,2.874-2.874   c0-0.75-0.294-1.427-0.765-1.939c-0.525-0.571-1.272-0.936-2.109-0.936h-4.454h-2.667h-3.365h-0.814H9.899   c-0.1,0-0.192,0.02-0.289,0.03c-0.153-0.018-0.304-0.03-0.45-0.03c-4.531,0-4.342,9.276-4.342,9.276s-0.01,9.364,4.342,9.364   c0.146,0,0.297-0.012,0.45-0.029c0.097,0.012,0.189,0.029,0.289,0.029h0.714h11.739C23.94,87.993,25.227,86.707,25.227,85.119z"/><path d="M91.924,70.355c-0.146,0-0.298,0.012-0.449,0.029c-0.097-0.01-0.19-0.029-0.29-0.029h-1.152h-0.396h-3.288h-3.163h-4.454   c-0.644,0-1.232,0.22-1.711,0.577c-0.702,0.524-1.162,1.354-1.162,2.298c0,1.586,1.285,2.873,2.873,2.873h0.986h3.932h3.698v0.653   h-3.163h-4.205h-1.248c-0.659,0-1.26,0.23-1.744,0.604c-0.683,0.525-1.129,1.342-1.129,2.27c0,0.393,0.08,0.766,0.222,1.106   c0.433,1.038,1.456,1.769,2.651,1.769h2.827h5.789v0.741h-5.667h-2.949c-0.595,0-1.147,0.181-1.605,0.49   c-0.765,0.517-1.268,1.392-1.268,2.384c0,1.588,1.285,2.875,2.873,2.875h11.596h0.857c0.1,0,0.193-0.019,0.29-0.03   c0.151,0.018,0.304,0.03,0.449,0.03c4.351,0,4.341-9.365,4.341-9.365S96.455,70.355,91.924,70.355z"/></g>
+              </svg>
+          </div>
+          <h5 class="name">
+            <a href="{% url 'user_dashboard' %}">Book Driver</a> 
+          </h5>
+        </div>
+        <div class="box active">
+          <div class="img-box">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="1000px" y="1000px" viewBox="5.0 10.0 110.0 135.0">
+              <g>
+               <path d="m66.969 65.25c-0.15625-4.0781-0.28125-7.0156-3.1719-8.4531-0.09375-0.046875-0.1875-0.078125-0.26562-0.09375l-8.9688-2.5469c-3.8438-3.3438-13.609-9.625-19.141-10.047l-15.328 0.14062c-4.8438 0.03125-9.0469 3.1875-10.438 7.8125l-2.5 8.2812c-0.42188 0.64062-0.79688 2.125-0.59375 6.2656 0.015625 0.15625 0.046875 0.29688 0.09375 0.4375l1.4219 4.0312c0.21875 0.625 0.8125 1.0312 1.4688 1.0469l1.4531 0.015625c0.71875 3.2188 3.5938 5.6562 7.0469 5.6562 3.4375 0 6.3125-2.4375 7.0312-5.6562h23.594c0.71875 3.2188 3.5938 5.6562 7.0312 5.6562 3.4531 0 6.3594-2.4531 7.0469-5.7031 0.64062-0.03125 1.7969-0.23438 2.7812-1.1719 1.0781-1.0156 1.5781-2.5625 1.4844-4.5781zm-31.391-17.984c3.5938 0.4375 10.641 4.4219 15.047 7.7344h-15.047zm-22.844 5.4844v-0.015625c1.0781-3.1875 4-5.3438 7.3906-5.3594l7.75-0.078125v7.7031h-13.234c-0.64062 0-1.2344-0.28125-1.5938-0.76562-0.20312-0.25-0.5-0.78125-0.3125-1.4844zm5.3125 20.188c-1.3125 0-2.375-1.0625-2.375-2.3594 0-1.3125 1.0625-2.375 2.375-2.375 1.2969 0 2.3594 1.0625 2.3594 2.375 0 1.2969-1.0625 2.3594-2.3594 2.3594zm12.203-3.9219h-5.1719c-0.71875-3.2344-3.5938-5.6562-7.0312-5.6562-3.4531 0-6.3281 2.4219-7.0469 5.6562l-0.32812-0.015625-1-2.7656c-0.0625-1.75-0.015625-3.5938 0.14062-4.1875 0.09375-0.14062 0.1875-0.29688 0.23438-0.46875l1.375-4.5625c0.90625 0.70312 2.0156 1.1094 3.2188 1.1094h15.609zm25.453 3.9219c-1.3125 0-2.375-1.0625-2.375-2.3594 0-1.3125 1.0625-2.375 2.375-2.375s2.375 1.0625 2.375 2.375c0 1.2969-1.0625 2.3594-2.375 2.3594zm7.6875-4.2969c-0.20312 0.21875-0.46875 0.28125-0.67188 0.3125-0.73438-3.2031-3.5938-5.5938-7.0156-5.5938-3.4375 0-6.3125 2.4219-7.0312 5.6562h-15.297v-10.891h23.75l5.3906 1.5312c1.0312 0.59375 1.1875 2.0156 1.3281 5.7188l0.046875 1.0938c0.046875 1.0312-0.125 1.7969-0.5 2.1719z"/>
+               <path d="m39.18 61.492h-2.4766c-0.86328 0-1.5625 0.69922-1.5625 1.5625 0 0.86328 0.69922 1.5625 1.5625 1.5625h2.4766c0.86328 0 1.5625-0.69922 1.5625-1.5625 0-0.86328-0.69922-1.5625-1.5625-1.5625z"/>
+               <path d="m84.469 22.203c-4.9688 0-9.0156 4.0469-9.0156 9.0156 0 5.7969 7.0781 13.328 7.8906 14.172 0.29688 0.29688 0.70312 0.46875 1.125 0.46875s0.82812-0.17188 1.125-0.46875c0.8125-0.84375 7.875-8.375 7.875-14.172 0-4.9688-4.0312-9.0156-9-9.0156zm0 11.047c-1.3125 0-2.375-1.0625-2.375-2.375 0-1.2969 1.0625-2.3594 2.375-2.3594 1.2969 0 2.3594 1.0625 2.3594 2.3594 0 1.3125-1.0625 2.375-2.3594 2.375z"/>
+               <path d="m84.469 48.57c-0.86328 0-1.5625 0.69922-1.5625 1.5625v3.125c0 0.86328 0.69922 1.5625 1.5625 1.5625s1.5625-0.69922 1.5625-1.5625v-3.125c0-0.86719-0.70312-1.5625-1.5625-1.5625z"/>
+               <path d="m69.555 51.598v6.1484c0 0.86328 0.69922 1.5625 1.5625 1.5625 0.86328 0 1.5625-0.69922 1.5625-1.5625v-6.1484c0-0.86328-0.69922-1.5625-1.5625-1.5625-0.86719 0-1.5625 0.69922-1.5625 1.5625z"/>
+               <path d="m72.68 66.52v-2.6328c0-0.86328-0.69922-1.5625-1.5625-1.5625-0.86328 0-1.5625 0.69922-1.5625 1.5625v2.6328c0 1.457 0.38281 2.8906 1.1133 4.1406 0.28906 0.5 0.8125 0.77734 1.3516 0.77734 0.26562 0 0.53906-0.070312 0.78516-0.21094 0.74609-0.43359 1-1.3906 0.5625-2.1367-0.45313-0.77734-0.6875-1.668-0.6875-2.5703z"/>
+               <path d="m84.469 57.84c-0.86328 0-1.5625 0.69922-1.5625 1.5625v6.1484c0 0.86328 0.69922 1.5625 1.5625 1.5625s1.5625-0.69922 1.5625-1.5625v-6.1484c0-0.86328-0.70312-1.5625-1.5625-1.5625z"/>
+               <path d="m81.445 70.098c-1.1211 1.1445-2.7422 1.6875-4.2891 1.4961-0.86328-0.11719-1.6367 0.5-1.7422 1.3594-0.10547 0.85547 0.5 1.6367 1.3594 1.7422 0.33203 0.039063 0.67187 0.0625 1.0195 0.0625 2.2344 0 4.3242-0.87891 5.8867-2.4766 0.60156-0.61719 0.59375-1.6055-0.023438-2.2109-0.61719-0.60156-1.6055-0.58984-2.2109 0.027344z"/>
+               <path d="m70.691 46.984c0.65625-0.55859 0.73438-1.5469 0.17188-2.2031-1.7031-1.9961-4.4297-2.9688-6.9492-2.5664-0.85156 0.13672-1.4297 0.9375-1.2969 1.7891 0.13672 0.85156 0.94141 1.4336 1.7891 1.2969 1.4727-0.22656 3.0781 0.33984 4.0781 1.5117 0.30859 0.35938 0.75 0.54688 1.1875 0.54688 0.36328 0 0.72656-0.125 1.0195-0.375z"/>
+               <path d="m59.082 52.094c0.86328 0 1.5625-0.69922 1.5625-1.5625v-0.82812c0-0.57812 0.10547-1.1367 0.32031-1.6602 0.32031-0.80078-0.066406-1.7109-0.86719-2.0352-0.80078-0.32031-1.7109 0.0625-2.0352 0.86719-0.35938 0.89844-0.54688 1.8516-0.54688 2.8281v0.82812c0.003906 0.86719 0.70312 1.5625 1.5664 1.5625z"/>
+              </g>
+          </div>
+          <h5 class="name">
+          Track Vehicle
+          </h5>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 640" x="0px" y="0px"><path d="M288,144a24,24,0,1,0-24-24A24.028,24.028,0,0,0,288,144Zm0-32a8,8,0,1,1-8,8A8.009,8.009,0,0,1,288,112Z"/><path d="M488,16H280a8,8,0,0,0-8,8V48a8,8,0,0,0-8,8v4.687l-2.343-2.344a8,8,0,0,0-11.314,0l-24,24a8,8,0,0,0,0,11.314L228.687,96H224a8,8,0,0,0-8,8v24H136c-17.47,0-33.669,14.619-39.353,28.839L69.146,216H40a24,24,0,0,0-.409,48C24.247,279.756,16,314.49,16,328V472a24.028,24.028,0,0,0,24,24H72a24.028,24.028,0,0,0,24-24v-8H384v8a24.028,24.028,0,0,0,24,24h32a24.028,24.028,0,0,0,24-24V328c0-6.209-1.474-14.953-3.939-24H488a8,8,0,0,0,8-8V24A8,8,0,0,0,488,16ZM232,112h16a8,8,0,0,0,5.657-13.657L243.313,88,256,75.313l10.343,10.344A8,8,0,0,0,280,80V64h16V80a8,8,0,0,0,13.657,5.657L320,75.313,332.687,88,322.343,98.343A8,8,0,0,0,328,112h16v16H328a8,8,0,0,0-5.657,13.657L332.687,152,320,164.687l-10.343-10.344A8,8,0,0,0,296,160v16H280V160a8,8,0,0,0-13.657-5.657L256,164.687,243.313,152l10.344-10.343A8,8,0,0,0,248,128H232Zm88.336,264h-50.1A19.124,19.124,0,0,0,272,368c0-13.458-14.056-24-32-24s-32,10.542-32,24a19.124,19.124,0,0,0,1.764,8h-50.1A96.127,96.127,0,0,0,64,288H42.753c5.908-12.359,11.086-15.923,13.172-16,.016,0,.031,0,.046,0H272v24a8,8,0,0,0,8,8h83A96.06,96.06,0,0,0,320.336,376ZM416,304h27.411a118.837,118.837,0,0,1,3.82,16H416a64.081,64.081,0,0,0-63.482,56H336.4A80.117,80.117,0,0,1,416,304ZM256,368c0,3.262-6.233,8-16,8s-16-4.738-16-8,6.233-8,16-8S256,364.738,256,368ZM136,144h92.687l-2.344,2.343a8,8,0,0,0,0,11.314L228.686,160H112.836C117.638,151.2,127.76,144,136,144Zm-30.615,32h139.3l5.657,5.657a8,8,0,0,0,11.314,0L264,179.313V184a8,8,0,0,0,8,8v64H68.2ZM32,240a8.012,8.012,0,0,1,8-8H61.708l-7.442,16.009-14.266,0A8.012,8.012,0,0,1,32,240Zm4.6,64H64a80.117,80.117,0,0,1,79.6,72H127.482A64.081,64.081,0,0,0,64,320H32.781A121.882,121.882,0,0,1,36.6,304ZM32,336H64a48.071,48.071,0,0,1,47.321,40H58.667L32,356ZM80,472a8.009,8.009,0,0,1-8,8H40a8.009,8.009,0,0,1-8-8V442.265A63.851,63.851,0,0,0,80,464Zm104-24H80a47.928,47.928,0,0,1-37.783-18.449A39.811,39.811,0,0,0,56,432H184Zm96,0H200V424h80Zm16,0V432H424a39.807,39.807,0,0,0,13.783-2.449A47.927,47.927,0,0,1,400,448Zm152,24a8.009,8.009,0,0,1-8,8H408a8.009,8.009,0,0,1-8-8v-8a63.851,63.851,0,0,0,48-21.735Zm0-80a24.028,24.028,0,0,1-24,24H296a8,8,0,0,0-8-8H192a8,8,0,0,0-8,8H56a24.028,24.028,0,0,1-24-24V376l19.2,14.4A8,8,0,0,0,56,392H424a8,8,0,0,0,4.8-1.6L448,376Zm0-36-26.667,20H368.679A48.071,48.071,0,0,1,416,336h32Zm32-68H288V192h16a8,8,0,0,0,8-8v-4.687l2.343,2.344a8,8,0,0,0,11.314,0l24-24a8,8,0,0,0,0-11.314L347.313,144H352a8,8,0,0,0,8-8V104a8,8,0,0,0-8-8h-4.687l2.344-2.343a8,8,0,0,0,0-11.314l-24-24a8,8,0,0,0-11.314,0L312,60.687V56a8,8,0,0,0-8-8H288V32H480Z"/><path d="M448,152H376a8,8,0,0,0,0,16h72a8,8,0,0,0,0-16Z"/><path d="M448,184H352a8,8,0,0,0,0,16h96a8,8,0,0,0,0-16Z"/><path d="M448,216H320a8,8,0,0,0,0,16H448a8,8,0,0,0,0-16Z"/><path d="M448,248H320a8,8,0,0,0,0,16H448a8,8,0,0,0,0-16Z"/><path d="M448,120H384a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Z"/><path d="M448,88H384a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Z"/><path d="M368,72h80a8,8,0,0,0,0-16H368a8,8,0,0,0,0,16Z"/></svg>
+          </div>
+          <h5 class="name">
+             <a href="{% url 'user_dashboard' %}">Maintenance</a>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end feature section -->
+
+  <!-- about section -->
+
+  <section class="about_section layout_padding-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5 col-md-6">
+          <div class="detail-box">
+            <h2>
+              About us
+            </h2>
+            <p>We aims to alleviate common travel issues for vehicle owners, ensuring that their personal 
+              vehicles are safely delivered to any specified location with optional maintenance services. By offering 
+              a flexible, reliable, and user-friendly system, this solution has the potential to significantly enhance 
+              the convenience of travel, catering to a wide range of users.
+            </p>
+            {% comment %} <a href="">
+              Read More
+            </a> {% endcomment %}
+          </div>
+        </div>
+        <div class="col-lg-7 col-md-6">
+          <div class="img-box">
+            <img src={% static "images/about-img1.jpg" %} alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end about section -->
+
+
+  <!-- professional section -->
+
+  <section class="professional_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="img-box">
+            <img src={% static "images/professional-img2.webp" %} alt="">
+          </div>
+        </div>
+        <div class="col-md-6 ">
+          <div class="detail-box">
+            <h2>
+              We Provide  Vehicle Maintenance <br>
+              Services At Your Home
+            </h2>
+            <p>
+              randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All randomised words which don't look even slightly
+            </p>
+            {% comment %} <a href="">
+              Read More
+            </a> {% endcomment %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end professional section -->
+
+  <!-- service section -->
+
+  <section class="service_section layout_padding">
+    <div class="container ">
+      <div class="heading_container heading_center">
+        <h2> Our Services </h2>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-md-4 mx-auto">
+          <div class="box ">
+            <div class="img-box">
+              <img. src={% static "images/s1.png" %}  alt="" />
+            </div>
+            <div class="detail-box">
+              <h5>
+                Driver Provideing
+              </h5>
+              <p>
+                We provide drivers to transport their vehicles from the departure point to a desired destination, such as 
+                their home or another specified location 
+                 
+            
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mx-auto">
+          <div class="box ">
+            <div class="img-box">
+              <img. src={% static "images/s2.png" %}alt="" />
+            </div>
+            <div class="detail-box">
+              <h5>
+                Realtime Tracking
+              </h5>
+              <p>
+                Vehicle owners can track their vehicle when they need
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4 mx-auto">
+          <div class="box ">
+            <div class="img-box">
+              <img. src="{% static "images/s3.png" %}alt="" />
+            </div>
+            <div class="detail-box">
+              <h5>
+                Maintenance Services
+              </h5>
+              <p>
+                The platform offers value-added maintenance options, such as fuel refilling, basic repairs, 
+                and cleaning, allowing travelers to receive their vehicles in optimal condition upon arrival.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-box">
+        {% comment %} <a href="">
+          View More
+        </a> {% endcomment %}
+      </div>
+    </div>
+  </section>
+
+  <!-- end service section -->
+
+  <!-- client section -->
+
+  <section class="client_section ">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          What Our Clients Say
+        </h2>
+      </div>
+      <div class="carousel-wrap layout_padding2-top ">
+        <div class="owl-carousel">
+          <div class="item">
+            <div class="box">
+              <div class="client_id">
+                <div class="img-box">
+                  <img src="{% static "images/client-1.jpg" %} alt="">
+                </div>
+                <div class="client_detail">
+                  <div class="client_info">
+                    <h6>
+                      Jorch morik
+                    </h6>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                  </div>
+                  <i class="fa fa-quote-left" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="client_text">
+                <p>
+                  chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="box">
+              <div class="client_id">
+                <div class="img-box">
+                  <img src="{% static "images/client-2.jpg" %} alt="">
+                </div>
+                <div class="client_detail">
+                  <div class="client_info">
+                    <h6>
+                      Jorch morik
+                    </h6>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                  </div>
+                  <i class="fa fa-quote-left" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="client_text">
+                <p>
+                  chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="box">
+              <div class="client_id">
+                <div class="img-box">
+                  <img src="{% static "images/client-1.jpg" %} alt="">
+                </div>
+                <div class="client_detail">
+                  <div class="client_info">
+                    <h6>
+                      Jorch morik
+                    </h6>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                  </div>
+                  <i class="fa fa-quote-left" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="client_text">
+                <p>
+                  chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="box">
+              <div class="client_id">
+                <div class="img-box">
+                  <img src={% static "images/client-2.jpg" %} alt="">
+                </div>
+                <div class="client_detail">
+                  <div class="client_info">
+                    <h6>
+                      Jorch morik
+                    </h6>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                  </div>
+                  <i class="fa fa-quote-left" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="client_text">
+                <p>
+                  chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end client section -->
+
+  <!-- contact section -->
+
+  <section class="contact_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Contact Us
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <form action="">
+            <div>
+              <input type="text" placeholder="Name" />
+            </div>
+            <div>
+              <input type="text" placeholder="Phone Number" />
+            </div>
+            <div>
+              <input type="email" placeholder="Email" />
+            </div>
+            <div>
+              <input type="text" class="message-box" placeholder="Message" />
+            </div>
+            <div class="d-flex ">
+              <button>
+                SEND
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <div class="map_container">
+            <div class="map">
+              <div id="googleMap" style="width:100%;height:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end contact section -->
+
+
+  <!-- info section -->
+  <section class="info_section ">
+    <div class="container">
+      <h4>
+        Get In Touch
+      </h4>
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <div class="info_items">
+            <div class="row">
+              <div class="col-md-4">
+                <a href="">
+                  <div class="item ">
+                    <div class="img-box ">
+                      <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    </div>
+                    <p>
+                      All over kerala
+                    </p>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a href="">
+                  <div class="item ">
+                    <div class="img-box ">
+                      <i class="fa fa-phone" aria-hidden="true"></i>
+                    </div>
+                    <p>
+                      +91 6200552200
+                    </p>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a href="">
+                  <div class="item ">
+                    <div class="img-box">
+                      <i class="fa fa-envelope" aria-hidden="true"></i>
+                    </div>
+                    <p>
+                      dropcaro@gmail.com
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="social-box">
+      <h4>
+        Follow Us
+      </h4>
+      <div class="box">
+        <a href="">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+        <a href="">
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="">
+          <i class="fa fa-youtube" aria-hidden="true"></i>
+        </a>
+        <a href="">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- end info_section -->
+
+  <!-- footer section -->
+  <footer class="footer_section">
+    <div class="container">
+      <p>
+        &copy; <span id="displayDateYear"></span> All Rights Reserved  
+      </p>
+    </div>
+  </footer>
+  <!-- footer section -->
+
+  <script src={% static "js/jquery-3.4.1.min.js" %}></script>
+  <script src={% static "js/bootstrap.js" %}></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+  </script>
+  <script src={% static "js/custom.js" %}></script>
+  <!-- Google Map -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+  <!-- End Google Map -->
+
+
+</body>
+
+</html>

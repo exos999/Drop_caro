@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 1rem;
+        }
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .main-content h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .dashboard-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .dashboard-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .dashboard-card button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+        .dashboard-card button:hover {
+            background-color: #555;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div>
+                <h2>Admin Dashboard</h2>
+                <ul>
+                    <li><a href="#user-management">User Management</a></li>
+                    <li><a href="#service-monitoring">Service Monitoring</a></li>
+                    <li><a href="#analytics-reports">Analytics & Reports</a></li>
+                    <li><a href="#notifications">Notifications</a></li>
+                    <li><a href="#payment-management">Payment Management</a></li>
+                </ul>
+            </div>
+            <div>
+                <a href="#help-support">Help & Support</a>
+                <br>
+                <a href="#logout">Log Out</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1>Welcome, Administrator</h1>
+            <div class="dashboard-grid">
+                <!-- User Management -->
+                <div class="dashboard-card" id="user-management">
+                    <h2>User Management</h2>
+                    <p>Manage traveler and driver profiles, service history, and issues.</p>
+                    <button><a href="{% url 'manage_users' %}">Manage Users</a></button>
+                    <button><a href="{% url 'manage_drivers' %}">Manage Driver</a></button>
+                </div>
+
+                <!-- Service Request Monitoring -->
+                <div class="dashboard-card" id="service-monitoring">
+                    <h2>Service Monitoring</h2>
+                    <p>View all ongoing and pending service requests.</p>
+                    <button><a href="{% url 'vehicle_details' %}">Vehicle Details</a></button>
+                    <button>Driver Booked</button>
+                    <button>Maintenance Booked</button>
+                </div>
+
+                <!-- Analytics & Reports -->
+                <div class="dashboard-card" id="analytics-reports">
+                    <h2>Analytics & Reports</h2>
+                    <p>Track system performance and revenue statistics.</p>
+                    <button>View Reports</button>
+                </div>
+
+                <!-- Notifications -->
+                <div class="dashboard-card" id="notifications">
+                    <h2>Notifications & Alerts</h2>
+                    <p>Receive alerts for issues, delays, or complaints.</p>
+                    <button>View Notifications</button>
+                </div>
+
+                <!-- Payment Management -->
+                <div class="dashboard-card" id="payment-management">
+                    <h2>Payment Management</h2>
+                    <p>Track all transactions and resolve disputes or refunds.</p>
+                    <button>Manage Payments</button>
+                </div>
+            </div>
+            <footer>
+                &copy; 2025 Admin Dashboard
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

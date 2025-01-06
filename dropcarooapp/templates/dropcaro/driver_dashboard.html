@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 1rem;
+        }
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+        }
+        .main-content h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .dashboard-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .dashboard-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .dashboard-card button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+        .dashboard-card button:hover {
+            background-color: #555;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div>
+                <h2>Driver Dashboard</h2>
+                <ul>
+                    <li><a href="#tasks-overview">Task Overview</a></li>
+                    <li><a href="#vehicle-details">Vehicle Details</a></li>
+                    <li><a href="#maintenance">Maintenance Management</a></li>
+                    <li><a href="#navigation">Location & Navigation</a></li>
+                    <li><a href="#payments">Payments & Earnings</a></li>
+                </ul>
+            </div>
+            <div>
+                <a href="#help-support">Help & Support</a>
+                <br>
+                <a href="#logout">Log Out</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1>Welcome, Driver</h1>
+            <div class="dashboard-grid">
+                <!-- Task Overview -->
+                <div class="dashboard-card" id="tasks-overview">
+                    <h2>Task Overview</h2>
+                    <p>View assigned tasks and their current status.</p>
+                    <a href="{% url 'view_task' %}"><button>View Tasks</button></a>
+                </div>
+
+                <!-- Vehicle Details -->
+                <div class="dashboard-card" id="vehicle-details">
+                    <h2>Vehicle Details</h2>
+                    <p>Check vehicle information and special instructions.</p>
+                    <button>View Details</button>
+                </div>
+
+                <!-- Maintenance Management -->
+                <div class="dashboard-card" id="maintenance">
+                    <h2>Maintenance Management</h2>
+                    <p>Complete the service checklist for each vehicle.</p>
+                    <button>Start Checklist</button>
+                </div>
+
+                <!-- Location & Navigation -->
+                <div class="dashboard-card" id="navigation">
+                    <h2>Location & Navigation</h2>
+                    <p>Optimize routes and navigate efficiently.</p>
+                    <button>View Map</button>
+                </div>
+
+                <!-- Payments & Earnings -->
+                <div class="dashboard-card" id="payments">
+                    <h2>Payments & Earnings</h2>
+                    <p>Track earnings and pending payments.</p>
+                    <button>View Earnings</button>
+                </div>
+            </div>
+            <footer>
+                &copy; 2025 Driver Dashboard
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

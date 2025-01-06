@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f8f8f8;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <span style="font-weight: bold; font-size: 1.2em;">Dropcaro</span>
+        </div>
+    </header>
+    <main>
+        <h1>My Bookings</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>User Name</th>
+                    <th>Email Address</th>
+                    <th>Password</th>
+                    <th>Phone Number</th>
+                    <th>Driver's License Number</th>
+                    <th>Upload Driver Photo</th>
+                    <th>Date of Birth</th>
+                    <th>action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for driver in drivers %}
+                <tr>
+                    <td>{{ driver.fullname }}</td>
+                    <td>{{ driver.user.username }}</td>
+                    <td>{{ driver.email }}</td>
+                    <td>{{ driver.password }}</td> <!-- Consider not displaying plain text passwords -->
+                    <td>{{ driver.phone }}</td>
+                    <td>{{ driver.license_number }}</td>
+                    <td>
+                        {% if driver.photo %}
+                        <img src="{{ driver.photo.url }}" alt="Driver Photo" style="width:50px;height:50px;">
+                        {% else %}
+                        No photo
+                        {% endif %}
+                    </td>
+                    <td>{{ driver.date_of_birth }}</td>
+                    <td>
+                        <button>Edit</button>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+ 
+    </main>
+
+</body>
+</html>

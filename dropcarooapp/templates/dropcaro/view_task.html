@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Tasks</title>
+    <link rel="stylesheet" href="{% static 'css/view_task.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Driver Tasks</h1>
+    </header>
+    <main>
+        <h2>Assigned Tasks</h2>
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Description</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>001</td>
+                    <td>Deliver package to location A</td>
+                    <td>2025-01-10</td>
+                    <td><span class="status pending">Pending</span></td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>Pick up shipment from location B</td>
+                    <td>2025-01-08</td>
+                    <td><span class="status in-progress">In Progress</span></td>
+                </tr>
+                <tr>
+                    <td>003</td>
+                    <td>Vehicle maintenance check</td>
+                    <td>2025-01-05</td>
+                    <td><span class="status completed">Completed</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

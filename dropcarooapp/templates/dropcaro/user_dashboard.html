@@ -1,0 +1,142 @@
+a<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traveler Dashboard - DROPCARO</title>
+    
+    <!-- Load static files -->
+    {% load static %}
+
+    <!-- Link to external stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+        }
+        .sidebar h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .main-content h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .dashboard-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .dashboard-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-card h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .dashboard-card p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .dashboard-card button {
+            padding: 10px 15px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .dashboard-card button:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Traveler Dashboard</h2>
+            <ul>
+                <li><a href="#my-vehicles">My Vehicles</a></li>
+                <li><a href="#delivery-scheduling">Delivery Scheduling</a></li>
+                <li><a href="#maintenance">Maintenance Requests</a></li>
+                <li><a href="#payments">Payment Management</a></li>
+                <li><a href="#notifications">Notifications & Updates</a></li>
+                <li><a href="#logout">Log Out</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1>Welcome, Traveler!</h1>
+            <div class="dashboard-section">
+                <!-- Vehicle Management -->
+                <div class="dashboard-card" id="my-vehicles">
+                    <h2>My Vehicles</h2>
+                    <p>View and manage your registered vehicles.</p>
+                    <a href="{% url 'vehicle_reg' %}"> <button>Register Vehicles</button></a>
+                </div>
+
+                <!-- Delivery Scheduling -->
+                <div class="dashboard-card" id="delivery-scheduling">
+                    <h2>Book a Driver</h2>
+                    <p>Schedule pick-up and drop-off for your vehicle.</p>
+                    <a href="{% url 'book_driver' %}"><button>Schedule Now</button></a>
+                </div>
+
+                <!-- Maintenance Requests -->
+                <div class="dashboard-card" id="maintenance">
+                    <h2>Request Maintenance</h2>
+                    <p>Choose cleaning, refueling, or repair services.</p>
+                    <a href="{% url 'maintenance_reg' %}"><button>Request Services</button></a>
+                </div>
+
+                <!-- Payment Management -->
+                <div class="dashboard-card" id="payments">
+                    <h2>Payment Management</h2>
+                    <p>View invoices and manage your payments.</p>
+                    <button>View Payments</button>
+                </div>
+
+                <!-- Notifications -->
+                <div class="dashboard-card" id="notifications">
+                    <h2>Notifications & Updates</h2>
+                    <p>Get real-time updates on your vehicle's status.</p>
+                    <a href="{% url 'map' %}"><button>View Notifications</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
