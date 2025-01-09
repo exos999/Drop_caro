@@ -50,6 +50,8 @@ urlpatterns = [
     path('manage_users/', views.manage_users, name='manage_users'),
     path('manage_drivers/', views.manage_drivers, name='manage_drivers'),
     path('vehicle_details/', views.vehicle_details, name='vehicle_details'),
+    path('view_bookdriver/', views.view_bookdriver, name='view_bookdriver'),
+    path('view_bookmaintance/', views.view_bookmaintance, name='view_bookmaintance'),
       
       
 ]
