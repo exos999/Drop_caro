@@ -52,6 +52,12 @@ urlpatterns = [
     path('vehicle_details/', views.vehicle_details, name='vehicle_details'),
     path('view_bookdriver/', views.view_bookdriver, name='view_bookdriver'),
     path('view_bookmaintance/', views.view_bookmaintance, name='view_bookmaintance'),
+    
+    
+    # payment
+    
+    path('payment/', views.payment, name='payment'),
+    path('sucessfull_payment/', views.sucessfull_payment, name='sucessfull_payment'),
       
       
 ]

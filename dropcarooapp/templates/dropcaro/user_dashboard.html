@@ -1,4 +1,4 @@
-a<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -86,15 +86,15 @@ a<!DOCTYPE html>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <h2>Traveler Dashboard</h2>
-            <ul>
+            <h2>User Dashboard</h2>
+            {% comment %} <ul>
                 <li><a href="#my-vehicles">My Vehicles</a></li>
                 <li><a href="#delivery-scheduling">Delivery Scheduling</a></li>
                 <li><a href="#maintenance">Maintenance Requests</a></li>
                 <li><a href="#payments">Payment Management</a></li>
                 <li><a href="#notifications">Notifications & Updates</a></li>
                 <li><a href="#logout">Log Out</a></li>
-            </ul>
+            </ul> {% endcomment %}
         </div>
 
         <!-- Main Content -->
@@ -124,9 +124,9 @@ a<!DOCTYPE html>
 
                 <!-- Payment Management -->
                 <div class="dashboard-card" id="payments">
-                    <h2>Payment Management</h2>
+                    <h2>Payment</h2>
                     <p>View invoices and manage your payments.</p>
-                    <button>View Payments</button>
+                    <a href="{% url 'payment' %}"><button>Payment</button></a>
                 </div>
 
                 <!-- Notifications -->
