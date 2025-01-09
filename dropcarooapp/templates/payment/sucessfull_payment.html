@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .success-image {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 1.5rem;
+            color: #4285f4;
+            margin-bottom: 10px;
+        }
+        .details {
+            font-size: 1rem;
+            color: #555;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #4285f4;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #357ae8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="{% static 'images/i.jpg' %}" alt="Payment Successful" class="success-image">
+        <div class="message">Payment Successful</div>
+        <div class="details">Thank you for your payment via Google Pay. Your transaction has been completed successfully.</div>
+        <a href="{% url 'user_dashboard' %}"><button>Go to Homepage</button></a>
+    </div>
+</body>
+</html>
