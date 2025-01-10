@@ -51,10 +51,17 @@ urlpatterns = [
     path('manage_drivers/', views.manage_drivers, name='manage_drivers'),
     path('vehicle_details/', views.vehicle_details, name='vehicle_details'),
 
-    path('list_maintenance/', views.admin_list_maintenance, name='list_maintenance'),
+   
 
 
-
+    path('view_bookdriver/', views.view_bookdriver, name='view_bookdriver'),
+    path('view_bookmaintance/', views.view_bookmaintance, name='view_bookmaintance'),
+    
+    
+    # payment
+    
+    path('payment/', views.payment, name='payment'),
+    path('sucessfull_payment/', views.sucessfull_payment, name='sucessfull_payment'),
       
       
 ]

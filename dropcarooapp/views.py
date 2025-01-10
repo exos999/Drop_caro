@@ -297,3 +297,24 @@ def vehicle_details(request):
     vehicles=VehicleRegistration.objects.all()
     
     return render(request, 'dropcaro/vehicle_details.html',{"vehicles":vehicles})
+
+
+def view_bookdriver(request):
+    bookdriver=DriverBooking.objects.all()
+    
+    return render(request, 'admin_dashboard/view_bookdriver.html',{"bookdriver":bookdriver})
+
+
+def view_bookmaintance(request):
+    bookmaintance=MaintenanceRequest.objects.all()
+    
+    return render(request, 'admin_dashboard/view_bookmaintance.html',{"bookmaintance":bookmaintance})
+
+# payment
+
+
+def payment(request):
+    return render(request, 'payment/payment.html')
+
+def sucessfull_payment(request):
+    return render(request, 'payment/sucessfull_payment.html')
