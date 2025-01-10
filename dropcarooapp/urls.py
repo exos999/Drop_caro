@@ -50,6 +50,11 @@ urlpatterns = [
     path('manage_users/', views.manage_users, name='manage_users'),
     path('manage_drivers/', views.manage_drivers, name='manage_drivers'),
     path('vehicle_details/', views.vehicle_details, name='vehicle_details'),
+
+    path('list_maintenance/', views.admin_list_maintenance, name='list_maintenance'),
+
+
+
       
       
 ]

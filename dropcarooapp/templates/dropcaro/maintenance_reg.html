@@ -23,14 +23,20 @@
     <main>
         <section class="maintenance-container">
             <h1>Maintenance Request</h1>
-            <form action="{% url 'maintenance_reg' %}" method="POST" class="maintenance-form" action="{% url 'maintenance_reg'%}">
+            <form method="POST" class="maintenance-form" action="{% url 'maintenance_reg'%}">
             {% csrf_token %}  
               <label for="full_name">Full Name:</label>
                 <input type="text" id="full-name" name="full_name" placeholder="Enter your full name" required>
 
                 <label for="vehicle-number">Vehicle Number:</label>
-                <input type="text" id="vehicle-number" name="vehicle_number" placeholder="Enter vehicle number" required>
-<!-- Service Options -->
+                <select id="vehicle-number" name="vehicle" required>
+                    <option value="" disabled selected>Select your vehicle</option>
+                    {% for vehicle in vehicles %}
+                        <option value="{{ vehicle.id }}">{{ vehicle.vehicle_number }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Service Options -->
       <h2>Services</h2>
       <label for="services">Select Services:</label>
       <div class="checkbox-group">

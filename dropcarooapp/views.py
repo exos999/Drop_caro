@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from.models import*
 from.form import UserDetailsForm,DriverDetailsForm,VehicleRegistrationForm,MaintenanceRequestForm,DriverBookingForm
 from django.contrib import messages
@@ -146,8 +146,8 @@ from django.shortcuts import render
 def track_vehicle(request):
     return render(request, 'track.html')
 
-def maintenance_reg(request):
-    return render(request, 'dropcaro/maintenance_reg.html')
+# def maintenance_reg(request):
+#     return render(request, 'dropcaro/maintenance_reg.html')
 
 def payments(request):
     return render(request, 'payments.html')
@@ -216,7 +216,10 @@ def vehicle_reg(request):
     if request.method == "POST":
         form = VehicleRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            userds=get_object_or_404(UserDetails,user=request.user)
+            vehicle=form.save(commit=False)
+            vehicle.owner=userds
+            vehicle.save()
             messages.success(request, "Vehicle registered successfully!")
             return redirect('user_dashboard')
         else:
@@ -233,10 +236,13 @@ def maintenance_reg(request):
     if request.method == "POST":
         form = MaintenanceRequestForm(request.POST)
         if form.is_valid():
+            vehicle_id=request.POST.get('vehicle')
             maintenance_request = form.save(commit=False)
             # Combine selected services into a comma-separated string
             services = request.POST.getlist('services')
             maintenance_request.services = ','.join(services)
+            vehicle=get_object_or_404(VehicleRegistration,id=vehicle_id)
+            maintenance_request.vehicle=vehicle
             maintenance_request.save()
             messages.success(request, "Your maintenance request has been submitted successfully!")
             return redirect('user_dashboard')
@@ -245,8 +251,12 @@ def maintenance_reg(request):
     else:
         form = MaintenanceRequestForm()
 
-    return render(request, 'dropcaro/maintenance_reg.html', {'form': form})
+    vehicles=VehicleRegistration.objects.filter(owner__user=request.user)
+    return render(request, 'dropcaro/maintenance_reg.html', {'form': form,'vehicles':vehicles})
 
+def admin_list_maintenance(request):
+    maintenance_bookings = MaintenanceRequest.objects.all() 
+    return render(request, 'dropcaro/admin_list_maintenance.html', {'maintenance_bookings': maintenance_bookings})
 
 # book_driver
 def book_driver(request):

@@ -1,0 +1,51 @@
+<!-- Start Generation Here -->
+<h1 style="text-align: center; color: #000; font-family: Arial, sans-serif;">Maintenance Booking List</h1>
+<table>
+    <thead>
+        <tr>
+            <th style="text-align: center; color: #fff; background-color: #000;">Booking ID</th>
+            <th style="text-align: center; color: #fff; background-color: #000;">Vehicle</th>
+            <th style="text-align: center; color: #fff; background-color: #000;">Owner</th>
+            <th style="text-align: center; color: #fff; background-color: #000;">Services</th>
+            <th style="text-align: center; color: #fff; background-color: #000;">Status</th>
+            <th style="text-align: center; color: #fff; background-color: #000;">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in maintenance_bookings %}
+        <tr>
+            <td style="text-align: center; color: #000;">{{ booking.id }}</td>
+            <td style="text-align: center; color: #000;">{{ booking.vehicle.vehicle_number }}</td>
+            <td style="text-align: center; color: #000;">{{ booking.owner }}</td>
+            <td style="text-align: center; color: #000;">{{ booking.services }}</td>
+            <td style="text-align: center; color: #000;">{{ booking.status }}</td>
+            <td style="text-align: center; color: #000;">{{ booking.date }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align: center; color: #000;">No maintenance bookings found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    th, td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #000;
+    }
+    th {
+        font-weight: bold;
+    }
+    tr:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+<!-- End Generation Here -->

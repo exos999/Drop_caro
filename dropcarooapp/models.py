@@ -25,15 +25,15 @@ class UserDetails(models.Model):
     
 class VehicleRegistration(models.Model):
     vehicle_number = models.CharField(max_length=20, unique=True,blank=True, null=True)
-    owner_name = models.CharField(max_length=100,blank=True, null=True)
+    owner = models.ForeignKey(UserDetails, on_delete=models.CASCADE, blank=True, null=True)
     vehicle_model = models.CharField(max_length=100,blank=True, null=True)
     contact = models.CharField(max_length=15,blank=True, null=True)
 
 
 class MaintenanceRequest(models.Model):
     full_name = models.CharField(max_length=100)
-    vehicle_number = models.CharField(max_length=20)
-    services = models.TextField()  # Stores selected services as a comma-separated string
+    vehicle = models.ForeignKey(VehicleRegistration, on_delete=models.CASCADE,null=True,blank=True)
+    services = models.TextField()  
     description = models.TextField(blank=True, null=True)
     request_date = models.DateField()
     request_time = models.TimeField()

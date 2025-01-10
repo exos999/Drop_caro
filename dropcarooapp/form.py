@@ -21,13 +21,13 @@ class UserDetailsForm(forms.ModelForm):
 class VehicleRegistrationForm(forms.ModelForm):
     class Meta:
         model = VehicleRegistration
-        fields = ['vehicle_number', 'owner_name', 'vehicle_model', 'contact']
+        fields = ['vehicle_number', 'vehicle_model', 'contact']
 
 
 class MaintenanceRequestForm(forms.ModelForm):
     class Meta:
         model = MaintenanceRequest
-        fields = ['full_name', 'vehicle_number', 'services', 'description', 'request_date', 'request_time']
+        fields = ['full_name', 'services', 'description', 'request_date', 'request_time']
         widgets = {
             'services': forms.CheckboxSelectMultiple(choices=[
                 ('fuelRefill', 'Fuel Refill'),

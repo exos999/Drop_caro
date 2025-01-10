@@ -119,8 +119,8 @@
                 <div class="dashboard-card" id="user-management">
                     <h2>User Management</h2>
                     <p>Manage traveler and driver profiles, service history, and issues.</p>
-                    <button><a href="{% url 'manage_users' %}">Manage Users</a></button>
-                    <button><a href="{% url 'manage_drivers' %}">Manage Driver</a></button>
+                    <button><a style="text-decoration: none;color:white" href="{% url 'manage_users' %}">Manage Users</a></button>
+                    <button><a  style="text-decoration: none;color:white"href="{% url 'manage_drivers' %}">Manage Driver</a></button>
                 </div>
 
                 <!-- Service Request Monitoring -->
@@ -129,7 +129,7 @@
                     <p>View all ongoing and pending service requests.</p>
                     <button><a href="{% url 'vehicle_details' %}">Vehicle Details</a></button>
                     <button>Driver Booked</button>
-                    <button>Maintenance Booked</button>
+                    <button><a href="{% url 'list_maintenance' %}" style="text-decoration: none; color: white;">Maintenance Booked</a></button>
                 </div>
 
                 <!-- Analytics & Reports -->
