@@ -4,6 +4,7 @@ from.form import UserDetailsForm,DriverDetailsForm,VehicleRegistrationForm,Maint
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from .models import VehicleRegistration
 
 
 def home(request):
@@ -130,6 +131,10 @@ def driver_dashboard_view(request):
 def admin_dashboard_view(request):
     return render(request,'dropcaro/admin_dashboard.html')
 
+
+def list_my_vehicles(request):
+    vehicles = VehicleRegistration.objects.filter(owner__user=request.user)
+    return render(request, 'dropcaro/list_my_vehicles.html', {'vehicles': vehicles})
 
 
 # user_dashboard_view
@@ -271,7 +276,8 @@ def book_driver(request):
     else:
         form = DriverBookingForm()
 
-    return render(request, 'dropcaro/book_driver.html', {'form': form})
+    drivers=DriverDetails.objects.all()
+    return render(request, 'dropcaro/book_driver.html', {'form': form,'drivers':drivers})
 
 
 # driver_dashboard_view

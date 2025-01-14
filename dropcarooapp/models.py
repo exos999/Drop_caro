@@ -45,6 +45,7 @@ class DriverBooking(models.Model):
     contact_number = models.CharField(max_length=15)
     pickup_location = models.CharField(max_length=255)
     dropoff_location = models.CharField(max_length=255)
+    driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
     pickup_date = models.DateField()
     pickup_time = models.TimeField()
     key_point = models.CharField(max_length=255)

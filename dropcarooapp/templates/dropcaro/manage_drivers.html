@@ -4,7 +4,7 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bookings</title>
+    <title>Manage Drivers</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -78,7 +78,7 @@
         </div>
     </header>
     <main>
-        <h1>My Bookings</h1>
+        <h1>Manage Drivers</h1>
         <table>
             <thead>
                 <tr>
@@ -90,7 +90,7 @@
                     <th>Driver's License Number</th>
                     <th>Upload Driver Photo</th>
                     <th>Date of Birth</th>
-                    <th>action</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -111,16 +111,13 @@
                     </td>
                     <td>{{ driver.date_of_birth }}</td>
                     <td>
-                        <button>Edit</button>
+                        <a href="" class="edit-btn" style="padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-right: 5px;">Edit</a>
+                        <a href="" class="delete-btn" style="padding: 5px 10px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px;">Delete</a>
                     </td>
-
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        
- 
     </main>
-
 </body>
 </html>

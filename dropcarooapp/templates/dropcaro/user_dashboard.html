@@ -99,13 +99,13 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <h1>Welcome, Traveler!</h1>
+            <h1>Welcome, {{user}} !</h1>
             <div class="dashboard-section">
                 <!-- Vehicle Management -->
                 <div class="dashboard-card" id="my-vehicles">
                     <h2>My Vehicles</h2>
                     <p>View and manage your registered vehicles.</p>
-                    <a href="{% url 'vehicle_reg' %}"> <button>Register Vehicles</button></a>
+                    <a href="{% url 'list_vehicles' %}"> <button>Vehicles</button></a>
                 </div>
 
                 <!-- Delivery Scheduling -->
