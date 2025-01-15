@@ -1,10 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from.models import*
-from.form import UserDetailsForm,DriverDetailsForm,VehicleRegistrationForm,MaintenanceRequestForm,DriverBookingForm
+from.form import UserDetailsForm,DriverDetailsForm,VehicleRegistrationForm,MaintenanceRequestForm,DriverBookingForm,PaymentForm
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-from .models import VehicleRegistration
+# from .models import VehicleRegistration
 
 
 def home(request):
@@ -89,7 +89,7 @@ def driver_view(request):
         try:
             user=User.objects.create_user(username=username,password=password,email=email)
         except Exception as e:
-            print("e")
+            print(e)
             return redirect('driver_reg')
         
         driver_form=DriverDetailsForm(data)
@@ -147,19 +147,13 @@ from django.shortcuts import render
 #     return render(request, 'vehicles.html')
 
 
-
-def track_vehicle(request):
-    return render(request, 'track.html')
-
-# def maintenance_reg(request):
-#     return render(request, 'dropcaro/maintenance_reg.html')
-
 def payments(request):
     return render(request, 'payments.html')
 
 def logout_view(request):
     # Add logic for logging out the user
     return render(request, 'logout.html')
+
 
 # vehicle reg url
 # views.py
@@ -176,21 +170,7 @@ def map(request):
 
 
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
 
-@csrf_exempt 
-def save_location(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        latitude = data.get('latitude')
-        longitude = data.get('longitude')
-
-        print(f"Received coordinates: Latitude={latitude}, Longitude={longitude}")
-
-        return JsonResponse({'status': 'success', 'latitude': latitude, 'longitude': longitude})
-    return JsonResponse({'status': 'fail', 'message': 'Invalid request'}, status=400)
 # def vehicle_reg(request):
 #     if request.method == "POST":
 #         data=request.POST.copy()
@@ -218,6 +198,8 @@ def save_location(request):
 
 # VehicleRegistration view
 def vehicle_reg(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     if request.method == "POST":
         form = VehicleRegistrationForm(request.POST)
         if form.is_valid():
@@ -228,11 +210,16 @@ def vehicle_reg(request):
             messages.success(request, "Vehicle registered successfully!")
             return redirect('user_dashboard')
         else:
+            print(form.errors)
             messages.error(request, "Please correct the errors below.")
     else:
         form = VehicleRegistrationForm()
 
     return render(request, 'dropcaro/vehicle_reg.html', {'form': form})
+
+def driverview(request):
+    drivers=DriverDetails.objects.all()
+    return render(request, 'user_dashboard/driverview.html',{"drivers":drivers})
 
 
 # MaintenanceRequest view
@@ -280,11 +267,16 @@ def book_driver(request):
     return render(request, 'dropcaro/book_driver.html', {'form': form,'drivers':drivers})
 
 
-# driver_dashboard_view
+# driver_dashboard
 # view task
 
-def view_task(request):
-    return render(request, 'dropcaro/view_task.html')
+def view_work(request):
+    work=DriverBooking.objects.filter(driver__user=request.user)
+    return render(request, 'driver_dashboard/view_work.html',{"work":work})
+
+def view_vehicle(request):
+    aavehicle=VehicleRegistration.objects.filter(driver__user=request.user)
+    return render(request, 'driver_dashboard/view_vehicle.html',{"aavehicle":aavehicle})
 
 
 # admin_dashboard_view
@@ -310,6 +302,18 @@ def view_bookdriver(request):
     
     return render(request, 'admin_dashboard/view_bookdriver.html',{"bookdriver":bookdriver})
 
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.delete()
+    messages.success(request, f"User '{user.username}' deleted successfully.")
+    return redirect('manage_users')
+
+def delete_driver(request, driver_id):
+    driver = get_object_or_404(User, id=driver_id)
+    driver.delete()
+    messages.success(request, f"User '{driver.username}' deleted successfully.")
+    return redirect('manage_driver')
+
 
 def view_bookmaintance(request):
     bookmaintance=MaintenanceRequest.objects.all()
@@ -320,7 +324,14 @@ def view_bookmaintance(request):
 
 
 def payment(request):
-    return render(request, 'payment/payment.html')
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('successful_payment')
+    else:
+        form = PaymentForm()
+    return render(request, 'payment/payment.html',{'form':form})
 
 def sucessfull_payment(request):
     return render(request, 'payment/sucessfull_payment.html')

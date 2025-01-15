@@ -135,7 +135,7 @@
             <form action="{% url 'book_driver' %}" method="POST" class="booking-form">
                 {% csrf_token %}
 
-                <label for="location-search">Search Driver by Location:</label>
+                {% comment %} <label for="location-search">Search Driver by Location:</label>
                 <input type="text" id="location-search" name="location_search" placeholder="Enter location to search drivers" required>
 
                 <label for="driver">Driver:</label>
@@ -144,25 +144,29 @@
                     {% for driver in drivers %}
                         <option value="{{ driver.id }}">{{ driver.fullname }}</option>
                     {% endfor %}
-                </select>
+                </select> {% endcomment %}
 
-                <label for="full-name">Full Name:</label>
-                <input type="text" id="full-name" name="full_name" placeholder="Enter your full name" required>
+                <label for="full_name">Full Name:</label>
+                <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required>
 
-                <label for="contact-number">Contact Number:</label>
-                <input type="tel" id="contact-number" name="contact_number" placeholder="Enter your contact number" required>
+                <label for="contact_number">Contact Number:</label>
+                <input type="tel" id="contact_number" name="contact_number" placeholder="Enter your contact number" required>
 
-                <label for="pickup-location">Pickup Location:</label>
-                <input type="text" id="pickup-location" name="pickup_location" placeholder="Enter pickup location" required>
+                <label for="pickup_location">Pickup Location:</label>
+                <input type="text" id="pickup_location" name="pickup_location" placeholder="Enter pickup location" required>
 
-                <label for="dropoff-location">Dropoff Location:</label>
-                <input type="text" id="dropoff-location" name="dropoff_location" placeholder="Enter dropoff location" required>
+                <label for="dropoff_location">Dropoff Location:</label>
+                <input type="text" id="dropoff_location" name="dropoff_location" placeholder="Enter dropoff location" required>
 
-                <label for="pickup-date">Pickup Date:</label>
-                <input type="date" id="pickup-date" name="pickup_date" required>
+                <label for="pickup_date">Pickup Date:</label>
+                <input type="date" id="pickup_date" name="pickup_date" required>
 
-                <label for="pickup-time">Pickup Time:</label>
-                <input type="time" id="pickup-time" name="pickup_time" required>
+                <label for="pickup_time">Pickup Time:</label>
+                <input type="time" id="pickup_time" name="pickup_time" required>
+
+                <label for="Key_point">Key Point:</label>
+                <input type="text" id="Key_point" name="Key_point" placeholder="key point" required>
+
 
                 <button type="submit" class="submit-btn">Book Driver</button>
             </form>

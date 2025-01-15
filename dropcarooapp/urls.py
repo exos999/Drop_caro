@@ -31,6 +31,7 @@ urlpatterns = [
      path('maintenance_reg/', views.maintenance_reg, name='maintenance_reg'),
      path('book_driver/', views.book_driver, name='book_driver'),
      path('vehicle_reg/', views.vehicle_reg, name='vehicle_reg'),
+     path('driverview/', views.driverview, name='driverview'),
      
      path('map/', views.map, name='map'),
      
@@ -42,7 +43,8 @@ urlpatterns = [
     
     # driverdashboard
     
-    path('view_task/', views.view_task, name='view_task'),
+    path('view_work/', views.view_work, name='view_work'),
+    path('view_vehicle/', views.view_vehicle, name='view_vehicle'),
      
   
   
@@ -50,6 +52,8 @@ urlpatterns = [
     path('manage_users/', views.manage_users, name='manage_users'),
     path('manage_drivers/', views.manage_drivers, name='manage_drivers'),
     path('vehicle_details/', views.vehicle_details, name='vehicle_details'),
+    path('delete_user/<int:user_id>', views.delete_user, name='delete_user'),  # Change deactivate to delete
+    path('delete_driver/<int:driver_id>', views.delete_driver, name='delete_driver'),  # Change deactivate to delete
 
 
     path('view_bookdriver/', views.view_bookdriver, name='view_bookdriver'),

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .driver {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .driver:last-child {
+            border-bottom: none;
+        }
+
+        .driver .details {
+            display: flex;
+            align-items: center;
+        }
+
+        .driver .details img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .driver .status {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .driver .status.free {
+            color: green;
+        }
+
+        .driver .status.onwork {
+            color: red;
+        }
+
+        .driver button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .driver button:hover {
+            background-color: #0056b3;
+        }
+
+        .driver button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Driver Status</h1>
+    </header>
+    <div class="container">
+        {% for item in drivers %}
+        <div class="driver">
+            <div class="details">
+                <img src="{{ item.photoupload}}" alt="Driver Photo">
+                <div>
+                    <strong>Driver Name: {{ item.fullname }}</strong><br>
+                    <strong>City: {{ item.city }}</strong>
+                    <strong>Photo: {{ item.photo }}</strong>
+                    
+
+                    <div class="status free">Status:</div>
+                </div>
+            </div>
+            <a href="{% url 'book_driver' %}"><button>Book Driver</button></a>
+        </div>
+        {% endfor %}
+</body>
+</html>

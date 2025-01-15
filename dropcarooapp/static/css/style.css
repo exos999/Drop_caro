@@ -8,6 +8,12 @@ body {
   padding-top: 120px;
   padding-bottom: 120px;
 }
+.img-box img {
+  margin-top: 50px; Adjust the value as needed
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
+}
 .slider_section {
   background-size: cover;
   background-position: center;

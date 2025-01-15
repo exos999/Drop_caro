@@ -1,11 +1,11 @@
 from django import forms
-from .models import DriverDetails,UserDetails,VehicleRegistration,MaintenanceRequest,DriverBooking
+from .models import DriverDetails,UserDetails,VehicleRegistration,MaintenanceRequest,DriverBooking,Payment
 
 
 class DriverDetailsForm(forms.ModelForm):
     class Meta:
         model = DriverDetails
-        fields = ['fullname','email','password', 'phone', 'license_number', 'photo', 'date_of_birth']
+        fields = ['fullname','email','password', 'phone', 'license_number', 'photo', 'date_of_birth','city']
 
 # class DriverDetailsForm(forms.ModelForm):
 #     class Meta:
@@ -21,7 +21,7 @@ class UserDetailsForm(forms.ModelForm):
 class VehicleRegistrationForm(forms.ModelForm):
     class Meta:
         model = VehicleRegistration
-        fields = ['vehicle_number', 'vehicle_model', 'contact']
+        fields = ['vehicle_number','owner', 'vehicle_model', 'contact']
 
 
 class MaintenanceRequestForm(forms.ModelForm):
@@ -46,4 +46,15 @@ class DriverBookingForm(forms.ModelForm):
         widgets = {
             'pickup_date': forms.DateInput(attrs={'type': 'date'}),
             'pickup_time': forms.TimeInput(attrs={'type': 'time'}),
+        }
+
+
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['payment_method', 'amount', 'upi_id']
+        widgets = {
+            'payment_method': forms.RadioSelect(choices=Payment.PAYMENT_METHOD_CHOICES),
+            'amount': forms.NumberInput(attrs={'placeholder': 'Enter the amount'}),
+            'upi_id': forms.TextInput(attrs={'placeholder': 'Enter your UPI ID'}),
         }

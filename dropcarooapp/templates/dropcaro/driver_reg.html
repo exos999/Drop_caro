@@ -13,7 +13,7 @@
     <form id="driverRegistrationForm" method="post" action="{% url 'driver_reg' %}">
       {% csrf_token %}
 
-      <label for="fullName">Full Name:</label>
+      <label for="full_name">Full Name:</label>
       <input type="text" id="full_name" name="fullname" placeholder="Enter your full name" required>
 
       <!-- Username -->
@@ -36,10 +36,13 @@
 
 
       <label for="uploadPhoto">Upload Driver Photo:</label>
-      <input type="file" id="uploadPhoto" name="uploadPhoto" accept="image/*" required>
+      <input type="file" id="uploadPhoto" name="Photo" accept="image/*" required>
 
       <label for="dob">Date of Birth:</label>
       <input type="date" id="dob" name="date_of_birth" required>
+
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city" required>
 
       <button type="submit">submit</button>
     </form>

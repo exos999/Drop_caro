@@ -95,13 +95,13 @@
         <div class="sidebar">
             <div>
                 <h2>Driver Dashboard</h2>
-                <ul>
+                {% comment %} <ul>
                     <li><a href="#tasks-overview">Task Overview</a></li>
                     <li><a href="#vehicle-details">Vehicle Details</a></li>
                     <li><a href="#maintenance">Maintenance Management</a></li>
                     <li><a href="#navigation">Location & Navigation</a></li>
                     <li><a href="#payments">Payments & Earnings</a></li>
-                </ul>
+                </ul> {% endcomment %}
             </div>
             <div>
                 <a href="#help-support">Help & Support</a>
@@ -112,13 +112,13 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <h1>Welcome, Driver</h1>
+            <h1>Welcome {{user}}!</h1>
             <div class="dashboard-grid">
                 <!-- Task Overview -->
                 <div class="dashboard-card" id="tasks-overview">
-                    <h2>Task Overview</h2>
-                    <p>View assigned tasks and their current status.</p>
-                    <a href="{% url 'view_task' %}"><button>View Tasks</button></a>
+                    <h2> Works</h2>
+                    <p>View your Works</p>
+                    <a href="{% url 'view_work' %}"><button>View Tasks</button></a>
                 </div>
 
                 <!-- Vehicle Details -->

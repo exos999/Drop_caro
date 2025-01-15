@@ -7,10 +7,11 @@ class DriverDetails(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,blank=True, null=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=150, blank=True, null=True)
-    phone = models.CharField(max_length=15, blank=True, null=True)
+    phone = models.CharField(max_length=10, blank=True, null=True)
     license_number = models.CharField(max_length=50, unique=True)
     photo = models.ImageField(upload_to='driver_photos/', blank=True, null=True)
     date_of_birth = models.DateField(blank=True,null=True)
+    city = models.CharField(max_length=15,blank=True,null=True)
 
    
     
@@ -45,8 +46,23 @@ class DriverBooking(models.Model):
     contact_number = models.CharField(max_length=15)
     pickup_location = models.CharField(max_length=255)
     dropoff_location = models.CharField(max_length=255)
-    driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
+    # driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
     pickup_date = models.DateField()
     pickup_time = models.TimeField()
     key_point = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+class Payment(models.Model):
+    PAYMENT_METHOD_CHOICES = [
+        ('gpay', 'Google Pay'),
+        ('paytm', 'Paytm'),
+        ('phonepe', 'PhonePe'),
+    ]
+
+    payment_method = models.CharField(max_length=50, choices=PAYMENT_METHOD_CHOICES)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    upi_id = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.payment_method} - {self.amount}"
