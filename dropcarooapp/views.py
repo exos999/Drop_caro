@@ -328,7 +328,7 @@ def delete_payment(request, payment_id):
 
 
 def delete_vehicle(request, vehicle_id):
-    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    vehicle = get_object_or_404(VehicleRegistration, id=vehicle_id)
     vehicle.delete()
     messages.success(request, f"Vehicle '{vehicle.vehicle_number}' deleted successfully.")
     
@@ -336,16 +336,16 @@ def delete_vehicle(request, vehicle_id):
     return redirect('vehicle_details')  # Adjust 'manage_vehicles' to match your URL name
 
 def delete_booking(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
+    booking = get_object_or_404(DriverBooking, id=booking_id)
     booking.delete()
     messages.success(request, f"Booking with ID '{booking.id}' deleted successfully.")
-    return redirect('manage_bookings')  # Adjust 'manage_bookings' to your URL name
+    return redirect('view_bookdriver')  # Adjust 'manage_bookings' to your URL name
 
 def delete_request(request, request_id):
-    user_request = get_object_or_404(Request, id=request_id)
+    user_request = get_object_or_404(MaintenanceRequest, id=request_id)
     user_request.delete()
     messages.success(request, f"Request with ID '{user_request.id}' deleted successfully.")
-    return redirect('manage_requests')  # Adjust 'manage_requests' to match your URL name
+    return redirect('view_bookmaintance')  # Adjust 'manage_requests' to match your URL name
 
 def view_bookmaintance(request):
     bookmaintance=MaintenanceRequest.objects.all()
