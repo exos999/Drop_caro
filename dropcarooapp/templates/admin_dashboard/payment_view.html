@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Payment Invoices</title>
+    
+    <!-- Load static files -->
+    {% load static %}
+
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="{% static 'css/payment_view.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">Dropcaro</div>
+    </header>
+    <main>
+        <section class="invoice-container">
+            <h1>Payment Invoices</h1>
+            
+            {% if viewpay %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Customer Name</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            {% comment %} <th>Status</th> {% endcomment %}
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for invoice in viewpay %}
+                            <tr>
+                                <td>{{ invoice.id }}</td>
+                                <td>{{ invoice.user.user.username }}</td>
+                                <td>{{ invoice.amount }}</td>
+                                <td>{{ invoice.date }}</td>
+                                {% comment %} <td>{{ invoice.status }}</td> {% endcomment %}
+                                
+                                    {% comment %} <a href="{% url 'invoice_detail' invoice.id %}" class="btn-view">View</a> {% endcomment %}
+                                
+                                <td>
+                                    {% comment %} <a href="{% url 'edit_maintenance' request.id %}">Edit</a> | {% endcomment %}
+                                    <a href="{% url 'delete_payment' payment_id=invoice.id %}"><button>Delete</button></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="no-data">No invoices found.</p>
+            {% endif %}
+            
+        </section>
+    </main>
+</body>
+</html>

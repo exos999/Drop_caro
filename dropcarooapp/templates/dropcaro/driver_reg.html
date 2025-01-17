@@ -6,6 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Driver Registration</title>
   <link rel="stylesheet" href="{% static 'css/newa.css' %}">
+  <script>
+    function validatePhoneNumber() {
+      var phoneNumber = document.getElementById("phone").value;
+      var phoneErrorMessage = document.getElementById("phoneErrorMessage");
+      var phonePattern = /^[0-9]{10}$/; // Simple validation for 10 digits
+
+      if (!phonePattern.test(phoneNumber)) {
+        phoneErrorMessage.textContent = "Please enter a valid phone number";
+        phoneErrorMessage.style.color = "red";
+      } else {
+        phoneErrorMessage.textContent = ""; // Clear error message if valid
+      }
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -27,13 +41,12 @@
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" placeholder="Create a password" required>
 
-
       <label for="phone">Phone Number:</label>
-      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required onblur="validatePhoneNumber()">
+      <span style="font-size:9px" id="phoneErrorMessage"></span>
 
       <label for="license_number">Driver's License Number:</label>
       <input type="text" id="license_number" name="license_number" placeholder="Enter your license number" required>
-
 
       <label for="uploadPhoto">Upload Driver Photo:</label>
       <input type="file" id="uploadPhoto" name="Photo" accept="image/*" required>
@@ -44,7 +57,7 @@
       <label for="city">City:</label>
       <input type="text" id="city" name="city" required>
 
-      <button type="submit">submit</button>
+      <button type="submit">Submit</button>
     </form>
   </div>
 </body>

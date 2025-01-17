@@ -104,9 +104,9 @@
                 </ul> {% endcomment %}
             </div>
             <div>
-                <a href="#help-support">Help & Support</a>
+                {% comment %} <a href="#help-support">Help & Support</a> {% endcomment %}
                 <br>
-                <a href="#logout">Log Out</a>
+                <a href="{% url 'logout'%}"><button>Log Out</button></a>
             </div>
         </div>
 

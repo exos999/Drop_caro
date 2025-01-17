@@ -3,8 +3,14 @@ from.models import*
 from.form import UserDetailsForm,DriverDetailsForm,VehicleRegistrationForm,MaintenanceRequestForm,DriverBookingForm,PaymentForm
 from django.contrib import messages
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 # from .models import VehicleRegistration
+from django.contrib.auth.decorators import login_required
+
+# Logout View
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # Redirect to login page after logout
 
 
 def home(request):
@@ -40,6 +46,8 @@ def login_view(request):
                 return redirect('user_dashboard')
             elif DriverDetails.objects.filter(user=user).exists():
                 return redirect('driver_dashboard')
+            elif user.is_superuser:
+                return redirect('admin_dashboard')
             else:
                 return HttpResponse("Unauthorized role")
         else:
@@ -109,11 +117,11 @@ def driver_view(request):
 
 
 
-def cupass_view(request):
-    return render(request,'dropcaro/cus_password.html')
+# def cupass_view(request):
+#     return render(request,'dropcaro/cus_password.html')
 
-def drvpass_view(request):
-    return render(request,'dropcaro/driver_password.html')
+# def drvpass_view(request):
+#     return render(request,'dropcaro/driver_password.html')
 
 def book_driver_view(request):
     return render(request,'dropcaro/bookdriver.html')
@@ -121,13 +129,16 @@ def book_driver_view(request):
 def book_maintance_view(request):
     return render(request,'dropcaro/bookmaintance.html')
 
+@login_required
 def user_dashboard_view(request):
     return render(request,'dropcaro/user_dashboard.html')
 
+@login_required
 def driver_dashboard_view(request):
     return render(request,'dropcaro/driver_dashboard.html')
 
 
+@login_required
 def admin_dashboard_view(request):
     return render(request,'dropcaro/admin_dashboard.html')
 
@@ -149,10 +160,6 @@ from django.shortcuts import render
 
 def payments(request):
     return render(request, 'payments.html')
-
-def logout_view(request):
-    # Add logic for logging out the user
-    return render(request, 'logout.html')
 
 
 # vehicle reg url
@@ -287,7 +294,6 @@ def manage_users(request):
 
 def manage_drivers(request):
     drivers=DriverDetails.objects.all()
-    
     return render(request, 'dropcaro/manage_drivers.html',{"drivers":drivers})
 
 
@@ -314,24 +320,61 @@ def delete_driver(request, driver_id):
     messages.success(request, f"User '{driver.username}' deleted successfully.")
     return redirect('manage_driver')
 
+def delete_payment(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id)
+    payment.delete()
+    messages.success(request, f"Payment with ID '{payment_id}' deleted successfully.")
+    return redirect('payment_view')  # Replace 'manage_payments' with your desired redirect URL name
+
+
+def delete_vehicle(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    vehicle.delete()
+    messages.success(request, f"Vehicle '{vehicle.vehicle_number}' deleted successfully.")
+    
+    # Redirect to the manage vehicles page
+    return redirect('vehicle_details')  # Adjust 'manage_vehicles' to match your URL name
+
+def delete_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+    booking.delete()
+    messages.success(request, f"Booking with ID '{booking.id}' deleted successfully.")
+    return redirect('manage_bookings')  # Adjust 'manage_bookings' to your URL name
+
+def delete_request(request, request_id):
+    user_request = get_object_or_404(Request, id=request_id)
+    user_request.delete()
+    messages.success(request, f"Request with ID '{user_request.id}' deleted successfully.")
+    return redirect('manage_requests')  # Adjust 'manage_requests' to match your URL name
 
 def view_bookmaintance(request):
     bookmaintance=MaintenanceRequest.objects.all()
     
     return render(request, 'admin_dashboard/view_bookmaintance.html',{"bookmaintance":bookmaintance})
 
+def payment_view(request):
+    viewpay=Payment.objects.all()
+    return render(request, 'admin_dashboard/payment_view.html',{"viewpay":viewpay})
+
 # payment
 
-
+from django.shortcuts import get_object_or_404
 def payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('successful_payment')
+            user=get_object_or_404(UserDetails,user=request.user)
+            data=form.save(commit=False)
+            data.user=user
+            data.save()            
+            return redirect('sucessfull_payment')
     else:
         form = PaymentForm()
     return render(request, 'payment/payment.html',{'form':form})
 
 def sucessfull_payment(request):
     return render(request, 'payment/sucessfull_payment.html')
+
+
+def notification(request):
+    return render(request, 'admin_dashboard/notification.html')

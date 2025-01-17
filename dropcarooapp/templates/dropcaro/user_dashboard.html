@@ -16,9 +16,21 @@
             margin: 0;
             padding: 0;
         }
+
         .dashboard-container {
             display: flex;
             height: 100vh;
+        }    
+        .log{
+            margin-top: 210%;
+            position: relative;
+        }
+        button {
+            width: 100px; /* Adjust the width */
+            height: 40px; /* Adjust the height */
+            background-color: black; /* Button background color */
+            color: white; /* Button text color */
+            
         }
         .sidebar {
             width: 250px;
@@ -93,8 +105,11 @@
                 <li><a href="#maintenance">Maintenance Requests</a></li>
                 <li><a href="#payments">Payment Management</a></li>
                 <li><a href="#notifications">Notifications & Updates</a></li>
-                <li><a href="#logout">Log Out</a></li>
+                
             </ul> {% endcomment %}
+            <div class="log">
+            <a href="{% url 'logout'%}"><button>Log Out</button></a>
+            </div>
         </div>
 
         <!-- Main Content -->
