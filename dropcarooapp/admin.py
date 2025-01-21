@@ -10,4 +10,5 @@ admin.site.register(VehicleRegistration)
 admin.site.register(MaintenanceRequest)
 admin.site.register(DriverBooking)
 admin.site.register(Payment)
+admin.site.register(Location)
 

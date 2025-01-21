@@ -72,4 +72,8 @@ urlpatterns = [
     path('sucessfull_payment/', views.sucessfull_payment, name='sucessfull_payment'),
     path('delete_payment/<int:payment_id>/', views.delete_payment, name='delete_payment'),
     path('notification/', views.notification, name='notification'),
+    path('share_location_view/<int:task_id>/', views.share_location_view, name='share_location_view'),
+
+    path('update-location', views.update_location, name='update-location'),
+    path('driver_booking_history/', views.driver_booking_history, name='driver_booking_history'),
 ] 

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle Registration</title>
@@ -41,11 +40,27 @@
                 <input type="text" id="vehicle_model" name="vehicle_model" placeholder="Enter vehicle model" required>
 
                 <label for="contact">Contact Number:</label>
-                <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required>
+                <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required onblur="validateContact()">
+                <div id="contact-error" class="error-message"></div>
 
                 <button type="submit" class="submit-btn">Register</button>
             </form>
         </section>
     </main>
+
+    <script>
+        function validateContact() {
+            const contactInput = document.getElementById('contact');
+            const errorDiv = document.getElementById('contact-error');
+            const contactNumber = contactInput.value.trim();
+
+            if (contactNumber.length < 10) {
+                errorDiv.textContent = 'Contact number must be at least 10 digits.';
+                errorDiv.style.color = 'red';
+            } else {
+                errorDiv.textContent = ''; // Clear error message
+            }
+        }
+    </script>
 </body>
 </html>

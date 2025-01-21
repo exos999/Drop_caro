@@ -148,7 +148,13 @@
                 <div class="dashboard-card" id="notifications">
                     <h2>Notifications & Updates</h2>
                     <p>Get real-time updates on your vehicle's status.</p>
-                    <a href="{% url 'map' %}"><button>View Notifications</button></a>
+                    <a href="{% url 'notification' %}"><button>View Notifications</button></a>
+                </div>
+
+                <div class="dashboard-card" id="notifications">
+                    <h2>My driver booking</h2>
+                    <p>Get real-time updates on your vehicle's status.</p>
+                    <a href="{% url 'driver_booking_history' %}"><button>View booking history</button></a>
                 </div>
             </div>
         </div>

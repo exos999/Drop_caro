@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .notification-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .notification-list {
+            list-style: none;
+            padding: 0;
+        }
+        .notification-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .notification-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .notification-date {
+            font-size: 12px;
+            color: #999;
+        }
+        .clear-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+        }
+        .clear-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification-container">
+        <h1>Notifications</h1>
+        {% if not notifications %}
+        <h4>No notifications available</h4>
+        {% endif %}
+        <ul class="notification-list">
+            {% for notification in notifications %}
+            <li class="notification-item">
+                <div>
+                    <div class="notification-title">{{ notification.title }}</div>
+                    <div class="notification-date">{{ notification.date }}</div>
+                </div>
+                <div class="notification-message">{{ notification.message }}</div>
+            </li>
+            {% endfor %}
+        </ul>
+        <button class="clear-button">Clear Notifications</button>
+    </div>
+</body>
+</html>
+

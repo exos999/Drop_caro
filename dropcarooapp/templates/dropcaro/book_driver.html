@@ -132,7 +132,7 @@
     <main>
         <section class="booking-container">
             <h1>Book a Driver</h1>
-            <form action="{% url 'book_driver' %}" method="POST" class="booking-form">
+            <form action="{% url 'book_driver' %}?driver_id={{ driver_id }}" method="POST" class="booking-form">
                 {% csrf_token %}
 
                 {% comment %} <label for="location-search">Search Driver by Location:</label>
@@ -165,7 +165,7 @@
                 <input type="time" id="pickup_time" name="pickup_time" required>
 
                 <label for="Key_point">Key Point:</label>
-                <input type="text" id="Key_point" name="Key_point" placeholder="key point" required>
+                <input type="text" id="key_point" name="key_point" placeholder="key point" required>
 
 
                 <button type="submit" class="submit-btn">Book Driver</button>

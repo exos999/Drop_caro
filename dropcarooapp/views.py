@@ -7,6 +7,12 @@ from django.contrib.auth import authenticate, login,logout
 # from .models import VehicleRegistration
 from django.contrib.auth.decorators import login_required
 
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import Location, DriverDetails, DriverBooking
+
+
 # Logout View
 def logout_view(request):
     logout(request)
@@ -51,39 +57,40 @@ def login_view(request):
             else:
                 return HttpResponse("Unauthorized role")
         else:
-            return render(request, 'login.html', {'error': 'Invalid credentials'})
+            return render(request, 'dropcaro/login.html', {'error': 'Invalid credentials'})
 
     return render(request,'dropcaro/login.html')
 
 
+
 def carowner_registration(request):
     if request.method == 'POST':
-        data=request.POST.copy()
-        email=request.POST.get('email')
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        
+        data = request.POST.copy()
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
         try:
-            user=User.objects.create_user(username=username,password=password,email=email)
+            user = User.objects.create_user(username=username, password=password, email=email)
         except Exception as e:
             print(e)
+            messages.error(request, 'Error creating user: {}'.format(str(e)))
             return redirect('carowner')
-            
         
-        user_form=UserDetailsForm(data)
+        user_form = UserDetailsForm(data)
         if user_form.is_valid():
-            user_details=user_form.save(commit=False)  
-            print(user)
-            user_details.user=user
+            user_details = user_form.save(commit=False)
+            user_details.user = user
             user_details.save()
-            messages.success(request, 'Registration successful!')  
-            return redirect('login')  
+            messages.success(request, 'Registration successful!')
+            return redirect('login')
         else:
-            print(uesr_form.errors)
-            messages.error(request, 'Please correct the errors below.') 
+            print(user_form.errors)
+            messages.error(request, 'Please correct the errors below.')
     else:
-        user_form = UserDetailsForm() 
-    return render(request,'dropcaro/carowner.html')
+        user_form = UserDetailsForm()
+
+    return render(request, 'dropcaro/carowner.html', {'form': user_form})
 
 
 
@@ -259,19 +266,70 @@ def admin_list_maintenance(request):
 
 # book_driver
 def book_driver(request):
+    driver_id = request.GET.get('driver_id')
+    status = request.GET.get('status')
+
     if request.method == "POST":
+        driver = get_object_or_404(DriverDetails, id=driver_id)
+        user = get_object_or_404(UserDetails, user=request.user)
         form = DriverBookingForm(request.POST)
         if form.is_valid():
-            form.save()
+            obj=form.save(commit=False)
+            obj.driver=driver
+            obj.user=user
+            obj.save()
             messages.success(request, "Driver booked successfully!")
             return redirect('user_dashboard')  # Redirect to prevent form resubmission
         else:
+            print(form.errors)
             messages.error(request, "Please correct the errors in the form.")
     else:
         form = DriverBookingForm()
 
     drivers=DriverDetails.objects.all()
-    return render(request, 'dropcaro/book_driver.html', {'form': form,'drivers':drivers})
+    return render(request, 'dropcaro/book_driver.html', {'form': form,'drivers':drivers,'driver_id':driver_id,'status':status})
+
+
+def share_location_view(request,task_id):
+    return render(request, 'driver_dashboard/live_location_share.html',{'task_id':task_id})
+
+
+@csrf_exempt  
+def update_location(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            latitude = data.get('latitude')
+            longitude = data.get('longitude')
+            task_id = data.get('task_id')
+
+            if latitude is None or longitude is None:
+                return JsonResponse({"error": "Latitude and longitude are required"}, status=400)
+
+            task = get_object_or_404(DriverBooking, id=task_id)
+            location, created = Location.objects.get_or_create(
+                task=task
+            )
+
+            location.latitude = latitude
+            location.longitude = longitude
+            location.save()
+
+            response_data = {
+                "latitude": latitude,
+                "longitude": longitude,
+            }
+
+            return JsonResponse(response_data, status=201)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON data"}, status=400)
+    return HttpResponse(status=405)
+
+
+def driver_booking_history(request): 
+    driver_bookings=DriverBooking.objects.filter(user__user=request.user)
+    return render(request, 'dropcaro/booking_history.html',{"driver_bookings":driver_bookings})
+    
 
 
 # driver_dashboard
@@ -349,8 +407,9 @@ def delete_request(request, request_id):
 
 def view_bookmaintance(request):
     bookmaintance=MaintenanceRequest.objects.all()
+    drivers=DriverDetails.objects.all()
     
-    return render(request, 'admin_dashboard/view_bookmaintance.html',{"bookmaintance":bookmaintance})
+    return render(request, 'admin_dashboard/view_bookmaintance.html',{"bookmaintance":bookmaintance,'drivers':drivers})
 
 def payment_view(request):
     viewpay=Payment.objects.all()
@@ -377,4 +436,5 @@ def sucessfull_payment(request):
 
 
 def notification(request):
-    return render(request, 'admin_dashboard/notification.html')
+    notifications=Notification.objects.filter(user=request.user)
+    return render(request, 'dropcaro/user_notifications.html',{"notifications":notifications})

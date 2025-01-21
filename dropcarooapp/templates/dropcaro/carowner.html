@@ -6,6 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customer Registration</title>
   <link rel="stylesheet" href="{% static 'css/carowners.css' %}">
+  <script>
+    function validatePhoneNumber() {
+      const phoneInput = document.getElementById('id_phone');
+      const errorDiv = document.getElementById('phoneError');
+      const phonePattern = /^[0-9]{10}$/; // Assuming a 10-digit phone number
+
+      if (!phonePattern.test(phoneInput.value)) {
+        errorDiv.textContent = 'Please enter a valid 10-digit phone number.';
+      } else {
+        errorDiv.textContent = '';
+      }
+    }
+  </script>
+  <style>
+    .error {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -14,31 +33,48 @@
       {% csrf_token %}
 
       <!-- Full Name -->
-      <label for="id_username">Full Name:</label>
+      <label for="id_fullname">Full Name:</label>
+      {% if form.fullname.errors %}
+        <div class="error">{{ form.fullname.errors|join:', ' }}</div>
+      {% endif %}
       <input type="text" id="id_fullname" name="fullname" placeholder="Enter your full name" value="{{ form.fullname.value|default_if_none:'' }}" required>
-       <!-- Full Name -->
 
-<label for="id_username">User Name:</label>
-<input type="text" id="id_username" name="username" placeholder="Enter your full name" value="{{ form.username.value|default_if_none:'' }}" required>
+      <!-- User Name -->
+      <label for="id_username">User Name:</label>
+      {% if form.username.errors %}
+        <div class="error">{{ form.username.errors|join:', ' }}</div>
+      {% endif %}
+      <input type="text" id="id_username" name="username" placeholder="Enter your username" value="{{ form.username.value|default_if_none:'' }}" required>
       
-<!-- Address -->
+      <!-- Address -->
       <label for="id_address_line1">Address:</label>
+      {% if form.address_line1.errors %}
+        <div class="error">{{ form.address_line1.errors|join:', ' }}</div>
+      {% endif %}
       <textarea id="id_address_line1" name="address_line1" placeholder="Enter your address" rows="3" required>{{ form.address_line1.value|default_if_none:'' }}</textarea>
 
       <!-- Email Address -->
       <label for="id_email">Email Address:</label>
+      {% if form.email.errors %}
+        <div class="error">{{ form.email.errors|join:', ' }}</div>
+      {% endif %}
       <input type="email" id="id_email" name="email" placeholder="Enter your email address" value="{{ form.email.value|default_if_none:'' }}" required>
 
       <!-- Password Section -->
       <label for="password">Password:</label>
+      {% if form.password.errors %}
+        <div class="error">{{ form.password.errors|join:', ' }}</div>
+      {% endif %}
       <input type="password" id="password" name="password" placeholder="Create a password" required>
-
 
       <!-- Phone Number -->
       <label for="id_phone">Phone Number:</label>
-      <input type="tel" id="id_phone" name="phone" placeholder="Enter your phone number" value="{{ form.phone.value|default_if_none:'' }}" required>
+      <div id="phoneError" class="error"></div>
+      <input type="tel" id="id_phone" name="phone" placeholder="Enter your phone number" value="{{ form.phone.value|default_if_none:'' }}" required onblur="validatePhoneNumber()">
+      {% if form.phone.errors %}
+        <div class="error">{{ form.phone.errors|join:', ' }}</div>
+      {% endif %}
 
-      
       <!-- Submit -->
       <button type="submit">Submit</button>
     </form>

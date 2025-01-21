@@ -29,6 +29,7 @@ class VehicleRegistration(models.Model):
     owner = models.ForeignKey(UserDetails, on_delete=models.CASCADE, blank=True, null=True)
     vehicle_model = models.CharField(max_length=10,blank=True, null=True)
     contact = models.CharField(max_length=10,blank=True, null=True)
+    owner_name = models.CharField(max_length=100,blank=True, null=True)
 
 
 class MaintenanceRequest(models.Model):
@@ -46,7 +47,8 @@ class DriverBooking(models.Model):
     contact_number = models.CharField(max_length=10)
     pickup_location = models.CharField(max_length=20)
     dropoff_location = models.CharField(max_length=20)
-    # driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
+    driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
+    user= models.ForeignKey(UserDetails, on_delete=models.CASCADE,null=True,blank=True)
     pickup_date = models.DateField()
     pickup_time = models.TimeField()
     key_point = models.CharField(max_length=255)
@@ -67,3 +69,25 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"{self.payment_method} - {self.amount}"
+    
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+    title = models.CharField(max_length=100,null=True,blank=True)
+    type = models.CharField(max_length=20,null=True,blank=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):  
+        return self.title if self.title else 'Notification'
+    
+
+
+class Location(models.Model):
+    latitude = models.FloatField(null=True,blank=True)
+    task = models.ForeignKey('DriverBooking', on_delete=models.CASCADE,null=True,blank=True)
+    longitude = models.FloatField(null=True,blank=True)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Location of {self.task.driver.user.username} at {self.timestamp}"

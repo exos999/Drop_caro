@@ -9,102 +9,133 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color: #f0f8ff;
         }
 
         header {
-            background-color: #007bff;
+            background-color: #ff6f61;
             color: white;
-            padding: 10px 20px;
+            padding: 20px;
             text-align: center;
+            font-size: 28px;
+            font-weight: bold;
         }
 
         .container {
             margin: 20px auto;
-            max-width: 800px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: calc(33.333% - 20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 4px solid #ff6f61;
+        }
+
+        .card-content {
             padding: 20px;
         }
 
-        .driver {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+        .card-content strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333;
         }
 
-        .driver:last-child {
-            border-bottom: none;
+        .status {
+            font-size: 16px;
+            margin-top: 10px;
+            font-weight: bold;
         }
 
-        .driver .details {
-            display: flex;
-            align-items: center;
+        .status.free {
+            color: #28a745;
         }
 
-        .driver .details img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
+        .status.onwork {
+            color: #dc3545;
         }
 
-        .driver .status {
-            font-size: 14px;
-            color: #555;
-        }
-
-        .driver .status.free {
-            color: green;
-        }
-
-        .driver .status.onwork {
-            color: red;
-        }
-
-        .driver button {
+        .card button {
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
+            border-radius: 25px;
+            padding: 12px 25px;
             cursor: pointer;
             font-size: 14px;
+            margin-top: 15px;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
-        .driver button:hover {
+        .card button:hover {
             background-color: #0056b3;
+            transform: scale(1.05);
         }
 
-        .driver button:disabled {
+        .card button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Driver Status</h1>
+        Driver List
     </header>
     <div class="container">
         {% for item in drivers %}
-        <div class="driver">
-            <div class="details">
-                <img src="{{ item.photoupload}}" alt="Driver Photo">
-                <div>
-                    <strong>Driver Name: {{ item.fullname }}</strong><br>
-                    <strong>City: {{ item.city }}</strong>
-                    <strong>Photo: {{ item.photo }}</strong>
-                    
-
-                    <div class="status free">Status:</div>
+        <div class="card">
+            <img src="{{ item.photoupload }}" alt="Driver Photo">
+            <div class="card-content">
+                <strong>Driver Name: {{ item.fullname }}</strong>
+                <strong>City: {{ item.city }}</strong>
+                <strong>Photo: {{ item.photo }}</strong>
+                <div class="status {% if item.status == 'free' %}free{% else %}onwork{% endif %}">
+                    Status: {{ item.status }}
                 </div>
+                <a href="{% url 'book_driver' %}?driver_id={{ item.id }}&status={{ item.status }}">
+                    <button {% if item.status == 'onwork' %}disabled{% endif %}>Book Driver</button>
+                </a>
+                
             </div>
-            <a href="{% url 'book_driver' %}"><button>Book Driver</button></a>
         </div>
         {% endfor %}
+    </div>
 </body>
 </html>
