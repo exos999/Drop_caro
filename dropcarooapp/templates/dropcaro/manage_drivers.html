@@ -79,6 +79,7 @@
     </header>
     <main>
         <h1>Manage Drivers</h1>
+        <a href="{% url 'driver_reg' %}"><button>Add Driver</button></a>
         <table>
             <thead>
                 <tr>
@@ -88,8 +89,10 @@
                     <th>Password</th>
                     <th>Phone Number</th>
                     <th>Driver's License Number</th>
+                    <th>city</th>
                     <th>Upload Driver Photo</th>
                     <th>Date of Birth</th>
+                    
                     <th>Action</th>
                 </tr>
             </thead>
@@ -102,6 +105,7 @@
                     <td>{{ driver.password }}</td> <!-- Consider not displaying plain text passwords -->
                     <td>{{ driver.phone }}</td>
                     <td>{{ driver.license_number }}</td>
+                    <td>{{ driver.city }}</td>
                     <td>
                         {% if driver.photo %}
                         <img src="{{ driver.photo.url }}" alt="Driver Photo" style="width:50px;height:50px;">
@@ -111,7 +115,7 @@
                     </td>
                     <td>{{ driver.date_of_birth }}</td>
                     <td>
-                        <a href="" class="edit-btn" style="padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-right: 5px;">Edit</a>
+                        {% comment %} <a href="" class="edit-btn" style="padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-right: 5px;">Edit</a> {% endcomment %}
                         <a href="{% url 'delete_driver' driver.id %}" class="delete-btn" style="padding: 5px 10px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px;">Delete</a>
                     </td>
                 </tr>

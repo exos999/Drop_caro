@@ -28,7 +28,7 @@
         <section class="registration-container">
             <h1>Register Your Vehicle</h1>
             <form action="{% url 'vehicle_reg' %}" method="POST" class="registration-form">
-                {% csrf_token %} <!-- Include CSRF token for security -->
+            {% csrf_token %} <!-- Include CSRF token for security -->
                 
                 <label for="vehicle_number">Vehicle Number:</label>
                 <input type="text" id="vehicle_number" name="vehicle_number" placeholder="Enter vehicle number" required>

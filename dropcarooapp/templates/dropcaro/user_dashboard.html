@@ -22,7 +22,7 @@
             height: 100vh;
         }    
         .log{
-            margin-top: 210%;
+            margin-top: 100%;
             position: relative;
         }
         button {
@@ -92,6 +92,90 @@
         .dashboard-card button:hover {
             background: #555;
         }
+        {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .profile-container {
+            background: #333;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 10px;
+            border: 3px solid #4caf50;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin: 10px 0;
+        }
+
+        .edit-button {
+            display: inline-block;
+            background-color: #4caf50;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .edit-button:hover {
+            background-color: #45a049;
+        }
+
+        .edit-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .edit-section input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .save-button {
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .save-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -99,6 +183,18 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <h2>User Dashboard</h2>
+            <div class="profile-container">
+                <div class="profile-pic">
+                    <img src="https://via.placeholder.com/100" alt="User Profile Picture">
+                </div>
+                <div class="user-name" id="user-name">{{user}}</div>
+                <a href="{% url 'edit_user'%}"><div class="edit-button" id="edit-button">Edit Profile</div></a>
+        
+                {% comment %} <div class="edit-section" id="edit-section">
+                    <input type="text" id="name-input" placeholder="Enter your name" value="John Doe">
+                    <div class="save-button" id="save-button">Save</div>
+                </div> {% endcomment %}
+            </div>
             {% comment %} <ul>
                 <li><a href="#my-vehicles">My Vehicles</a></li>
                 <li><a href="#delivery-scheduling">Delivery Scheduling</a></li>
@@ -115,6 +211,7 @@
         <!-- Main Content -->
         <div class="main-content">
             <h1>Welcome, {{user}} !</h1>
+            {% comment %} <img src="{% static 'images/bell.png' %}"> {% endcomment %}
             <div class="dashboard-section">
                 <!-- Vehicle Management -->
                 <div class="dashboard-card" id="my-vehicles">
@@ -152,9 +249,9 @@
                 </div>
 
                 <div class="dashboard-card" id="notifications">
-                    <h2>My driver booking</h2>
+                    <h2>Track my vehicle</h2>
                     <p>Get real-time updates on your vehicle's status.</p>
-                    <a href="{% url 'driver_booking_history' %}"><button>View booking history</button></a>
+                    <a href="{% url 'driver_booking_history' %}"><button>Track</button></a>
                 </div>
             </div>
         </div>

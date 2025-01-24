@@ -35,6 +35,7 @@ class VehicleRegistration(models.Model):
 class MaintenanceRequest(models.Model):
     full_name = models.CharField(max_length=20)
     vehicle = models.ForeignKey(VehicleRegistration, on_delete=models.CASCADE,null=True,blank=True)
+    driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
     services = models.TextField()  
     description = models.TextField(blank=True, null=True)
     request_date = models.DateField()
@@ -63,8 +64,8 @@ class Payment(models.Model):
 
     user=models.ForeignKey(UserDetails,on_delete=models.CASCADE,null=True,blank=True)
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHOD_CHOICES)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    upi_id = models.CharField(max_length=100)
+    amount = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
+    upi_id = models.CharField(max_length=100,null=True,blank=True)
     createdat= models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -73,8 +74,9 @@ class Payment(models.Model):
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True ,related_name='notification_customer')
     title = models.CharField(max_length=100,null=True,blank=True)
-    type = models.CharField(max_length=20,null=True,blank=True)
+    # type = models.CharField(max_length=20,null=True,blank=True)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

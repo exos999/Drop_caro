@@ -190,7 +190,7 @@
                     <th>Description</th>
                     <th>Preferred Date</th>
                     <th>Preferred Time</th>
-                    <th>Action</th>
+                    {% comment %} <th>Action</th> {% endcomment %}
                 </tr>
             </thead>
             <tbody>
@@ -202,11 +202,11 @@
                     <td>{{ request.description }}</td>
                     <td>{{ request.request_date }}</td>
                     <td>{{ request.request_time }}</td>
-                    <td>
-                        <a href="#" class="edit-btn">Edit</a>
+                    {% comment %} <td> {% endcomment %}
+                        {% comment %} <a href="#" class="edit-btn">Edit</a>
                         <a href="{% url 'delete_request' request.id %}" class="delete-btn">Delete</a>
-                        <button class="assign-btn" onclick="showPopup('{{ request.id }}')">Add Driver</button>
-                    </td>
+                        <button class="assign-btn" onclick="showPopup('{{ request.id }}')">Add Driver</button> {% endcomment %}
+                    {% comment %} </td> {% endcomment %}
                 </tr>
                 {% empty %}
                 <tr>
@@ -220,11 +220,11 @@
     <!-- Popup Overlay -->
     <div class="popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
 
-    <!-- Popup for assigning driver -->
+    {% comment %} <!-- Popup for assigning driver -->
     <div class="popup" id="assignDriverPopup">
         <span class="popup-close" onclick="closePopup()">&times;</span>
         <div class="popup-header">Assign Driver</div>
-        <form method="post" id="assignDriverForm">
+        <form method="post" action="">
             {% csrf_token %}
             <input type="hidden" id="bookingId" name="booking_id">
             <label for="driver">Select Driver:</label>
@@ -235,11 +235,11 @@
                 <option value="">No drivers available</option>
                 {% endfor %}
             </select>
-            <button type="submit">Assign Driver</button>
+            <button type="submit">Assign Driver</button> {% endcomment %}
         </form>
     </div>
 
-    <script>
+    {% comment %} <script>
         function showPopup(bookingId) {
             document.getElementById('bookingId').value = bookingId;
             document.getElementById('popupOverlay').style.display = 'block';
@@ -250,32 +250,6 @@
             document.getElementById('popupOverlay').style.display = 'none';
             document.getElementById('assignDriverPopup').style.display = 'none';
         }
-
-        document.getElementById('assignDriverForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-        
-            // Get values
-            const bookingId = document.getElementById('bookingId').value;
-            const driverId = document.getElementById('driver').value;
-        
-            if (!driverId) {
-                alert('Please select a driver.');
-                return;
-            }
-        
-            // Get the base URL from the form's action attribute
-            const baseUrl = this.action;
-        
-            // Replace the placeholder (0) with the selected driverId
-            const url = baseUrl.replace('/0/', `/${driverId}/`);
-        
-            // Update the form's action to the new URL
-            this.action = url;
-        
-            // Submit the form
-            this.submit();
-        });
-        
-    </script>
+    </script> {% endcomment %}
 </body>
 </html>

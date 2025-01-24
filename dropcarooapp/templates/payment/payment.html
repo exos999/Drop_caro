@@ -1,66 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/tailwindcss-colors.css' %}">
-    <link rel="stylesheet" href="{% static 'css/payment_style.css' %}">
-    <title>Payment Page</title>
+    <title>Payment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .payment-form {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .payment-form h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    
-    <!-- start: Payment -->
-    <section class="payment-section">
-        <div class="container">
-            <div class="payment-wrapper">
-                <div class="payment-left">
-                    <div class="payment-header">
-                        <div class="payment-header-icon"><i class="ri-flashlight-fill"></i></div>
-                        <div class="payment-header-title">Order Summary</div>
-                        <p class="payment-header-description">Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-                    </div>
-                    <div class="payment-content">
-                        <div class="payment-body">
-                            <div class="payment-plan">
-                                <div class="payment-plan-type">Pro</div>
-                                <div class="payment-plan-info">
-                                    <div class="payment-plan-info-name">Professional Plan</div>
-                                    <div class="payment-plan-info-price">$49 per month</div>
-                                </div>
-                            </div>
-                            <div class="payment-summary">
-                                <div class="payment-summary-item">
-                                    <div class="payment-summary-name">Additional fee</div>
-                                    <div class="payment-summary-price">$10</div>
-                                </div>
-                                <div class="payment-summary-item">
-                                    <div class="payment-summary-name">Discount 20%</div>
-                                    <div class="payment-summary-price">-$10</div>
-                                </div>
-                                <div class="payment-summary-divider"></div>
-                                <div class="payment-summary-item payment-summary-total">
-                                    <div class="payment-summary-name">Total</div>
-                                    <div class="payment-summary-price">$49</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="payment-right">
-                    <form method="post" class="payment-form">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="payment-form-submit-button">
-                            <i class="ri-wallet-line"></i> Pay
-                        </button>
-                    </form>
-                </div>
-            </div>
+    <form class="payment-form" action="{% url 'payment' %}" method="POST">
+        {% csrf_token %}
+        <h1>Payment Form</h1>
+        <div class="form-group">
+            <label for="payment_method">Payment Method</label>
+            <select id="payment_method" name="payment_method" required>
+                <option value="">Select a payment method</option>
+                <option value="gpay">Google Pay</option>
+                <option value="paytm">Paytm</option>
+                <option value="phonepe">PhonePe</option>
+            </select>
         </div>
-    </section>
-    <!-- end: Payment -->
-
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" name="amount" step="0.01" placeholder="Enter amount" required>
+        </div>
+        <div class="form-group">
+            <label for="upi_id">UPI ID</label>
+            <input type="text" id="upi_id" name="upi_id" placeholder="Enter UPI ID">
+        </div>
+        <button type="submit" class="submit-btn">Pay</button>
+    </form>
 </body>
 </html>

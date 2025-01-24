@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        ul.notifications {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul.notifications li {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s ease;
+        }
+
+        ul.notifications li:last-child {
+            border-bottom: none;
+        }
+
+        ul.notifications li:hover {
+            background-color: #f9f9f9;
+        }
+
+        ul.notifications li i {
+            font-size: 1.5rem;
+            color: #555;
+            margin-right: 15px;
+        }
+
+        ul.notifications .message {
+            flex: 1;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        ul.notifications .timestamp {
+            font-size: 0.85rem;
+            color: #999;
+            margin-right: 15px;
+        }
+
+        ul.notifications button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        ul.notifications button:hover {
+            background-color: #555;
+        }
+
+        .no-notifications {
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        .clear-all {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #d9534f;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.3s;
+        }
+
+        .clear-all:hover {
+            background-color: #c9302c;
+        }
+
+        /* Popup Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            margin-bottom: 20px;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Notifications</h1>
+
+        <ul class="notifications">
+            {% for item in notifications %}
+            <li>
+                <i class="fas fa-envelope"></i>
+                <div class="message">{{ item.title }}</div>
+                <div class="timestamp">{{ item.created_at }}</div>
+                <button onclick="openModal('{{ item.title }}', '{{ item.message }}',{{item.customer}})">Open</button>
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% if notifications|length == 0 %}
+        <div class="no-notifications">
+            No notifications to display.
+        </div>
+        {% endif %}
+
+        <button class="clear-all" onclick="clearAllNotifications()">Clear All</button>
+    </div>
+
+    <!-- Popup Modal -->
+    <div class="modal" id="notificationModal">
+        <div class="modal-content">
+            <h2 id="modalTitle"></h2>
+            <p id="modalMessage"></p>
+            <p id="modalCustomer"></p>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(title, message,customer) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('modalCustomer').textContent = customer;
+            document.getElementById('notificationModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('notificationModal').style.display = 'none';
+        }
+
+        function clearAllNotifications() {
+            // Logic to clear all notifications goes here (server-side integration needed).
+            alert('All notifications cleared.');
+        }
+    </script>
+</body>
+</html>

@@ -168,6 +168,18 @@ from django.shortcuts import render
 def payments(request):
     return render(request, 'payments.html')
 
+@login_required
+def edit_user(request):
+    user_details = get_object_or_404(UserDetails, user=request.user)
+    if request.method == 'POST':
+        form = UserDetailsForm(request.POST, instance=user_details)
+        if form.is_valid():
+            form.save()
+            return redirect('user_dashboard')  # Replace 'success_page' with your URL
+    else:
+        form = UserDetailsForm(instance=user_details)
+    return render(request, 'user_dashboard/edit_user.html', {'form': form})
+
 
 # vehicle reg url
 # views.py
@@ -211,6 +223,7 @@ def map(request):
 
 
 # VehicleRegistration view
+
 def vehicle_reg(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -278,6 +291,7 @@ def book_driver(request):
             obj.driver=driver
             obj.user=user
             obj.save()
+            Notification.objects.create(user=driver.user,title="Booking request",message="booked",customer=user)
             messages.success(request, "Driver booked successfully!")
             return redirect('user_dashboard')  # Redirect to prevent form resubmission
         else:
@@ -342,6 +356,23 @@ def view_work(request):
 def view_vehicle(request):
     aavehicle=VehicleRegistration.objects.filter(driver__user=request.user)
     return render(request, 'driver_dashboard/view_vehicle.html',{"aavehicle":aavehicle})
+
+def my_maintance(request):
+    bookmaintance=MaintenanceRequest.objects.all()    
+    return render(request, 'driver_dashboard/my_maintance.html',{"bookmaintance":bookmaintance})
+
+
+@login_required
+def edit_driver(request):
+    driver_details = get_object_or_404(DriverDetails, user=request.user)
+    if request.method == 'POST':
+        form = DriverDetailsForm(request.POST, request.FILES, instance=driver_details)
+        if form.is_valid():
+            form.save()
+            return redirect('driver_dashboard')  # Replace 'success_page' with your URL
+    else:
+        form = DriverDetailsForm(instance=driver_details)
+    return render(request, 'driver_dashboard/edit_driver.html', {'form': form})
 
 
 # admin_dashboard_view
@@ -438,3 +469,16 @@ def sucessfull_payment(request):
 def notification(request):
     notifications=Notification.objects.filter(user=request.user)
     return render(request, 'dropcaro/user_notifications.html',{"notifications":notifications})
+
+def driver_notification(request):
+    notifications=Notification.objects.filter(user=request.user)
+    return render(request, 'dropcaro/driver_notification.html',{"notifications":notifications})
+
+def admin_assign_maintanance(request,driver_id,booking_id):
+    if request.method=='POST':
+        driver=get_object_or_404(DriverDetails,id=driver_id)
+        booking=get_object_or_404(MaintenanceRequest,id=booking_id)
+        
+        booking.driver=driver
+        booking.save()
+    return redirect(request,'view_bookmaintance')

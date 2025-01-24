@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Driver Dashboard</title>
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,10 +13,12 @@
             padding: 0;
             background-color: #f5f5f5;
         }
+
         .dashboard-container {
             display: flex;
             height: 100vh;
         }
+
         .sidebar {
             width: 250px;
             background-color: #333;
@@ -24,53 +28,71 @@
             flex-direction: column;
             justify-content: space-between;
         }
+
         .sidebar h2 {
             font-size: 1.5rem;
             margin-bottom: 20px;
         }
+
         .sidebar ul {
             list-style: none;
             padding: 0;
         }
+
         .sidebar ul li {
             margin: 15px 0;
         }
+
         .sidebar ul li a {
             text-decoration: none;
             color: white;
             font-size: 1rem;
         }
+
         .sidebar ul li a:hover {
             text-decoration: underline;
         }
+
         .main-content {
             flex: 1;
             padding: 20px;
             background-color: #fff;
+            position: relative;
         }
+
         .main-content h1 {
             font-size: 2rem;
             margin-bottom: 20px;
         }
+
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
+
         .dashboard-card {
             background-color: #f9f9f9;
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
         }
+
+        .dashboard-card:hover {
+            transform: scale(1.05);
+        }
+
         .dashboard-card h2 {
             font-size: 1.2rem;
             margin-bottom: 10px;
         }
+
         .dashboard-card p {
             color: #666;
             margin-bottom: 15px;
         }
+
         .dashboard-card button {
             padding: 10px 15px;
             border: none;
@@ -78,14 +100,30 @@
             background-color: #333;
             color: white;
             cursor: pointer;
+            transition: background 0.3s;
         }
+
         .dashboard-card button:hover {
             background-color: #555;
         }
+
         footer {
             text-align: center;
             margin-top: 20px;
             color: #666;
+        }
+
+        .notification-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: red;
+            cursor: pointer;
+        }
+
+        .notification-icon:hover {
+            color: #900;
         }
     </style>
 </head>
@@ -95,44 +133,32 @@
         <div class="sidebar">
             <div>
                 <h2>Driver Dashboard</h2>
-                {% comment %} <ul>
-                    <li><a href="#tasks-overview">Task Overview</a></li>
-                    <li><a href="#vehicle-details">Vehicle Details</a></li>
-                    <li><a href="#maintenance">Maintenance Management</a></li>
-                    <li><a href="#navigation">Location & Navigation</a></li>
-                    <li><a href="#payments">Payments & Earnings</a></li>
-                </ul> {% endcomment %}
+                <a href="{% url 'edit_driver' %}"><button>Edit Profile</button></a>
             </div>
             <div>
-                {% comment %} <a href="#help-support">Help & Support</a> {% endcomment %}
-                <br>
-                <a href="{% url 'logout'%}"><button>Log Out</button></a>
+                <a href="{% url 'logout' %}"><button>Log Out</button></a>
             </div>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
-            <h1>Welcome {{user}}!</h1>
+            <!-- Notification Icon -->
+            <a href="{% url 'driver_notification' %}" class="fas fa-bell notification-icon" title="Notifications"></a>
+
+            <h1>Welcome, {{ user }}!</h1>
             <div class="dashboard-grid">
                 <!-- Task Overview -->
                 <div class="dashboard-card" id="tasks-overview">
-                    <h2> Works</h2>
-                    <p>View your Works</p>
+                    <h2>Works</h2>
+                    <p>View your works and tasks.</p>
                     <a href="{% url 'view_work' %}"><button>View Tasks</button></a>
-                </div>
-
-                <!-- Vehicle Details -->
-                <div class="dashboard-card" id="vehicle-details">
-                    <h2>Vehicle Details</h2>
-                    <p>Check vehicle information and special instructions.</p>
-                    <button>View Details</button>
                 </div>
 
                 <!-- Maintenance Management -->
                 <div class="dashboard-card" id="maintenance">
                     <h2>Maintenance Management</h2>
                     <p>Complete the service checklist for each vehicle.</p>
-                    <button>Start Checklist</button>
+                    <a href="{% url 'my_maintance' %}"><button>Start Checklist</button></a>
                 </div>
 
                 <!-- Location & Navigation -->
