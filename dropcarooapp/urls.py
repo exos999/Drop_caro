@@ -82,4 +82,7 @@ urlpatterns = [
 
     path('update-location', views.update_location, name='update-location'),
     path('driver_booking_history/', views.driver_booking_history, name='driver_booking_history'),
+
+    path('get_live_location/<int:task_id>/', views.get_live_location, name='get_live_location'),
+    path('view_live_location/<int:task_id>/', views.view_live_location, name='view_live_location'),
 ] 

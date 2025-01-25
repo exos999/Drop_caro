@@ -165,7 +165,7 @@
                 <i class="fas fa-envelope"></i>
                 <div class="message">{{ item.title }}</div>
                 <div class="timestamp">{{ item.created_at }}</div>
-                <button onclick="openModal('{{ item.title }}', '{{ item.message }}',{{item.customer}})">Open</button>
+                <button onclick="openModal('{{ item.title }}', '{{ item.message }}','{{ item.customer }}')">Open</button>
             </li>
             {% endfor %}
         </ul>

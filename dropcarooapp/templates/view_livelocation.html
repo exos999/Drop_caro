@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Location</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #map { height: 100vh; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map').setView([{{ latitude }}, {{ longitude }}], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        let marker = L.marker([{{ latitude }}, {{ longitude }}]).addTo(map)
+            .bindPopup('Live Location')
+            .openPopup();
+
+        function updateLocation() {
+            fetch('/view_live_location/{{ task_id }}/')
+                .then(response => response.json())
+                .then(data => {
+                    const lat = data.latitude;
+                    const lon = data.longitude;
+
+                    map.setView([lat, lon], 13);
+                    marker.setLatLng([lat, lon])
+                        .bindPopup(`Live Location: ${lat.toFixed(5)}, ${lon.toFixed(5)}`)
+                        .openPopup();
+                })
+                .catch(error => console.error('Error fetching location:', error));
+        }
+
+        setInterval(updateLocation, 3000);
+    </script>
+</body>
+</html>

@@ -190,6 +190,7 @@
                     <th>Description</th>
                     <th>Preferred Date</th>
                     <th>Preferred Time</th>
+                    <th>Assigned Driver</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -202,10 +203,12 @@
                     <td>{{ request.description }}</td>
                     <td>{{ request.request_date }}</td>
                     <td>{{ request.request_time }}</td>
+                    <td>{% if request.driver %}{{ request.driver.fullname }}{% else %} Not assigned {% endif %}</td>
+
                     <td>
                         <a href="#" class="edit-btn">Edit</a>
                         <a href="{% url 'delete_request' request.id %}" class="delete-btn">Delete</a>
-                        <button class="assign-btn" onclick="showPopup('{{ request.id }}')">Add Driver</button>
+                        <button class="assign-btn" onclick="showPopup('{{ request.id }}')">Assign Driver</button>
                     </td>
                 </tr>
                 {% empty %}
@@ -224,7 +227,7 @@
     <div class="popup" id="assignDriverPopup">
         <span class="popup-close" onclick="closePopup()">&times;</span>
         <div class="popup-header">Assign Driver</div>
-        <form method="post" id="assignDriverForm">
+        <form method="post" id="assignDriverForm" action="{% url 'admin_assign_maintanance' 0 0 %}">
             {% csrf_token %}
             <input type="hidden" id="bookingId" name="booking_id">
             <label for="driver">Select Driver:</label>
@@ -237,6 +240,7 @@
             </select>
             <button type="submit">Assign Driver</button>
         </form>
+        
     </div>
 
     <script>
@@ -245,16 +249,15 @@
             document.getElementById('popupOverlay').style.display = 'block';
             document.getElementById('assignDriverPopup').style.display = 'block';
         }
-
+    
         function closePopup() {
             document.getElementById('popupOverlay').style.display = 'none';
             document.getElementById('assignDriverPopup').style.display = 'none';
         }
-
+    
         document.getElementById('assignDriverForm').addEventListener('submit', function (event) {
             event.preventDefault();
         
-            // Get values
             const bookingId = document.getElementById('bookingId').value;
             const driverId = document.getElementById('driver').value;
         
@@ -262,20 +265,16 @@
                 alert('Please select a driver.');
                 return;
             }
-        
-            // Get the base URL from the form's action attribute
-            const baseUrl = this.action;
-        
-            // Replace the placeholder (0) with the selected driverId
-            const url = baseUrl.replace('/0/', `/${driverId}/`);
-        
-            // Update the form's action to the new URL
-            this.action = url;
-        
-            // Submit the form
-            this.submit();
+    
+            // Get the base Django URL and replace the placeholders
+            let form = document.getElementById('assignDriverForm');
+            let baseUrl = form.getAttribute('action'); 
+            let updatedUrl = baseUrl.replace('/0/0/', `/${bookingId}/${driverId}/`);
+    
+            form.action = updatedUrl;  // Update the form action dynamically
+            form.submit();  // Submit the form
         });
-        
     </script>
+    
 </body>
 </html>

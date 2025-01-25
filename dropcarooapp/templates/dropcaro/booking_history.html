@@ -157,7 +157,7 @@
                         <td>{{ booking.driver.user.username  }}</td>
                         <td>{{ booking.driver.phone }}</td>
                         <td>
-                            <a href="#" class="view-location-btn">View Location</a>
+                            <a href="{% url 'get_live_location' booking.id %}" class="view-location-btn">View Location</a>
                         </td>
                     </tr>
                     {% empty %}

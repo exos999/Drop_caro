@@ -13,6 +13,8 @@ class DriverDetails(models.Model):
     date_of_birth = models.DateField(blank=True,null=True)
     city = models.CharField(max_length=15,blank=True,null=True)
 
+    def __str__(self):
+        return self.fullname
    
     
 class UserDetails(models.Model):

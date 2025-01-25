@@ -291,7 +291,7 @@ def book_driver(request):
             obj.driver=driver
             obj.user=user
             obj.save()
-            Notification.objects.create(user=driver.user,title="Booking request",message="booked",customer=user)
+            Notification.objects.create(user=driver.user,title="Booking request",message="booked",customer=request.user)
             messages.success(request, "Driver booked successfully!")
             return redirect('user_dashboard')  # Redirect to prevent form resubmission
         else:
@@ -339,6 +339,18 @@ def update_location(request):
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
     return HttpResponse(status=405)
 
+def get_live_location(request, task_id):
+    task = get_object_or_404(DriverBooking, id=task_id)
+    location = Location.objects.filter(task=task).first()
+    print(task,location)
+    return render(request,'view_livelocation.html',{"latitude": location.latitude, "longitude": location.longitude,"task_id":task_id})
+
+import random
+def view_live_location(request,task_id):
+    location = Location.objects.filter(task__id=task_id).first()
+    print(task_id)
+    location = {"latitude": location.latitude, "longitude": location.longitude}
+    return JsonResponse(location)
 
 def driver_booking_history(request): 
     driver_bookings=DriverBooking.objects.filter(user__user=request.user)
@@ -478,7 +490,8 @@ def admin_assign_maintanance(request,driver_id,booking_id):
     if request.method=='POST':
         driver=get_object_or_404(DriverDetails,id=driver_id)
         booking=get_object_or_404(MaintenanceRequest,id=booking_id)
-        
+        print(driver,booking,'kjfklafj')
         booking.driver=driver
         booking.save()
-    return redirect(request,'view_bookmaintance')
+        Notification.objects.create(user=driver.user,title="maintenance request",message="driver assigned",customer=booking.vehicle.owner if booking.vehicle else None)
+    return redirect('view_bookmaintance')
