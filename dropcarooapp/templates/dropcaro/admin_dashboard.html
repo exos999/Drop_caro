@@ -22,6 +22,10 @@
             color: white;
             padding: 20px;
             display: flex;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            margin-top: 50px;
+            margin-left: 10px;
             flex-direction: column;
             justify-content: space-between;
         }
@@ -48,6 +52,7 @@
             flex: 1;
             padding: 20px;
             background-color: #fff;
+            position: relative;
         }
         .main-content h1 {
             font-size: 2rem;
@@ -88,6 +93,19 @@
             margin-top: 20px;
             color: #666;
         }
+        .notification-bell {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
+        .notification-bell img {
+            width: 30px;
+            height: 30px;
+        }
+        .h1 {
+            margin-left: 80px;
+        }
     </style>
 </head>
 <body>
@@ -96,16 +114,8 @@
         <div class="sidebar">
             <div>
                 <h2>Admin Dashboard</h2>
-                {% comment %} <ul>
-                    <li><a href="#user-management">User Management</a></li>
-                    <li><a href="#service-monitoring">Service Monitoring</a></li>
-                    <li><a href="#analytics-reports">Analytics & Reports</a></li>
-                    <li><a href="#notifications">Notifications</a></li>
-                    <li><a href="#payment-management">Payment Management</a></li>
-                </ul> {% endcomment %}
             </div>
-            <div>
-                {% comment %} <a href="#help-support">Help & Support</a> {% endcomment %}
+            <div class="h1">
                 <br>
                 <a href="{% url 'logout'%}"><button>Log Out</button></a>
             </div>
@@ -113,6 +123,13 @@
 
         <!-- Main Content -->
         <div class="main-content">
+            <!-- Notification Bell -->
+            <div class="notification-bell">
+                <a href="{% url 'notification' %}">
+                    <img src="{% static 'images/bell.png' %}" alt="Notifications">
+                </a>
+            </div>
+
             <h1>Welcome, Administrator</h1>
             <div class="dashboard-grid">
                 <!-- User Management -->
@@ -120,14 +137,14 @@
                     <h2>User Management</h2>
                     <p>Manage traveler and driver profiles, service history, and issues.</p>
                     <button><a style="text-decoration: none;color:white" href="{% url 'manage_users' %}">Manage Users</a></button>
-                    <button><a  style="text-decoration: none;color:white"href="{% url 'manage_drivers' %}">Manage Driver</a></button>
+                    <button><a style="text-decoration: none;color:white" href="{% url 'manage_drivers' %}">Manage Driver</a></button>
                 </div>
 
                 <!-- Service Request Monitoring -->
                 <div class="dashboard-card" id="service-monitoring">
                     <h2>Service Monitoring</h2>
                     <p>View all ongoing and pending service requests.</p>
-                    <a style="color: white;" href="{% url 'vehicle_details' %}"><button  >Vehicle Details</button></a>
+                    <a style="color: white;" href="{% url 'vehicle_details' %}"><button>Vehicle Details</button></a>
                     <a style="color: white;" href="{% url 'view_bookdriver' %}"><button>Driver Booked</button></a>
                     <a style="color: white;" href="{% url 'view_bookmaintance' %}"><button>Maintenance Booked</button></a>
                 </div>
@@ -143,7 +160,7 @@
                 <div class="dashboard-card" id="notifications">
                     <h2>Notifications & Alerts</h2>
                     <p>Receive alerts for issues, delays, or complaints.</p>
-                 <a href="{% url 'notification' %}"><button>View Notifications</button></a>
+                    <a href="{% url 'notification' %}"><button>View Notifications</button></a>
                 </div>
 
                 <!-- Payment Management -->
@@ -151,6 +168,12 @@
                     <h2>Payment Management</h2>
                     <p>Track all transactions and resolve disputes or refunds.</p>
                     <a href="{% url 'payment_view' %}"><button>Manage Payments</button></a>
+                </div>
+                   <!-- Payment Management -->
+                   <div class="dashboard-card" id="payment-management">
+                    <h2>Feedbacks</h2>
+                    <p>Feedback raised by users</p>
+                    <a href="{% url 'feedback_list' %}"><button>View Feedbacks</button></a>
                 </div>
             </div>
             <footer>

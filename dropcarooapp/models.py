@@ -95,3 +95,19 @@ class Location(models.Model):
 
     def __str__(self):
         return f"Location of {self.task.driver.user.username} at {self.timestamp}"
+    
+    
+class Feedback(models.Model):
+    FEEDBACK_TYPES = [
+        ('feedback', 'Feedback'),
+        ('complaint', 'Complaint'),
+    ]
+
+    name = models.CharField(max_length=100,null=True,blank=True)
+    email = models.EmailField(null=True,blank=True)
+    feedback_type = models.CharField(max_length=20, choices=FEEDBACK_TYPES,null=True,blank=True)
+    message = models.TextField(null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.feedback_type}"

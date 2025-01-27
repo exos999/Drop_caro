@@ -42,6 +42,8 @@ urlpatterns = [
     # path('track/', views.track_vehicle, name='track'),
     # path('payments/', views.payments, name='payments'),
     path('logout/', views.logout_view, name='logout'),
+    path('user_notification/', views.user_notification, name='user_notification'),
+    path('feedback/', views.feedback, name='feedback'),
     
     
     # driverdashboard
@@ -51,6 +53,8 @@ urlpatterns = [
     path('my_maintance/', views.my_maintance, name='my_maintance'),
     path('edit_driver/', views.edit_driver, name='edit_driver'),
     path('driver_notification/', views.driver_notification, name='driver_notification'),
+    # path('update_delivery_status/<int:delivery_id>/', views.update_delivery_status, name='update_delivery_status'),
+
 
      
   
@@ -71,6 +75,10 @@ urlpatterns = [
 
     path('list_vehicles/', views.list_my_vehicles, name='list_vehicles'),
     path('payment_view/', views.payment_view, name='payment_view'),
+    path('notification/', views.notification, name='notification'),
+    path('add_user/', views.add_user, name='add_user'),
+    path('feedback-list/', views.feedback_list, name='feedback_list'),
+    
     
     # payment
     

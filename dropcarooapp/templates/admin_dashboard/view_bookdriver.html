@@ -103,7 +103,7 @@
                     <td>{{ booking.pickup_time }}</td>
                     <td>{{ booking.key_point }}</td>
                     <td>
-                        <a href="" class="edit-btn" style="padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-right: 5px;">Edit</a>
+                        {% comment %} <a href="" class="edit-btn" style="padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-right: 5px;">Edit</a> {% endcomment %}
                         <a href="{% url 'delete_booking'  booking.id %}"  class="delete-btn" style="padding: 5px 10px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px;">Delete</a>
                     </td>
                 </tr>

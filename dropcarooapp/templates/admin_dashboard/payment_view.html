@@ -28,7 +28,7 @@
                             <th>Amount</th>
                             <th>Date</th>
                             {% comment %} <th>Status</th> {% endcomment %}
-                            <th>Action</th>
+                            {% comment %} <th>Action</th> {% endcomment %}
                         </tr>
                     </thead>
                     <tbody>
@@ -37,15 +37,15 @@
                                 <td>{{ invoice.id }}</td>
                                 <td>{{ invoice.user.user.username }}</td>
                                 <td>{{ invoice.amount }}</td>
-                                <td>{{ invoice.date }}</td>
+                                <td>{{ invoice.createdat }}</td>
                                 {% comment %} <td>{{ invoice.status }}</td> {% endcomment %}
                                 
                                     {% comment %} <a href="{% url 'invoice_detail' invoice.id %}" class="btn-view">View</a> {% endcomment %}
                                 
-                                <td>
-                                    {% comment %} <a href="{% url 'edit_maintenance' request.id %}">Edit</a> | {% endcomment %}
+                                {% comment %} <td>
+                                    <a href="{% url 'edit_maintenance' request.id %}">Edit</a> |
                                     <a href="{% url 'delete_payment' payment_id=invoice.id %}"><button>Delete</button></a>
-                                </td>
+                                </td> {% endcomment %}
                             </tr>
                         {% endfor %}
                     </tbody>

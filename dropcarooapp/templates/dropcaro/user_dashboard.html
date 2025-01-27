@@ -21,16 +21,15 @@
             display: flex;
             height: 100vh;
         }    
-        .log{
+        .log {
             margin-top: 100%;
             position: relative;
         }
         button {
-            width: 100px; /* Adjust the width */
-            height: 40px; /* Adjust the height */
-            background-color: black; /* Button background color */
-            color: white; /* Button text color */
-            
+            width: 100px;
+            height: 40px;
+            background-color: black;
+            color: white;
         }
         .sidebar {
             width: 250px;
@@ -57,6 +56,7 @@
             flex: 1;
             padding: 20px;
             background-color: #f9f9f9;
+            position: relative;
         }
         .main-content h1 {
             font-size: 2em;
@@ -91,15 +91,6 @@
         }
         .dashboard-card button:hover {
             background: #555;
-        }
-        {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
         }
 
         .profile-container {
@@ -149,32 +140,16 @@
             background-color: #45a049;
         }
 
-        .edit-section {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .edit-section input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .save-button {
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 8px 16px;
-            border-radius: 5px;
+        .notification-bell {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             cursor: pointer;
-            display: inline-block;
         }
 
-        .save-button:hover {
-            background-color: #0056b3;
+        .notification-bell img {
+            width: 30px;
+            height: 30px;
         }
     </style>
 </head>
@@ -190,34 +165,28 @@
                 <div class="user-name" id="user-name">{{user}}</div>
                 <a href="{% url 'edit_user'%}"><div class="edit-button" id="edit-button">Edit Profile</div></a>
         
-                {% comment %} <div class="edit-section" id="edit-section">
-                    <input type="text" id="name-input" placeholder="Enter your name" value="John Doe">
-                    <div class="save-button" id="save-button">Save</div>
-                </div> {% endcomment %}
-            </div>
-            {% comment %} <ul>
-                <li><a href="#my-vehicles">My Vehicles</a></li>
-                <li><a href="#delivery-scheduling">Delivery Scheduling</a></li>
-                <li><a href="#maintenance">Maintenance Requests</a></li>
-                <li><a href="#payments">Payment Management</a></li>
-                <li><a href="#notifications">Notifications & Updates</a></li>
-                
-            </ul> {% endcomment %}
-            <div class="log">
-            <a href="{% url 'logout'%}"><button>Log Out</button></a>
+                <div class="log">
+                    <a href="{% url 'logout'%}"><button>Log Out</button></a>
+                </div>
             </div>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
-            <h1>Welcome, {{user}} !</h1>
-            {% comment %} <img src="{% static 'images/bell.png' %}"> {% endcomment %}
+            <!-- Notification Bell -->
+            <div class="notification-bell">
+                <a href="{% url 'user_notification' %}">
+                    <img src="{% static 'images/bell.png' %}" alt="Notifications">
+                </a>
+            </div>
+
+            <h1>Welcome, {{user}}!</h1>
             <div class="dashboard-section">
                 <!-- Vehicle Management -->
                 <div class="dashboard-card" id="my-vehicles">
                     <h2>My Vehicles</h2>
                     <p>View and manage your registered vehicles.</p>
-                    <a href="{% url 'list_vehicles' %}"> <button>Vehicles</button></a>
+                    <a href="{% url 'list_vehicles' %}"><button>Vehicles</button></a>
                 </div>
 
                 <!-- Delivery Scheduling -->
@@ -241,17 +210,19 @@
                     <a href="{% url 'payment' %}"><button>Payment</button></a>
                 </div>
 
-                <!-- Notifications -->
-                <div class="dashboard-card" id="notifications">
-                    <h2>Notifications & Updates</h2>
-                    <p>Get real-time updates on your vehicle's status.</p>
-                    <a href="{% url 'notification' %}"><button>View Notifications</button></a>
-                </div>
+                 
 
-                <div class="dashboard-card" id="notifications">
-                    <h2>Track my vehicle</h2>
+                <!-- Vehicle Tracking -->
+                <div class="dashboard-card" id="tracking">
+                    <h2>Track My Vehicle</h2>
                     <p>Get real-time updates on your vehicle's status.</p>
                     <a href="{% url 'driver_booking_history' %}"><button>Track</button></a>
+                </div>
+                <!-- Notifications -->
+                <div class="dashboard-card" id="notifications">
+                    <h2>Feedback</h2>
+                    <p>Give your experences</p>
+                    <a href="{% url 'feedback' %}"><button>Feedback</button></a>
                 </div>
             </div>
         </div>

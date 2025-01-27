@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from .models import Location, DriverDetails, DriverBooking
+from .models import Location, DriverDetails, DriverBooking,Feedback
 
 
 # Logout View
@@ -123,13 +123,6 @@ def driver_view(request):
     return render(request,'dropcaro/driver_reg.html')
 
 
-
-# def cupass_view(request):
-#     return render(request,'dropcaro/cus_password.html')
-
-# def drvpass_view(request):
-#     return render(request,'dropcaro/driver_password.html')
-
 def book_driver_view(request):
     return render(request,'dropcaro/bookdriver.html')
 
@@ -158,15 +151,6 @@ def list_my_vehicles(request):
 # user_dashboard_view
 from django.shortcuts import render
 
-# def  home(request):
-#     return render(request, 'home.html')
-
-# def my_vehicles(request):
-#     return render(request, 'vehicles.html')
-
-
-def payments(request):
-    return render(request, 'payments.html')
 
 @login_required
 def edit_user(request):
@@ -194,32 +178,6 @@ def map(request):
     }
     return render(request, 'map.html', context)
 
-
-
-
-# def vehicle_reg(request):
-#     if request.method == "POST":
-#         data=request.POST.copy()
-#         vehicle_number = request.POST.get('vehicle_number')
-#         owner_name = request.POST.get('owner_name')
-#         vehicle_model = request.POST.get('vehicle_model')
-#         contact = request.POST.get('contact')
-
-#         try:
-#             user=Vehicle.objects.create(
-#                 vehicle_number=vehicle_number,
-#                 owner_name=owner_name,
-#                 vehicle_model=vehicle_model,
-#                 contact=contact
-#             )
-#             messages.success(request, "Vehicle registered successfully!")
-#         except Exception as e:
-#             print("e")
-#             messages.error(request, f"Error: {str(e)}")
-
-#         return redirect('vehicle_reg')
-    
-#     return render(request, 'dropcaro/vehicle_reg.html')
 
 
 # VehicleRegistration view
@@ -263,6 +221,20 @@ def maintenance_reg(request):
             vehicle=get_object_or_404(VehicleRegistration,id=vehicle_id)
             maintenance_request.vehicle=vehicle
             maintenance_request.save()
+            Notification.objects.create(
+               user=request.user,  # The user who made the booking
+               title="Maintance Booking",
+               message="Maintance Booking Request Sent",
+               customer=request.user
+             )
+            admin_users = User.objects.filter(is_superuser=True)
+            for admin_user in admin_users:
+             Notification.objects.create(
+                user=admin_user,
+                title="New Maintance Booking Request",
+             message=f"A booking has been made by {request.user.username}",
+                customer=request.user
+                )
             messages.success(request, "Your maintenance request has been submitted successfully!")
             return redirect('user_dashboard')
         else:
@@ -291,7 +263,21 @@ def book_driver(request):
             obj.driver=driver
             obj.user=user
             obj.save()
+            Notification.objects.create(
+               user=request.user,  # The user who made the booking
+               title="Driver Booking",
+               message="Driver Booking Request Sent",
+               customer=request.user
+             )
             Notification.objects.create(user=driver.user,title="Booking request",message="booked",customer=request.user)
+            admin_users = User.objects.filter(is_superuser=True)
+            for admin_user in admin_users:
+             Notification.objects.create(
+                user=admin_user,
+                title="New Driver Booking Request",
+             message=f"A booking has been made by {request.user.username} for driver {driver.user.username}.",
+                customer=request.user
+                )
             messages.success(request, "Driver booked successfully!")
             return redirect('user_dashboard')  # Redirect to prevent form resubmission
         else:
@@ -356,6 +342,35 @@ def driver_booking_history(request):
     driver_bookings=DriverBooking.objects.filter(user__user=request.user)
     return render(request, 'dropcaro/booking_history.html',{"driver_bookings":driver_bookings})
     
+def user_notification(request):
+    notifications=Notification.objects.filter(user=request.user)
+    return render(request, 'dropcaro/user_notification.html',{"notifications":notifications})
+
+def feedback(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        feedback_type = request.POST['feedback_type']
+        message = request.POST['message']
+
+        # Save feedback to the database
+        Feedback.objects.create(
+            name=name,
+            email=email,
+            feedback_type=feedback_type,
+            message=message
+        )
+        Notification.objects.create(
+               user=request.user,  # The user who made the booking
+               title="Feedback sented",
+               message="",
+               customer=request.user
+             )
+        # Display success message
+        messages.success(request, 'Thank you for your feedback!')
+        return redirect('user_dashboard')
+
+    return render(request, 'user_dashboard/feedback.html')
 
 
 # driver_dashboard
@@ -366,8 +381,9 @@ def view_work(request):
     return render(request, 'driver_dashboard/view_work.html',{"work":work})
 
 def view_vehicle(request):
-    aavehicle=VehicleRegistration.objects.filter(driver__user=request.user)
-    return render(request, 'driver_dashboard/view_vehicle.html',{"aavehicle":aavehicle})
+    # Filter by owner if the 'driver' field is not available
+    vehicless = VehicleRegistration.objects.filter(owner__user=request.user)
+    return render(request, 'driver_dashboard/view_vehicle.html', {"vehicless": vehicless})
 
 def my_maintance(request):
     bookmaintance=MaintenanceRequest.objects.all()    
@@ -385,6 +401,33 @@ def edit_driver(request):
     else:
         form = DriverDetailsForm(instance=driver_details)
     return render(request, 'driver_dashboard/edit_driver.html', {'form': form})
+ 
+
+def driver_notification(request):
+    notifications=Notification.objects.filter(user=request.user)
+    return render(request, 'dropcaro/driver_notification.html',{"notifications":notifications})
+
+
+# def update_delivery_status(request, delivery_id):
+#     """
+#     Update delivery status to 'Delivered' and send a notification to the user.
+#     """
+#     if request.method == "POST":
+#         # Fetch the delivery object
+#         delivery = get_object_or_404(Delivery, id=delivery_id)
+
+#         # Update the status to 'Delivered'
+#         delivery.status = "Delivered"
+#         delivery.save()
+
+#         # Send a notification to the user
+#         if delivery.user:  # Assuming the Delivery model has a ForeignKey to the User model
+#             Notification.objects.create(
+#                 user=delivery.user,
+#                 title="Delivery Successful",
+#                 message=f"Your delivery with ID {delivery.id} has been successfully delivered."
+#             )
+#     return redirect('view_works')
 
 
 # admin_dashboard_view
@@ -409,10 +452,13 @@ def view_bookdriver(request):
     
     return render(request, 'admin_dashboard/view_bookdriver.html',{"bookdriver":bookdriver})
 
+from django.db import transaction
+
 def delete_user(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    user.delete()
-    messages.success(request, f"User '{user.username}' deleted successfully.")
+    with transaction.atomic():  # Use a transaction to ensure the deletion is committed
+        user = get_object_or_404(User, id=user_id)
+        user.delete()
+        messages.success(request, f"User '{user.username}' deleted successfully.")
     return redirect('manage_users')
 
 def delete_driver(request, driver_id):
@@ -432,8 +478,6 @@ def delete_vehicle(request, vehicle_id):
     vehicle = get_object_or_404(VehicleRegistration, id=vehicle_id)
     vehicle.delete()
     messages.success(request, f"Vehicle '{vehicle.vehicle_number}' deleted successfully.")
-    
-    # Redirect to the manage vehicles page
     return redirect('vehicle_details')  # Adjust 'manage_vehicles' to match your URL name
 
 def delete_booking(request, booking_id):
@@ -458,8 +502,13 @@ def payment_view(request):
     viewpay=Payment.objects.all()
     return render(request, 'admin_dashboard/payment_view.html',{"viewpay":viewpay})
 
-# payment
+def notification(request):
+    notifications=Notification.objects.filter(user=request.user)
+    return render(request, 'admin_dashboard/notification.html',{"notifications":notifications})
 
+
+
+# payment
 from django.shortcuts import get_object_or_404
 def payment(request):
     if request.method == 'POST':
@@ -468,7 +517,21 @@ def payment(request):
             user=get_object_or_404(UserDetails,user=request.user)
             data=form.save(commit=False)
             data.user=user
-            data.save()            
+            data.save()
+            Notification.objects.create(
+               user=request.user,  # The user who made the booking
+               title="Payment Sucessfully",
+               message="",
+               customer=request.user
+             )
+            admin_users = User.objects.filter(is_superuser=True)
+            for admin_user in admin_users:
+             Notification.objects.create(
+                user=admin_user,
+                title="Payment Sucessfull",
+             message=f"Payed by{request.user.username} amount: {data.amount}",
+                customer=request.user
+                )            
             return redirect('sucessfull_payment')
     else:
         form = PaymentForm()
@@ -478,14 +541,6 @@ def sucessfull_payment(request):
     return render(request, 'payment/sucessfull_payment.html')
 
 
-def notification(request):
-    notifications=Notification.objects.filter(user=request.user)
-    return render(request, 'dropcaro/user_notifications.html',{"notifications":notifications})
-
-def driver_notification(request):
-    notifications=Notification.objects.filter(user=request.user)
-    return render(request, 'dropcaro/driver_notification.html',{"notifications":notifications})
-
 def admin_assign_maintanance(request,driver_id,booking_id):
     if request.method=='POST':
         driver=get_object_or_404(DriverDetails,id=driver_id)
@@ -493,5 +548,52 @@ def admin_assign_maintanance(request,driver_id,booking_id):
         print(driver,booking,'kjfklafj')
         booking.driver=driver
         booking.save()
-        Notification.objects.create(user=driver.user,title="maintenance request",message="driver assigned",customer=booking.vehicle.owner if booking.vehicle else None)
+        Notification.objects.create(
+        user=booking.vehicle.owner.user,  # Assuming `booking.vehicle.owner.user` is the customer
+        title="Maintenance Request Update",
+        message="A driver has been assigned to your request.",
+        customer=None  # You can adjust this field if needed
+    )
+        Notification.objects.create(
+         user=driver.user,
+         title="maintenance request",
+         message="driver assigned",
+         customer=booking.vehicle.owner.user if booking.vehicle and booking.vehicle.owner else None
+            )
+
     return redirect('view_bookmaintance')
+
+
+def add_user(request):
+    if request.method == 'POST':
+        data = request.POST.copy()
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.create_user(username=username, password=password, email=email)
+        except Exception as e:
+            print(e)
+            messages.error(request, 'Error creating user: {}'.format(str(e)))
+            return redirect('add_user')
+        
+        user_form = UserDetailsForm(data)
+        if user_form.is_valid():
+            user_details = user_form.save(commit=False)
+            user_details.user = user
+            user_details.save()
+            messages.success(request, 'Registration successful!')
+            return redirect('manage_users')
+        else:
+            print(user_form.errors)
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        user_form = UserDetailsForm()
+
+    return render(request, 'admin_dashboard/add_user.html', {'form': user_form})
+
+
+def feedback_list(request):
+    feedbacks = Feedback.objects.all().order_by('-created_at')  # Fetch all feedbacks and order by latest
+    return render(request, 'admin_dashboard/feedback_list.html', {'feedbacks': feedbacks})

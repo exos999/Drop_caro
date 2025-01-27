@@ -32,6 +32,31 @@
             text-decoration: underline;
         }
 
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input[type="text"] {
+            padding: 5px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .search-container button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+
         main {
             padding: 20px;
         }
@@ -178,6 +203,12 @@
         <div>
             <span style="font-weight: bold; font-size: 1.2em;">Dropcaro</span>
         </div>
+        <div class="search-container">
+            <form method="get" action="{% url 'view_bookmaintance' %}">
+                <input type="text" name="vehicle_number" placeholder="Search by Vehicle Number" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
     </header>
     <main>
         <h1>Maintenance Requests</h1>
@@ -198,7 +229,7 @@
                 {% for request in bookmaintance %}
                 <tr>
                     <td>{{ request.full_name }}</td>
-                    <td>{{ request.vehicle_number }}</td>
+                    <td>{{ request.vehicle }}</td>
                     <td>{{ request.services }}</td>
                     <td>{{ request.description }}</td>
                     <td>{{ request.request_date }}</td>
@@ -206,14 +237,14 @@
                     <td>{% if request.driver %}{{ request.driver.fullname }}{% else %} Not assigned {% endif %}</td>
 
                     <td>
-                        <a href="#" class="edit-btn">Edit</a>
+                        {% comment %} <a href="#" class="edit-btn">Edit</a> {% endcomment %}
                         <a href="{% url 'delete_request' request.id %}" class="delete-btn">Delete</a>
                         <button class="assign-btn" onclick="showPopup('{{ request.id }}')">Assign Driver</button>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7">No maintenance bookings found.</td>
+                    <td colspan="8">No maintenance bookings found.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -240,7 +271,6 @@
             </select>
             <button type="submit">Assign Driver</button>
         </form>
-        
     </div>
 
     <script>
@@ -249,32 +279,31 @@
             document.getElementById('popupOverlay').style.display = 'block';
             document.getElementById('assignDriverPopup').style.display = 'block';
         }
-    
+
         function closePopup() {
             document.getElementById('popupOverlay').style.display = 'none';
             document.getElementById('assignDriverPopup').style.display = 'none';
         }
-    
+
         document.getElementById('assignDriverForm').addEventListener('submit', function (event) {
             event.preventDefault();
-        
+
             const bookingId = document.getElementById('bookingId').value;
             const driverId = document.getElementById('driver').value;
-        
+
             if (!driverId) {
                 alert('Please select a driver.');
                 return;
             }
-    
+
             // Get the base Django URL and replace the placeholders
             let form = document.getElementById('assignDriverForm');
             let baseUrl = form.getAttribute('action'); 
             let updatedUrl = baseUrl.replace('/0/0/', `/${bookingId}/${driverId}/`);
-    
+
             form.action = updatedUrl;  // Update the form action dynamically
             form.submit();  // Submit the form
         });
     </script>
-    
 </body>
 </html>
