@@ -57,8 +57,17 @@
           <label for="washing">Washing</label>
         </div>
             <br>
-                <label for="description">Description (Optional):</label>
-                <textarea id="description" name="description" placeholder="Add additional details (if any)" rows="4"></textarea>
+
+                <!-- New Dropdown for Monthly Options -->
+                <label for="monthly-options">Monthly Plan:</label>
+                <select id="monthly-options" name="monthly_plan">
+                    <option value="" disabled selected>Select a plan</option>
+                    <option value="one_year">Monthly for One Year</option>
+                    <option value="six_months">Monthly for Six Months</option>
+                </select>
+
+                <label for="description">Address:</label>
+                <textarea id="description" name="description" placeholder="Add your located address" rows="4"></textarea>
 
                 <label for="request-date">Preferred Date:</label>
                 <input type="date" id="request-date" name="request_date" required>

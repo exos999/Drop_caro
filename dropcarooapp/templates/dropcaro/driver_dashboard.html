@@ -113,10 +113,16 @@
             color: #666;
         }
 
-        .notification-icon {
+        .notification-container {
             position: absolute;
             top: 20px;
             right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification-icon {
             font-size: 1.5rem;
             color: red;
             cursor: pointer;
@@ -124,6 +130,29 @@
 
         .notification-icon:hover {
             color: #900;
+        }
+
+        .status-button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: green;
+            color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .status-button:hover {
+            background-color: darkgreen;
+        }
+
+        .status-button.free {
+            background-color: gray;
+        }
+
+        .status-button.free:hover {
+            background-color: darkgray;
         }
     </style>
 </head>
@@ -142,8 +171,12 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Notification Icon -->
-            <a href="{% url 'driver_notification' %}" class="fas fa-bell notification-icon" title="Notifications"></a>
+            <div class="notification-container">
+                <!-- Notification Icon -->
+                <a href="{% url 'driver_notification' %}" class="fas fa-bell notification-icon" title="Notifications"></a>
+                <!-- Status Button -->
+                <button class="status-button" id="statusButton" title="Toggle Status">On Duty</button>
+            </div>
 
             <h1>Welcome, {{ user }}!</h1>
             <div class="dashboard-grid">
@@ -180,5 +213,15 @@
             </footer>
         </div>
     </div>
+
+    <script>
+        const statusButton = document.getElementById('statusButton');
+
+        statusButton.addEventListener('click', () => {
+            const isOnDuty = statusButton.textContent === 'On Duty';
+            statusButton.textContent = isOnDuty ? 'Free' : 'On Duty';
+            statusButton.classList.toggle('free', isOnDuty);
+        });
+    </script>
 </body>
 </html>

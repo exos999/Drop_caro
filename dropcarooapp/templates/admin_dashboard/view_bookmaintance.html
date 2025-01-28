@@ -218,8 +218,10 @@
                     <th>Full Name</th>
                     <th>Vehicle Number</th>
                     <th>Services</th>
-                    <th>Description</th>
+                   
+                    <th>Address</th>
                     <th>Preferred Date</th>
+                    <th>Monthly plan</th>
                     <th>Preferred Time</th>
                     <th>Assigned Driver</th>
                     <th>Action</th>
@@ -233,7 +235,9 @@
                     <td>{{ request.services }}</td>
                     <td>{{ request.description }}</td>
                     <td>{{ request.request_date }}</td>
+                    <td>{{ request.monthly_plan }}</td>
                     <td>{{ request.request_time }}</td>
+                   
                     <td>{% if request.driver %}{{ request.driver.fullname }}{% else %} Not assigned {% endif %}</td>
 
                     <td>

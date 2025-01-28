@@ -24,10 +24,11 @@ class VehicleRegistrationForm(forms.ModelForm):
         fields = ['vehicle_number', 'vehicle_model', 'contact']
 
 
+
 class MaintenanceRequestForm(forms.ModelForm):
     class Meta:
         model = MaintenanceRequest
-        fields = ['full_name', 'services', 'description', 'request_date', 'request_time']
+        fields = ['full_name', 'vehicle', 'services', 'monthly_plan', 'description', 'request_date', 'request_time']
         widgets = {
             'services': forms.CheckboxSelectMultiple(choices=[
                 ('fuelRefill', 'Fuel Refill'),
@@ -35,8 +36,13 @@ class MaintenanceRequestForm(forms.ModelForm):
                 ('engineStart', 'Engine Start'),
                 ('washing', 'Washing'),
             ]),
+            'monthly_plan': forms.Select(choices=[
+                ('one_year', 'Monthly for One Year'),
+                ('six_months', 'Monthly for Six Months')
+            ]),
             'description': forms.Textarea(attrs={'rows': 4}),
         }
+
 
 
 class DriverBookingForm(forms.ModelForm):

@@ -408,26 +408,22 @@ def driver_notification(request):
     return render(request, 'dropcaro/driver_notification.html',{"notifications":notifications})
 
 
-# def update_delivery_status(request, delivery_id):
-#     """
-#     Update delivery status to 'Delivered' and send a notification to the user.
-#     """
-#     if request.method == "POST":
-#         # Fetch the delivery object
-#         delivery = get_object_or_404(Delivery, id=delivery_id)
-
-#         # Update the status to 'Delivered'
-#         delivery.status = "Delivered"
-#         delivery.save()
-
-#         # Send a notification to the user
-#         if delivery.user:  # Assuming the Delivery model has a ForeignKey to the User model
-#             Notification.objects.create(
-#                 user=delivery.user,
-#                 title="Delivery Successful",
-#                 message=f"Your delivery with ID {delivery.id} has been successfully delivered."
-#             )
-#     return redirect('view_works')
+def update_status(request):
+    if request.method == "POST":
+        # Create a notification
+        try:
+            Notification.objects.create(
+               user=request.user.username,  # The user who made the booking
+               title="Vehicle Delivery Sucessfully",
+               message="Maintance Booking Request Sent",
+               customer=request.user.username
+             )
+            print(f"Notification created: {notification}")  # Debug log
+        except Exception as e:
+            print(f"Error creating notification: {e}")  # Debug log for errors
+        return redirect('view_work')  # Redirect to the bookings page
+    else:
+        return redirect('view_work')  # Handle non-POST requests
 
 
 # admin_dashboard_view

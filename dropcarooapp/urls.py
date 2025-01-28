@@ -53,7 +53,7 @@ urlpatterns = [
     path('my_maintance/', views.my_maintance, name='my_maintance'),
     path('edit_driver/', views.edit_driver, name='edit_driver'),
     path('driver_notification/', views.driver_notification, name='driver_notification'),
-    # path('update_delivery_status/<int:delivery_id>/', views.update_delivery_status, name='update_delivery_status'),
+    path('update_status/', views.update_status, name='update_status'),
 
 
      
@@ -67,7 +67,7 @@ urlpatterns = [
     path('delete_driver/<int:driver_id>/', views.delete_driver, name='delete_driver'),  # Change deactivate to delete
     path('delete_vehicle/<int:vehicle_id>/', views.delete_vehicle, name='delete_vehicle'),
     path('delete_booking/<int:booking_id>/', views.delete_booking, name='delete_booking'),
-    path('delete-request/<int:request_id>/', views.delete_request, name='delete_request'),
+    path('delete_request/<int:request_id>/', views.delete_request, name='delete_request'),
 
     path('view_bookdriver/', views.view_bookdriver, name='view_bookdriver'),
     path('view_bookmaintance/', views.view_bookmaintance, name='view_bookmaintance'),

@@ -138,7 +138,7 @@
                     <td>{{ booking.key_point }}</td>
                     <td class="action-buttons">
                         <a href="{% url 'view_vehicle' %}"><button>View Vehicle</button></a>
-                        <a href="#"><button>Update Status</button></a>
+                        <a href="{% url 'update_status' %}"  class="delete-btn" style="padding: 5px 10px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px;">Update Status</a>
                         <a href="{% url 'share_location_view' booking.id %}"><button>Share Location</button></a>
                     </td>
                 </tr>
