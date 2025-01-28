@@ -476,23 +476,35 @@ def delete_vehicle(request, vehicle_id):
     messages.success(request, f"Vehicle '{vehicle.vehicle_number}' deleted successfully.")
     return redirect('vehicle_details')  # Adjust 'manage_vehicles' to match your URL name
 
+
 def delete_booking(request, booking_id):
     booking = get_object_or_404(DriverBooking, id=booking_id)
     booking.delete()
     messages.success(request, f"Booking with ID '{booking.id}' deleted successfully.")
     return redirect('view_bookdriver')  # Adjust 'manage_bookings' to your URL name
 
+
 def delete_request(request, request_id):
     user_request = get_object_or_404(MaintenanceRequest, id=request_id)
     user_request.delete()
     messages.success(request, f"Request with ID '{user_request.id}' deleted successfully.")
-    return redirect('view_bookmaintance')  # Adjust 'manage_requests' to match your URL name
+    return redirect('view_bookmaintance') 
+
 
 def view_bookmaintance(request):
     bookmaintance=MaintenanceRequest.objects.all()
     drivers=DriverDetails.objects.all()
-    
+    vehicle_number=request.GET.get('vehicle_number')
+    if vehicle_number:
+        bookmaintance=bookmaintance.filter(vehicle__vehicle_number__icontains=vehicle_number)
     return render(request, 'admin_dashboard/view_bookmaintance.html',{"bookmaintance":bookmaintance,'drivers':drivers})
+
+
+def maintainance_history(request,vehicle_id):
+    bookmaintance=MaintenanceRequest.objects.filter(vehicle__id=vehicle_id)
+    print(bookmaintance,'test')
+    return render(request, 'maintainance_history.html',{"bookmaintance":bookmaintance})
+
 
 def payment_view(request):
     viewpay=Payment.objects.all()

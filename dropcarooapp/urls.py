@@ -93,4 +93,5 @@ urlpatterns = [
 
     path('get_live_location/<int:task_id>/', views.get_live_location, name='get_live_location'),
     path('view_live_location/<int:task_id>/', views.view_live_location, name='view_live_location'),
+    path('maintainance_history/<int:vehicle_id>/', views.maintainance_history, name='maintainance_history'),
 ] 

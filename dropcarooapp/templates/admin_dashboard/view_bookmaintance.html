@@ -196,6 +196,19 @@
         .assign-btn {
             background-color: #28a745;
         }
+
+        .view-all-btn {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .view-all-btn:hover {
+            background-color: #138496;
+        }
     </style>
 </head>
 <body>
@@ -204,21 +217,21 @@
             <span style="font-weight: bold; font-size: 1.2em;">Dropcaro</span>
         </div>
         <div class="search-container">
-            <form method="get" action="{% url 'view_bookmaintance' %}">
-                <input type="text" name="vehicle_number" placeholder="Search by Vehicle Number" required>
-                <button type="submit">Search</button>
-            </form>
+            <div class="search-container">
+                <input type="text" id="vehicle_number" placeholder="Search by Vehicle Number" required>
+                <button type="button" onclick="searchVehicle()">Search</button>
+            </div>
         </div>
     </header>
     <main>
         <h1>Maintenance Requests</h1>
+        <button class="view-all-btn" onclick="window.location.href='{% url 'view_bookmaintance' %}'">View All Maintenance</button>
         <table>
             <thead>
                 <tr>
                     <th>Full Name</th>
                     <th>Vehicle Number</th>
                     <th>Services</th>
-                   
                     <th>Address</th>
                     <th>Preferred Date</th>
                     <th>Monthly plan</th>
@@ -231,24 +244,19 @@
                 {% for request in bookmaintance %}
                 <tr>
                     <td>{{ request.full_name }}</td>
-                    <td>{{ request.vehicle }}</td>
+                    <td>{{ request.vehicle.vehicle_number }}</td>
                     <td>{{ request.services }}</td>
                     <td>{{ request.description }}</td>
                     <td>{{ request.request_date }}</td>
                     <td>{{ request.monthly_plan }}</td>
                     <td>{{ request.request_time }}</td>
-                   
                     <td>{% if request.driver %}{{ request.driver.fullname }}{% else %} Not assigned {% endif %}</td>
-
                     <td>
-                        {% comment %} <a href="#" class="edit-btn">Edit</a> {% endcomment %}
                         <a href="{% url 'delete_request' request.id %}" class="delete-btn">Delete</a>
                         <button class="assign-btn" onclick="showPopup('{{ request.id }}')">Assign Driver</button>
+                        <a class="edit-btn" href="{% url 'maintainance_history' request.vehicle.id %}">Show History</a>
+
                     </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="8">No maintenance bookings found.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -308,6 +316,13 @@
             form.action = updatedUrl;  // Update the form action dynamically
             form.submit();  // Submit the form
         });
+    </script>
+    <script>
+        function searchVehicle() {
+            const vehicleNumber = document.getElementById('vehicle_number').value;
+            const url = "{% url 'view_bookmaintance' %}?vehicle_number=" + encodeURIComponent(vehicleNumber);
+            window.location.href = url;
+        }
     </script>
 </body>
 </html>
