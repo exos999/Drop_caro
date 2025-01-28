@@ -12,7 +12,6 @@
             padding: 0;
             background-color: #f4f4f4;
         }
-
         header {
             background-color: #000;
             color: #fff;
@@ -21,29 +20,24 @@
             justify-content: space-between;
             align-items: center;
         }
-
         header a {
             color: #fff;
             text-decoration: none;
             margin-left: 20px;
         }
-
         header a:hover {
             text-decoration: underline;
         }
-
         .search-container {
             display: flex;
             align-items: center;
         }
-
         .search-container input[type="text"] {
             padding: 5px;
             margin-right: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
-
         .search-container button {
             padding: 5px 10px;
             background-color: #007bff;
@@ -52,42 +46,34 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         .search-container button:hover {
             background-color: #0056b3;
         }
-
         main {
             padding: 20px;
         }
-
         h1 {
             text-align: center;
             color: #333;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
             background-color: #fff;
         }
-
         table th, table td {
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
         }
-
         table th {
             background-color: #000;
             color: #fff;
         }
-
         table tr:nth-child(even) {
             background-color: #f8f8f8;
         }
-
         .footer {
             text-align: center;
             padding: 10px;
@@ -110,7 +96,6 @@
             border-radius: 10px;
             z-index: 1000;
         }
-
         .popup-header {
             font-size: 20px;
             margin-bottom: 15px;
@@ -118,18 +103,15 @@
             color: #333;
             text-align: center;
         }
-
         .popup-close {
             float: right;
             cursor: pointer;
             font-size: 18px;
             color: #888;
         }
-
         .popup-close:hover {
             color: #333;
         }
-
         .popup-overlay {
             display: none;
             position: fixed;
@@ -140,18 +122,15 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
-
         .popup form {
             display: flex;
             flex-direction: column;
         }
-
         .popup form label {
             margin-bottom: 10px;
             font-weight: bold;
             color: #555;
         }
-
         .popup form select,
         .popup form button {
             padding: 10px;
@@ -159,12 +138,10 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
-
         .popup form select {
             width: 100%;
             background-color: #f9f9f9;
         }
-
         .popup form button {
             background-color: #28a745;
             color: white;
@@ -172,11 +149,9 @@
             cursor: pointer;
             font-size: 16px;
         }
-
         .popup form button:hover {
             background-color: #218838;
         }
-
         .edit-btn, .delete-btn, .assign-btn {
             padding: 5px 10px;
             color: white;
@@ -184,19 +159,15 @@
             border-radius: 5px;
             margin-right: 5px;
         }
-
         .edit-btn {
             background-color: #007bff;
         }
-
         .delete-btn {
             background-color: #dc3545;
         }
-
         .assign-btn {
             background-color: #28a745;
         }
-
         .view-all-btn {
             background-color: #17a2b8;
             color: white;
@@ -205,7 +176,6 @@
             padding: 10px 15px;
             cursor: pointer;
         }
-
         .view-all-btn:hover {
             background-color: #138496;
         }
@@ -217,10 +187,8 @@
             <span style="font-weight: bold; font-size: 1.2em;">Dropcaro</span>
         </div>
         <div class="search-container">
-            <div class="search-container">
-                <input type="text" id="vehicle_number" placeholder="Search by Vehicle Number" required>
-                <button type="button" onclick="searchVehicle()">Search</button>
-            </div>
+            <input type="text" id="vehicle_number" placeholder="Search by Vehicle Number" required>
+            <button type="button" onclick="searchVehicle()">Search</button>
         </div>
     </header>
     <main>
@@ -234,7 +202,7 @@
                     <th>Services</th>
                     <th>Address</th>
                     <th>Preferred Date</th>
-                    <th>Monthly plan</th>
+                    <th>Monthly Plan</th>
                     <th>Preferred Time</th>
                     <th>Assigned Driver</th>
                     <th>Action</th>
@@ -255,7 +223,6 @@
                         <a href="{% url 'delete_request' request.id %}" class="delete-btn">Delete</a>
                         <button class="assign-btn" onclick="showPopup('{{ request.id }}')">Assign Driver</button>
                         <a class="edit-btn" href="{% url 'maintainance_history' request.vehicle.id %}">Show History</a>
-
                     </td>
                 </tr>
                 {% endfor %}
@@ -263,22 +230,18 @@
         </table>
     </main>
 
-    <!-- Popup Overlay -->
+    <!-- Popup -->
     <div class="popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
-
-    <!-- Popup for assigning driver -->
     <div class="popup" id="assignDriverPopup">
         <span class="popup-close" onclick="closePopup()">&times;</span>
         <div class="popup-header">Assign Driver</div>
-        <form method="post" id="assignDriverForm" action="{% url 'admin_assign_maintanance' 0 0 %}">
+        <form method="post" id="assignDriverForm">
             {% csrf_token %}
             <input type="hidden" id="bookingId" name="booking_id">
             <label for="driver">Select Driver:</label>
-            <select id="driver" name="driver_id" required>
+            <select id="driver_for" name="driver_id" required>
                 {% for driver in drivers %}
                 <option value="{{ driver.id }}">{{ driver.fullname }}</option>
-                {% empty %}
-                <option value="">No drivers available</option>
                 {% endfor %}
             </select>
             <button type="submit">Assign Driver</button>
@@ -292,37 +255,27 @@
             document.getElementById('assignDriverPopup').style.display = 'block';
         }
 
-        function closePopup() {
-            document.getElementById('popupOverlay').style.display = 'none';
-            document.getElementById('assignDriverPopup').style.display = 'none';
+        function searchVehicle() {
+            var vehicleNumber = document.getElementById('vehicle_number').value;
+            window.location.href = "{% url 'view_bookmaintance' %}?vehicle_number=" + vehicleNumber;
         }
 
-        document.getElementById('assignDriverForm').addEventListener('submit', function (event) {
-            event.preventDefault();
+        document.getElementById('assignDriverForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-            const bookingId = document.getElementById('bookingId').value;
-            const driverId = document.getElementById('driver').value;
-
+            var bookingId = document.getElementById('bookingId').value;
+            var driverId = document.getElementById('driver_for').value;
+            
             if (!driverId) {
-                alert('Please select a driver.');
+                alert('Please select a driver');
                 return;
             }
 
-            // Get the base Django URL and replace the placeholders
-            let form = document.getElementById('assignDriverForm');
-            let baseUrl = form.getAttribute('action'); 
-            let updatedUrl = baseUrl.replace('/0/0/', `/${bookingId}/${driverId}/`);
+            // Update the action URL dynamically
+            this.action = `{% url 'admin_assign_maintanance' 123 456 %}`.replace('123', bookingId).replace('456', driverId);
 
-            form.action = updatedUrl;  // Update the form action dynamically
-            form.submit();  // Submit the form
+            this.submit(); 
         });
-    </script>
-    <script>
-        function searchVehicle() {
-            const vehicleNumber = document.getElementById('vehicle_number').value;
-            const url = "{% url 'view_bookmaintance' %}?vehicle_number=" + encodeURIComponent(vehicleNumber);
-            window.location.href = url;
-        }
     </script>
 </body>
 </html>

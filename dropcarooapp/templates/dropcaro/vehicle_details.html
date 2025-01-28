@@ -93,7 +93,7 @@
                 {% for vehicle in vehicles %}
                 <tr>
                     <td>{{ vehicle.vehicle_number }}</td>
-                    <td>{{ vehicle.owner }}</td>
+                    <td>{{ vehicle.owner.user.username }}</td>
                     <td>{{ vehicle.vehicle_model }}</td>
                     <td>{{ vehicle.contact }}</td>
                     <td>

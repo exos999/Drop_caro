@@ -445,7 +445,6 @@ def vehicle_details(request):
 
 def view_bookdriver(request):
     bookdriver=DriverBooking.objects.all()
-    
     return render(request, 'admin_dashboard/view_bookdriver.html',{"bookdriver":bookdriver})
 
 from django.db import transaction
@@ -457,11 +456,13 @@ def delete_user(request, user_id):
         messages.success(request, f"User '{user.username}' deleted successfully.")
     return redirect('manage_users')
 
+
 def delete_driver(request, driver_id):
     driver = get_object_or_404(User, id=driver_id)
     driver.delete()
     messages.success(request, f"User '{driver.username}' deleted successfully.")
     return redirect('manage_driver')
+
 
 def delete_payment(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
@@ -481,7 +482,7 @@ def delete_booking(request, booking_id):
     booking = get_object_or_404(DriverBooking, id=booking_id)
     booking.delete()
     messages.success(request, f"Booking with ID '{booking.id}' deleted successfully.")
-    return redirect('view_bookdriver')  # Adjust 'manage_bookings' to your URL name
+    return redirect('view_bookdriver')  
 
 
 def delete_request(request, request_id):
@@ -509,6 +510,7 @@ def maintainance_history(request,vehicle_id):
 def payment_view(request):
     viewpay=Payment.objects.all()
     return render(request, 'admin_dashboard/payment_view.html',{"viewpay":viewpay})
+
 
 def notification(request):
     notifications=Notification.objects.filter(user=request.user)
@@ -553,14 +555,14 @@ def admin_assign_maintanance(request,driver_id,booking_id):
     if request.method=='POST':
         driver=get_object_or_404(DriverDetails,id=driver_id)
         booking=get_object_or_404(MaintenanceRequest,id=booking_id)
-        print(driver,booking,'kjfklafj')
         booking.driver=driver
+        print(driver_id,booking,'kdjsf')
         booking.save()
         Notification.objects.create(
-        user=booking.vehicle.owner.user,  # Assuming `booking.vehicle.owner.user` is the customer
+        user=booking.driver.user,
         title="Maintenance Request Update",
         message="A driver has been assigned to your request.",
-        customer=None  # You can adjust this field if needed
+        customer=booking.vehicle.owner.user
     )
         Notification.objects.create(
          user=driver.user,
