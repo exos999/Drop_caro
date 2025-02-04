@@ -107,7 +107,7 @@ def driver_view(request):
             print(e)
             return redirect('driver_reg')
         
-        driver_form=DriverDetailsForm(data)
+        driver_form=DriverDetailsForm(data,request.FILES)
         if driver_form.is_valid():
             driver_details=driver_form.save(commit=False)
             print("driver") 
@@ -135,7 +135,11 @@ def user_dashboard_view(request):
 
 @login_required
 def driver_dashboard_view(request):
-    return render(request,'dropcaro/driver_dashboard.html')
+    driver=request.user.driverdetails
+    booking_count=DriverBooking.objects.filter(driver=driver).count()
+    maintance_count=MaintenanceRequest.objects.filter(driver=driver).count()
+    total_count=booking_count+maintance_count
+    return render(request,'dropcaro/driver_dashboard.html',{"booking_count":booking_count,"maintance_count":maintance_count,"total_count":total_count})
 
 
 @login_required
@@ -207,6 +211,11 @@ def driverview(request):
     drivers=DriverDetails.objects.all()
     return render(request, 'user_dashboard/driverview.html',{"drivers":drivers})
 
+def driver_status_update(request):
+    driver=request.user.driverdetails
+    driver.is_free=not driver.is_free
+    driver.save()
+    return redirect('driver_dashboard')
 
 # MaintenanceRequest view
 
@@ -329,8 +338,12 @@ def update_location(request):
 def get_live_location(request, task_id):
     task = get_object_or_404(DriverBooking, id=task_id)
     location = Location.objects.filter(task=task).first()
+    if not location:
+        return HttpResponse('Location not shared yet', status=404)
+    lat=location.latitude
+    lon=location.longitude
     print(task,location)
-    return render(request,'view_livelocation.html',{"latitude": location.latitude, "longitude": location.longitude,"task_id":task_id})
+    return render(request,'view_livelocation.html',{"latitude": lat, "longitude": lon,"task_id":task_id})
 
 import random
 def view_live_location(request,task_id):

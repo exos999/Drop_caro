@@ -127,7 +127,7 @@
                 <strong>City: {{ item.city }}</strong>
                 <strong>Photo: {{ item.photo }}</strong>
                 <div class="status {% if item.status == 'free' %}free{% else %}onwork{% endif %}">
-                    Status: {{ item.status }}
+                    Status: {% if item.is_free %} Free {% else %} On Duty {% endif %}
                 </div>
                 <a href="{% url 'book_driver' %}?driver_id={{ item.id }}&status={{ item.status }}">
                     <button {% if item.status == 'onwork' %}disabled{% endif %}>Book Driver</button>

@@ -83,6 +83,7 @@ urlpatterns = [
     path('noty/', views.noty, name='noty'),
     path('add_user/', views.add_user, name='add_user'),
     path('feedback-list/', views.feedback_list, name='feedback_list'),
+    path('driver_status_update/', views.driver_status_update, name='driver_status_update'),
     
     
     # payment
