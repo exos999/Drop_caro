@@ -5,107 +5,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrator Dashboard</title>
+
+    <!-- Add FontAwesome CDN here -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
+            color: #333;
         }
         .dashboard-container {
             display: flex;
             height: 100vh;
+            flex-direction: row;
         }
         .sidebar {
             width: 250px;
-            background-color: #333;
-            color: white;
+            background-color: #000; /* Black sidebar */
+            color: white; /* White text */
             padding: 20px;
-            display: flex;
             border-radius: 20px;
-            margin-bottom: 10px;
-            margin-top: 50px;
-            margin-left: 10px;
+            margin: 20px;
             flex-direction: column;
+            display: flex;
             justify-content: space-between;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
         }
         .sidebar h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem; /* Keep "Admin Dashboard" text as is */
             margin-bottom: 20px;
+            font-weight: bold;
+            color: white; /* White text for heading */
         }
         .sidebar ul {
             list-style: none;
             padding: 0;
         }
         .sidebar ul li {
-            margin: 15px 0;
+            margin: 12px 0; /* Reduced margin */
         }
         .sidebar ul li a {
             text-decoration: none;
-            color: white;
-            font-size: 1rem;
+            color: white; /* White text for links */
+            font-size: 0.9rem; /* Reduced font size for links */
+            transition: color 0.3s ease;
         }
         .sidebar ul li a:hover {
-            text-decoration: underline;
+            color: #ff8c00; /* Highlight color on hover */
         }
         .main-content {
             flex: 1;
-            padding: 20px;
+            padding: 20px; /* Reduced padding */
             background-color: #fff;
             position: relative;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
+            margin-bottom: 20px;
         }
         .main-content h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: 2rem; /* Reduced font size */
+            margin-bottom: 20px; /* Reduced margin */
+            font-weight: 600;
         }
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px; /* Reduced gap */
         }
         .dashboard-card {
-            background-color: #f9f9f9;
+            background-color: #000; /* Black background for cards */
+            color: white; /* White text for cards */
             border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px; /* Reduced padding */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+        .dashboard-card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         .dashboard-card h2 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.2rem; /* Reduced font size */
+            margin-bottom: 10px; /* Reduced margin */
+            color: white; /* White text for headings */
         }
         .dashboard-card p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-        .dashboard-card button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #333;
-            color: white;
-            cursor: pointer;
-        }
-        .dashboard-card button:hover {
-            background-color: #555;
+            color: #ccc; /* Light gray for paragraph text */
+            margin-bottom: 10px; /* Reduced margin */
         }
         footer {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 20px; /* Reduced margin */
+            font-size: 0.9rem; /* Reduced font size */
             color: #666;
         }
         .notification-bell {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px; /* Reduced top margin */
+            right: 15px; /* Reduced right margin */
             cursor: pointer;
         }
         .notification-bell img {
-            width: 30px;
-            height: 30px;
+            width: 25px; /* Reduced icon size */
+            height: 25px;
         }
         .h1 {
             margin-left: 80px;
         }
+
+        /* Dropdowns */
+        .dropdown {
+            margin-bottom: 15px; /* Reduced margin */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 5px;
+        }
+        .dropdown button {
+            width: 100%;
+            background: none;
+            border: none;
+            color: white; /* White text for dropdown buttons */
+            font-size: 1rem; /* Slightly reduced font size */
+            text-align: left;
+            padding: 10px; /* Reduced padding */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px; /* Reduced gap */
+            transition: background 0.3s ease;
+            border-radius: 8px;
+        }
+        .dropdown button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .dropdown-content {
+            display: none;
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .dropdown-content a {
+            color: #ccc; /* Light gray text for dropdown links */
+            text-decoration: none;
+            display: block;
+            padding: 6px 0; /* Reduced padding */
+            font-size: 0.9rem; /* Reduced font size */
+            transition: color 0.3s ease;
+        }
+        .dropdown-content a:hover {
+            color: white; /* White text on hover */
+        }
+
     </style>
 </head>
 <body>
@@ -114,6 +165,53 @@
         <div class="sidebar">
             <div>
                 <h2>Admin Dashboard</h2>
+                <div class="dropdown">
+                    <button onclick="toggleDropdown('userManagement')">
+                        <i class="fas fa-users"></i> User Management
+                    </button>
+                    <div class="dropdown-content" id="userManagement">
+                        <a href="{% url 'manage_users' %}">Manage Users</a>
+                        <a href="{% url 'manage_drivers' %}">Manage Drivers</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button onclick="toggleDropdown('serviceMonitoring')">
+                        <i class="fas fa-tools"></i> Service Monitoring
+                    </button>
+                    <div class="dropdown-content" id="serviceMonitoring">
+                        <a href="{% url 'vehicle_details' %}">Vehicle Details</a>
+                        <a href="{% url 'view_bookdriver' %}">Driver Booked</a>
+                        <a href="{% url 'view_bookmaintance' %}">Maintenance Booked</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button onclick="toggleDropdown('notifications')">
+                        <i class="fas fa-bell"></i> Notifications
+                    </button>
+                    <div class="dropdown-content" id="notifications">
+                        <a href="{% url 'notification' %}">View Notifications</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button onclick="toggleDropdown('paymentManagement')">
+                        <i class="fas fa-credit-card"></i> Payment Management
+                    </button>
+                    <div class="dropdown-content" id="paymentManagement">
+                        <a href="{% url 'payment_view' %}">Manage Payments</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button onclick="toggleDropdown('feedbacks')">
+                        <i class="fas fa-comments"></i> Feedbacks
+                    </button>
+                    <div class="dropdown-content" id="feedbacks">
+                        <a href="{% url 'feedback_list' %}">View Feedbacks</a>
+                    </div>
+                </div>
             </div>
             <div class="h1">
                 <br>
@@ -125,61 +223,53 @@
         <div class="main-content">
             <!-- Notification Bell -->
             <div class="notification-bell">
-                <a href="{% url 'notification' %}">
+                <a href="{% url 'noty' %}">
                     <img src="{% static 'images/bell.png' %}" alt="Notifications">
                 </a>
             </div>
 
             <h1>Welcome, Administrator</h1>
+
+            <!-- Site Activity Reports -->
             <div class="dashboard-grid">
-                <!-- User Management -->
-                <div class="dashboard-card" id="user-management">
-                    <h2>User Management</h2>
-                    <p>Manage traveler and driver profiles, service history, and issues.</p>
-                    <button><a style="text-decoration: none;color:white" href="{% url 'manage_users' %}">Manage Users</a></button>
-                    <button><a style="text-decoration: none;color:white" href="{% url 'manage_drivers' %}">Manage Driver</a></button>
+                <!-- First card with Total Users and Total Drivers -->
+                <div class="dashboard-card">
+                    <h2>User & Driver Count</h2>
+                    <p><strong>Total Users:</strong> 320</p>
+                    <p><strong>Total Drivers:</strong> 150</p>
                 </div>
 
-                <!-- Service Request Monitoring -->
-                <div class="dashboard-card" id="service-monitoring">
-                    <h2>Service Monitoring</h2>
-                    <p>View all ongoing and pending service requests.</p>
-                    <a style="color: white;" href="{% url 'vehicle_details' %}"><button>Vehicle Details</button></a>
-                    <a style="color: white;" href="{% url 'view_bookdriver' %}"><button>Driver Booked</button></a>
-                    <a style="color: white;" href="{% url 'view_bookmaintance' %}"><button>Maintenance Booked</button></a>
+                <!-- Services card with Driver and Maintenance booked count -->
+                <div class="dashboard-card">
+                    <h2>Services</h2>
+                    <p><strong>Driver Booked Count:</strong> 80</p>
+                    <p><strong>Maintenance Booked Count:</strong> 40</p>
                 </div>
 
-                <!-- Analytics & Reports -->
-                <div class="dashboard-card" id="analytics-reports">
-                    <h2>Analytics & Reports</h2>
-                    <p>Track system performance and revenue statistics.</p>
-                    <button>View Reports</button>
-                </div>
-
-                <!-- Notifications -->
-                <div class="dashboard-card" id="notifications">
-                    <h2>Notifications & Alerts</h2>
-                    <p>Receive alerts for issues, delays, or complaints.</p>
-                    <a href="{% url 'notification' %}"><button>View Notifications</button></a>
-                </div>
-
-                <!-- Payment Management -->
-                <div class="dashboard-card" id="payment-management">
-                    <h2>Payment Management</h2>
-                    <p>Track all transactions and resolve disputes or refunds.</p>
-                    <a href="{% url 'payment_view' %}"><button>Manage Payments</button></a>
-                </div>
-                   <!-- Payment Management -->
-                   <div class="dashboard-card" id="payment-management">
-                    <h2>Feedbacks</h2>
-                    <p>Feedback raised by users</p>
-                    <a href="{% url 'feedback_list' %}"><button>View Feedbacks</button></a>
+                <div class="dashboard-card">
+                    <h2>Recent Activities</h2>
+                    {% comment %} {% for notification in notifications %}
+                    <p>{{ notification.title }}</p>
+                    {% endfor %} {% endcomment %}
                 </div>
             </div>
+
             <footer>
                 &copy; 2025 Admin Dashboard
             </footer>
         </div>
     </div>
+
+    <script>
+        function toggleDropdown(id) {
+            var content = document.getElementById(id);
+            
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        }
+    </script>
 </body>
 </html>

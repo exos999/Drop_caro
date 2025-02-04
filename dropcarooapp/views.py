@@ -139,8 +139,9 @@ def driver_dashboard_view(request):
 
 
 @login_required
-def admin_dashboard_view(request):
-    return render(request,'dropcaro/admin_dashboard.html')
+def admin_dashboard_view(request):  
+    notifications=Notification.objects.filter(user=request.user)
+    return render(request,'dropcaro/admin_dashboard.html',{"notifications":notifications})
 
 
 def list_my_vehicles(request):
@@ -511,6 +512,9 @@ def notification(request):
     return render(request, 'admin_dashboard/notification.html',{"notifications":notifications})
 
 
+def noty(request):
+    notifications=Notification.objects.filter(user=request.user)
+    return render(request, 'admin_dashboard/noty.html',{"notifications":notifications})
 
 # payment
 from django.shortcuts import get_object_or_404
