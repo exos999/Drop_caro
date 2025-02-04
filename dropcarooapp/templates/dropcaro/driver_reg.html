@@ -95,7 +95,7 @@
 <body>
   <div class="container">
     <h1>Driver Registration</h1>
-    <form id="driverRegistrationForm" method="post" action="{% url 'driver_reg' %}" onsubmit="return validateForm()">
+    <form id="driverRegistrationForm" method="post" enctype="multipart/form-data" action="{% url 'driver_reg' %}" onsubmit="return validateForm()">
       {% csrf_token %}
 
       <label for="full_name">Full Name:</label>
@@ -123,7 +123,7 @@
       <span id="licenseErrorMessage" class="error"></span>
 
       <label for="uploadPhoto">Upload Driver Photo:</label>
-      <input type="file" id="uploadPhoto" name="Photo" accept="image/*" required>
+      <input type="file" id="uploadPhoto" name="photo" accept="image/*" required>
       <span id="photoErrorMessage" class="error"></span>
 
       <label for="dob">Date of Birth:</label>

@@ -98,6 +98,23 @@
             background-color: gray;
         }
 
+        .profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden; /* Ensures no part of the image leaks outside */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image fills the circle properly */
+}
+
+
         button {
             background-color: black;
             color: white;
@@ -126,14 +143,16 @@
             <h2>Driver Dashboard</h2>
             <div class="profile-container">
                 <div class="profile-pic">
-                    <img src="{{ driver.photo.url }}" alt="User Profile Picture">
+                    {% if user.driverdetails.photo %}
+                    <img src="{{ user.driverdetails.photo.url }}" alt="">
+                    {% endif %}
                 </div>
                 <a href="{% url 'edit_driver' %}"><button>Edit Profile</button></a>
             </div>
             <div class="summary-container">
-                <p>Total Works Done:18 {{ total_works }}</p>
-                <p>Driver Booked: 12{{ driver_booked }}</p>
-                <p>Maintenance Booked:6 {{ maintenance_booked }}</p>
+                <p>Total Works Done:  {{ total_count }}</p>
+                <p>Driver Booked:  {{ booking_count }}</p>
+                <p>Maintenance Booked: {{ maintance_count }}</p>
             </div>
             <a href="{% url 'logout' %}"><button>Log Out</button></a>
         </div>
@@ -142,7 +161,7 @@
         <div class="main-content">
             <div class="notification-container">
                 <a href="{% url 'driver_notification' %}" class="fas fa-bell notification-icon" title="Notifications"></a>
-                <button class="status-button" id="statusButton" title="Toggle Status">On Duty</button>
+               <a href="{% url 'driver_status_update' %}"><button class="status-button" >{% if user.driverdetails.is_free %}Free {% else %}On Duty {% endif %}</button></a> 
             </div>
 
             <h1>Welcome, {{ user }}!</h1>
