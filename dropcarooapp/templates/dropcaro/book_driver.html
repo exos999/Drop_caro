@@ -7,6 +7,7 @@
     <title>Book Driver</title>
     <link rel="stylesheet" href="{% static 'css/driverRegi.css' %}">
     <style>
+        /* Add custom styling here, if necessary */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -101,6 +102,11 @@
             box-sizing: border-box;
         }
 
+        .error-message {
+            color: red;
+            font-size: 0.85rem;
+        }
+
         .submit-btn {
             background-color: #007bff;
             color: #fff;
@@ -132,45 +138,141 @@
     <main>
         <section class="booking-container">
             <h1>Book a Driver</h1>
-            <form action="{% url 'book_driver' %}?driver_id={{ driver_id }}" method="POST" class="booking-form">
+            <form action="{% url 'book_driver' %}?driver_id={{ driver_id }}" method="POST" class="booking-form" onsubmit="return validateForm()">
                 {% csrf_token %}
 
-                {% comment %} <label for="location-search">Search Driver by Location:</label>
-                <input type="text" id="location-search" name="location_search" placeholder="Enter location to search drivers" required>
-
-                <label for="driver">Driver:</label>
-                <select id="driver" name="driver" required>
-                    <option value="" disabled selected>Select a driver</option>
-                    {% for driver in drivers %}
-                        <option value="{{ driver.id }}">{{ driver.fullname }}</option>
-                    {% endfor %}
-                </select> {% endcomment %}
-
                 <label for="full_name">Full Name:</label>
-                <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required>
+                <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required oninput="validateFullName()">
+                <div id="full-name-error" class="error-message"></div>
 
                 <label for="contact_number">Contact Number:</label>
-                <input type="tel" id="contact_number" name="contact_number" placeholder="Enter your contact number" required>
+                <input type="tel" id="contact_number" name="contact_number" placeholder="Enter your contact number" required oninput="validateContactNumber()">
+                <div id="contact-number-error" class="error-message"></div>
 
                 <label for="pickup_location">Pickup Location:</label>
-                <input type="text" id="pickup_location" name="pickup_location" placeholder="Enter pickup location" required>
+                <input type="text" id="pickup_location" name="pickup_location" placeholder="Enter pickup location" required oninput="validatePickupLocation()">
+                <div id="pickup-location-error" class="error-message"></div>
 
                 <label for="dropoff_location">Dropoff Location:</label>
-                <input type="text" id="dropoff_location" name="dropoff_location" placeholder="Enter dropoff location" required>
+                <input type="text" id="dropoff_location" name="dropoff_location" placeholder="Enter dropoff location" required oninput="validateDropoffLocation()">
+                <div id="dropoff-location-error" class="error-message"></div>
 
                 <label for="pickup_date">Pickup Date:</label>
-                <input type="date" id="pickup_date" name="pickup_date" required>
+                <input type="date" id="pickup_date" name="pickup_date" required oninput="validatePickupDate()">
+                <div id="pickup-date-error" class="error-message"></div>
 
                 <label for="pickup_time">Pickup Time:</label>
-                <input type="time" id="pickup_time" name="pickup_time" required>
+                <input type="time" id="pickup_time" name="pickup_time" required oninput="validatePickupTime()">
+                <div id="pickup-time-error" class="error-message"></div>
 
-                <label for="Key_point">Key Point:</label>
-                <input type="text" id="key_point" name="key_point" placeholder="key point" required>
-
+                <label for="key_point">Key Point:</label>
+                <input type="text" id="key_point" name="key_point" placeholder="Enter key point" required oninput="validateKeyPoint()">
+                <div id="key-point-error" class="error-message"></div>
 
                 <button type="submit" class="submit-btn">Book Driver</button>
             </form>
         </section>
     </main>
+
+    <script>
+        // Real-time validation for Full Name
+        function validateFullName() {
+            const fullName = document.getElementById('full_name').value.trim();
+            const errorDiv = document.getElementById('full-name-error');
+            if (fullName.length < 3) {
+                errorDiv.textContent = 'Full Name must be at least 3 characters long.';
+            } else {
+                errorDiv.textContent = '';
+            }
+        }
+
+        // Real-time validation for Contact Number
+        function validateContactNumber() {
+            const contactNumber = document.getElementById('contact_number').value.trim();
+            const errorDiv = document.getElementById('contact-number-error');
+            const phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(contactNumber)) {
+                errorDiv.textContent = 'Contact Number must be 10 digits.';
+            } else {
+                errorDiv.textContent = '';
+            }
+        }
+
+        // Real-time validation for Pickup Location
+        function validatePickupLocation() {
+            const pickupLocation = document.getElementById('pickup_location').value.trim();
+            const errorDiv = document.getElementById('pickup-location-error');
+            if (pickupLocation.length < 3) {
+                errorDiv.textContent = 'Pickup location must be at least 3 characters.';
+            } else {
+                errorDiv.textContent = '';
+            }
+        }
+
+        // Real-time validation for Dropoff Location
+        function validateDropoffLocation() {
+            const dropoffLocation = document.getElementById('dropoff_location').value.trim();
+            const errorDiv = document.getElementById('dropoff-location-error');
+            if (dropoffLocation.length < 3) {
+                errorDiv.textContent = 'Dropoff location must be at least 3 characters.';
+            } else {
+                errorDiv.textContent = '';
+            }
+        }
+
+        // Real-time validation for Pickup Date
+        function validatePickupDate() {
+            const pickupDate = document.getElementById('pickup_date').value;
+            const errorDiv = document.getElementById('pickup-date-error');
+            const today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+            if (pickupDate < today) {
+                errorDiv.textContent = 'Pickup date must be today or a future date.';
+            } else {
+                errorDiv.textContent = '';
+            }
+        }
+
+        // Real-time validation for Pickup Time
+        function validatePickupTime() {
+            const pickupTime = document.getElementById('pickup_time').value;
+            const errorDiv = document.getElementById('pickup-time-error');
+            if (!pickupTime) {
+                errorDiv.textContent = 'Pickup time is required.';
+            } else {
+                errorDiv.textContent = '';
+            }
+        }
+
+        // Real-time validation for Key Point
+        function validateKeyPoint() {
+            const keyPoint = document.getElementById('key_point').value.trim();
+            const errorDiv = document.getElementById('key-point-error');
+            if (keyPoint.length < 3) {
+                errorDiv.textContent = 'Key point must be at least 3 characters long.';
+            } else {
+                errorDiv.textContent = '';
+            }
+        }
+
+        // Validate form before submission
+        function validateForm() {
+            validateFullName();
+            validateContactNumber();
+            validatePickupLocation();
+            validateDropoffLocation();
+            validatePickupDate();
+            validatePickupTime();
+            validateKeyPoint();
+            
+            // Check for errors and prevent form submission if any
+            const errorMessages = document.querySelectorAll('.error-message');
+            for (let error of errorMessages) {
+                if (error.textContent !== '') {
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>

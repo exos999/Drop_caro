@@ -27,20 +27,27 @@
     <main>
         <section class="registration-container">
             <h1>Register Your Vehicle</h1>
-            <form action="{% url 'vehicle_reg' %}" method="POST" class="registration-form">
+            <form action="{% url 'vehicle_reg' %}" method="POST" class="registration-form" onsubmit="return validateForm()">
             {% csrf_token %} <!-- Include CSRF token for security -->
                 
                 <label for="vehicle_number">Vehicle Number:</label>
-                <input type="text" id="vehicle_number" name="vehicle_number" placeholder="Enter vehicle number" required>
+                <input type="text" id="vehicle_number" name="vehicle_number" placeholder="Enter vehicle number" required oninput="validateVehicleNumber()">
+                <div id="vehicle-number-error" class="error-message"></div>
 
                 <label for="owner">Owner Name:</label>
-                <input type="text" id="owner" name="owner" placeholder="Enter owner name" required>
+                <input type="text" id="owner" name="owner" placeholder="Enter owner name" required oninput="validateOwnerName()">
+                <div id="owner-error" class="error-message"></div>
 
                 <label for="vehicle_model">Vehicle Model:</label>
-                <input type="text" id="vehicle_model" name="vehicle_model" placeholder="Enter vehicle model" required>
+                <input type="text" id="vehicle_model" name="vehicle_model" placeholder="Enter vehicle model" required oninput="validateVehicleModel()">
+                <div id="vehicle-model-error" class="error-message"></div>
+
+                <label for="vehicle_address">Vehicle Address:</label>
+                <input type="text" id="vehicle_address" name="vehicle_address" placeholder="Enter vehicle address" required oninput="validateVehicleAddress()">
+                <div id="vehicle-address-error" class="error-message"></div>
 
                 <label for="contact">Contact Number:</label>
-                <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required onblur="validateContact()">
+                <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required oninput="validateContact()">
                 <div id="contact-error" class="error-message"></div>
 
                 <button type="submit" class="submit-btn">Register</button>
@@ -49,6 +56,60 @@
     </main>
 
     <script>
+        // Validate Vehicle Number (real-time)
+        function validateVehicleNumber() {
+            const vehicleNumber = document.getElementById('vehicle_number').value.trim();
+            const errorDiv = document.getElementById('vehicle-number-error');
+            const vehicleNumberPattern = /^[A-Za-z0-9]{1,15}$/; // Assuming vehicle number is alphanumeric and up to 15 characters
+
+            if (!vehicleNumberPattern.test(vehicleNumber)) {
+                errorDiv.textContent = 'Vehicle number must be alphanumeric and up to 15 characters.';
+                errorDiv.style.color = 'red';
+            } else {
+                errorDiv.textContent = ''; // Clear error message
+            }
+        }
+
+        // Validate Owner Name (real-time)
+        function validateOwnerName() {
+            const ownerName = document.getElementById('owner').value.trim();
+            const errorDiv = document.getElementById('owner-error');
+
+            if (ownerName.length < 3) {
+                errorDiv.textContent = 'Owner name must be at least 3 characters long.';
+                errorDiv.style.color = 'red';
+            } else {
+                errorDiv.textContent = ''; // Clear error message
+            }
+        }
+
+        // Validate Vehicle Model (real-time)
+        function validateVehicleModel() {
+            const vehicleModel = document.getElementById('vehicle_model').value.trim();
+            const errorDiv = document.getElementById('vehicle-model-error');
+
+            if (vehicleModel.length < 2) {
+                errorDiv.textContent = 'Vehicle model must be at least 2 characters long.';
+                errorDiv.style.color = 'red';
+            } else {
+                errorDiv.textContent = ''; // Clear error message
+            }
+        }
+
+        // Validate Vehicle Address (real-time)
+        function validateVehicleAddress() {
+            const vehicleAddress = document.getElementById('vehicle_address').value.trim();
+            const errorDiv = document.getElementById('vehicle-address-error');
+
+            if (vehicleAddress.length < 5) {
+                errorDiv.textContent = 'Vehicle address must be at least 5 characters long.';
+                errorDiv.style.color = 'red';
+            } else {
+                errorDiv.textContent = ''; // Clear error message
+            }
+        }
+
+        // Validate Contact Number (real-time)
         function validateContact() {
             const contactInput = document.getElementById('contact');
             const errorDiv = document.getElementById('contact-error');
@@ -60,6 +121,24 @@
             } else {
                 errorDiv.textContent = ''; // Clear error message
             }
+        }
+
+        // Validate all fields before submission
+        function validateForm() {
+            validateVehicleNumber();
+            validateOwnerName();
+            validateVehicleModel();
+            validateVehicleAddress();
+            validateContact();
+            
+            // Check if there are any error messages, prevent form submission if there are
+            const errorMessages = document.querySelectorAll('.error-message');
+            for (let error of errorMessages) {
+                if (error.textContent !== '') {
+                    return false; // Prevent form submission if there's an error
+                }
+            }
+            return true;
         }
     </script>
 </body>

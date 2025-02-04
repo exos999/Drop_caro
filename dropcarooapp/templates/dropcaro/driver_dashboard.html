@@ -34,23 +34,13 @@
             margin-bottom: 20px;
         }
 
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            margin: 15px 0;
-        }
-
-        .sidebar ul li a {
-            text-decoration: none;
+        .summary-container {
+            background-color: #444;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
             color: white;
-            font-size: 1rem;
-        }
-
-        .sidebar ul li a:hover {
-            text-decoration: underline;
+            text-align: center;
         }
 
         .main-content {
@@ -60,14 +50,9 @@
             position: relative;
         }
 
-        .main-content h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
         }
 
@@ -81,36 +66,6 @@
 
         .dashboard-card:hover {
             transform: scale(1.05);
-        }
-
-        .dashboard-card h2 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .dashboard-card p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .dashboard-card button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #333;
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .dashboard-card button:hover {
-            background-color: #555;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
         }
 
         .notification-container {
@@ -128,31 +83,39 @@
             cursor: pointer;
         }
 
-        .notification-icon:hover {
-            color: #900;
-        }
-
         .status-button {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
-            background-color: green;
+            background-color: black;
             color: white;
             font-size: 0.9rem;
             cursor: pointer;
             transition: background 0.3s;
         }
 
-        .status-button:hover {
-            background-color: darkgreen;
-        }
-
         .status-button.free {
             background-color: gray;
         }
 
-        .status-button.free:hover {
-            background-color: darkgray;
+        button {
+            background-color: black;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
         }
     </style>
 </head>
@@ -160,53 +123,47 @@
     <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
-            <div>
-                <h2>Driver Dashboard</h2>
+            <h2>Driver Dashboard</h2>
+            <div class="profile-container">
+                <div class="profile-pic">
+                    <img src="{{ driver.photo.url }}" alt="User Profile Picture">
+                </div>
                 <a href="{% url 'edit_driver' %}"><button>Edit Profile</button></a>
             </div>
-            <div>
-                <a href="{% url 'logout' %}"><button>Log Out</button></a>
+            <div class="summary-container">
+                <p>Total Works Done:18 {{ total_works }}</p>
+                <p>Driver Booked: 12{{ driver_booked }}</p>
+                <p>Maintenance Booked:6 {{ maintenance_booked }}</p>
             </div>
+            <a href="{% url 'logout' %}"><button>Log Out</button></a>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
             <div class="notification-container">
-                <!-- Notification Icon -->
                 <a href="{% url 'driver_notification' %}" class="fas fa-bell notification-icon" title="Notifications"></a>
-                <!-- Status Button -->
                 <button class="status-button" id="statusButton" title="Toggle Status">On Duty</button>
             </div>
 
             <h1>Welcome, {{ user }}!</h1>
             <div class="dashboard-grid">
-                <!-- Task Overview -->
                 <div class="dashboard-card" id="tasks-overview">
                     <h2>Works</h2>
                     <p>View your works and tasks.</p>
                     <a href="{% url 'view_work' %}"><button>View Tasks</button></a>
                 </div>
 
-                <!-- Maintenance Management -->
                 <div class="dashboard-card" id="maintenance">
                     <h2>Maintenance Management</h2>
                     <p>Complete the service checklist for each vehicle.</p>
-                    <a href="{% url 'my_maintance' %}"><button>Start Checklist</button></a>
+                    <a href="{% url 'my_maintenance' %}"><button>Start Checklist</button></a>
                 </div>
 
-                {% comment %} <!-- Location & Navigation -->
                 <div class="dashboard-card" id="navigation">
-                    <h2>Location & Navigation</h2>
+                    <h2>Maintenance Checklist</h2>
                     <p>Optimize routes and navigate efficiently.</p>
-                    <button>View Map</button>
+                    <a href="{% url 'maintenance_checklist' %}"><button>Check list</button></a>
                 </div>
-
-                <!-- Payments & Earnings -->
-                <div class="dashboard-card" id="payments">
-                    <h2>Payments & Earnings</h2>
-                    <p>Track earnings and pending payments.</p>
-                    <button>View Earnings</button>
-                </div> {% endcomment %}
             </div>
             <footer>
                 &copy; 2025 Driver Dashboard
@@ -216,7 +173,6 @@
 
     <script>
         const statusButton = document.getElementById('statusButton');
-
         statusButton.addEventListener('click', () => {
             const isOnDuty = statusButton.textContent === 'On Duty';
             statusButton.textContent = isOnDuty ? 'Free' : 'On Duty';

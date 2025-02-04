@@ -30,6 +30,7 @@ class VehicleRegistration(models.Model):
     vehicle_number = models.CharField(max_length=10, unique=True,blank=True, null=True)
     owner = models.ForeignKey(UserDetails, on_delete=models.CASCADE, blank=True, null=True)
     vehicle_model = models.CharField(max_length=10,blank=True, null=True)
+    vehicle_address = models.CharField(max_length=255,blank=True, null=True)
     contact = models.CharField(max_length=10,blank=True, null=True)
     owner_name = models.CharField(max_length=100,blank=True, null=True)
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Checklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Maintenance Checklist</h2>
+        <form>
+            <label><input type="checkbox" name="maintenance" value="fuel-check"> Fuel Check</label><br>
+            <label><input type="checkbox" name="maintenance" value="engine-start"> Engine Start</label><br>
+            <label><input type="checkbox" name="maintenance" value="washing"> Washing</label><br>
+            <label><input type="checkbox" name="maintenance" value="basic-checkups"> Basic Checkups</label><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

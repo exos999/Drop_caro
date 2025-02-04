@@ -7,6 +7,66 @@
   <title>Driver Registration</title>
   <link rel="stylesheet" href="{% static 'css/newa.css' %}">
   <script>
+    // Real-time validation function
+    function validateField(fieldId, errorId, message, condition) {
+      const field = document.getElementById(fieldId);
+      const errorDiv = document.getElementById(errorId);
+      if (condition(field.value)) {
+        errorDiv.textContent = message;
+        field.classList.add('invalid');
+      } else {
+        errorDiv.textContent = '';
+        field.classList.remove('invalid');
+      }
+    }
+
+    // Real-time validation for each field
+    function addRealTimeValidation() {
+      document.getElementById('full_name').addEventListener('input', function() {
+        validateField('full_name', 'fullNameErrorMessage', 'Full name is required.', value => value.trim() === '');
+      });
+
+      document.getElementById('id_username').addEventListener('input', function() {
+        validateField('id_username', 'usernameErrorMessage', 'Username is required.', value => value.trim() === '');
+      });
+
+      document.getElementById('email').addEventListener('input', function() {
+        validateField('email', 'emailErrorMessage', 'Please enter a valid email address.', value => !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value));
+      });
+
+      document.getElementById('password').addEventListener('input', function() {
+        validateField('password', 'passwordErrorMessage', 'Password must be at least 6 characters.', value => value.length < 6);
+      });
+
+      document.getElementById('phone').addEventListener('input', function() {
+        validateField('phone', 'phoneErrorMessage', 'Please enter a valid phone number.', value => !/^[0-9]{10}$/.test(value));
+      });
+
+      document.getElementById('license_number').addEventListener('input', function() {
+        validateField('license_number', 'licenseErrorMessage', 'License number must be exactly 16 characters.', value => value.trim().length !== 16);
+      });
+
+      document.getElementById('uploadPhoto').addEventListener('change', function() {
+        const errorDiv = document.getElementById('photoErrorMessage');
+        if (this.files.length === 0) {
+          errorDiv.textContent = 'Please upload a photo.';
+          this.classList.add('invalid');
+        } else {
+          errorDiv.textContent = '';
+          this.classList.remove('invalid');
+        }
+      });
+
+      document.getElementById('dob').addEventListener('input', function() {
+        validateField('dob', 'dobErrorMessage', 'Date of birth is required.', value => value === '');
+      });
+
+      document.getElementById('city').addEventListener('input', function() {
+        validateField('city', 'cityErrorMessage', 'City is required.', value => value.trim() === '');
+      });
+    }
+
+    // Validate phone number (separate function for onblur validation)
     function validatePhoneNumber() {
       var phoneNumber = document.getElementById("phone").value;
       var phoneErrorMessage = document.getElementById("phoneErrorMessage");
@@ -19,43 +79,60 @@
         phoneErrorMessage.textContent = ""; // Clear error message if valid
       }
     }
+
+    window.onload = addRealTimeValidation;
   </script>
+  <style>
+    .invalid {
+      border-color: red;
+    }
+    .error {
+      color: red;
+      font-size: 9px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>Driver Registration</h1>
-    <form id="driverRegistrationForm" method="post" action="{% url 'driver_reg' %}">
+    <form id="driverRegistrationForm" method="post" action="{% url 'driver_reg' %}" onsubmit="return validateForm()">
       {% csrf_token %}
 
       <label for="full_name">Full Name:</label>
       <input type="text" id="full_name" name="fullname" placeholder="Enter your full name" required>
+      <span id="fullNameErrorMessage" class="error"></span>
 
-      <!-- Username -->
       <label for="id_username">User Name:</label>
-      <input type="text" id="id_username" name="username" placeholder="Enter  your user name" value="{{ form.username.value|default_if_none:'' }}" required>
+      <input type="text" id="id_username" name="username" placeholder="Enter your user name" value="{{ form.username.value|default_if_none:'' }}" required>
+      <span id="usernameErrorMessage" class="error"></span>
 
       <label for="email">Email Address:</label>
       <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+      <span id="emailErrorMessage" class="error"></span>
 
-      <!-- Password Section -->
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" placeholder="Create a password" required>
+      <span id="passwordErrorMessage" class="error"></span>
 
       <label for="phone">Phone Number:</label>
       <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required onblur="validatePhoneNumber()">
-      <span style="font-size:9px" id="phoneErrorMessage"></span>
+      <span id="phoneErrorMessage" class="error"></span>
 
       <label for="license_number">Driver's License Number:</label>
       <input type="text" id="license_number" name="license_number" placeholder="Enter your license number" required>
+      <span id="licenseErrorMessage" class="error"></span>
 
       <label for="uploadPhoto">Upload Driver Photo:</label>
       <input type="file" id="uploadPhoto" name="Photo" accept="image/*" required>
+      <span id="photoErrorMessage" class="error"></span>
 
       <label for="dob">Date of Birth:</label>
       <input type="date" id="dob" name="date_of_birth" required>
+      <span id="dobErrorMessage" class="error"></span>
 
       <label for="city">City:</label>
       <input type="text" id="city" name="city" required>
+      <span id="cityErrorMessage" class="error"></span>
 
       <button type="submit">Submit</button>
     </form>

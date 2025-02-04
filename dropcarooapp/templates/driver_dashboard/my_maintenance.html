@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Booking List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #000;
+            color: #fff;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        /* Styles for the popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+        .popup-header {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        .popup-close {
+            float: right;
+            cursor: pointer;
+            font-size: 18px;
+            color: #888;
+        }
+
+        .popup-close:hover {
+            color: #333;
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .popup form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup form label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .popup form select,
+        .popup form button {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .popup form select {
+            width: 100%;
+            background-color: #f9f9f9;
+        }
+
+        .popup form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .popup form button:hover {
+            background-color: #218838;
+        }
+
+        .edit-btn, .delete-btn, .assign-btn {
+            padding: 5px 10px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        .edit-btn {
+            background-color: #007bff;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .assign-btn {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <span style="font-weight: bold; font-size: 1.2em;">Dropcaro</span>
+        </div>
+    </header>
+    <main>
+        <h1>Maintenance Requests</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Vehicle Number</th>
+                    <th>Services</th>
+                    <th>Description</th>
+                    <th>Preferred Date</th>
+                    <th>Monthly plan</th>
+                    <th>Preferred Time</th>
+                    <th>Action</th>
+                    {% comment %} <th>Action</th> {% endcomment %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in bookmaintance %}
+                <tr>
+                    <td>{{ request.full_name }}</td>
+                    <td>{{ request.vehicle }}</td>
+                    <td>{{ request.services }}</td>
+                    <td>{{ request.description }}</td>
+                    <td>{{ request.request_date }}</td>
+                    <td>{{ request.monthly_plan }}</td>
+
+                    <td>{{ request.request_time }}</td>
+                    <td>
+                        <a href="#" class="edit-btn">Completed</a>
+                    </td>
+                    {% comment %} <td> {% endcomment %}
+                        {% comment %} <a href="#" class="edit-btn">Edit</a>
+                        <a href="{% url 'delete_request' request.id %}" class="delete-btn">Delete</a>
+                        <button class="assign-btn" onclick="showPopup('{{ request.id }}')">Add Driver</button> {% endcomment %}
+                    {% comment %} </td> {% endcomment %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No maintenance bookings found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Popup Overlay -->
+    <div class="popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
+
+    {% comment %} <!-- Popup for assigning driver -->
+    <div class="popup" id="assignDriverPopup">
+        <span class="popup-close" onclick="closePopup()">&times;</span>
+        <div class="popup-header">Assign Driver</div>
+        <form method="post" action="">
+            {% csrf_token %}
+            <input type="hidden" id="bookingId" name="booking_id">
+            <label for="driver">Select Driver:</label>
+            <select id="driver" name="driver_id" required>
+                {% for driver in drivers %}
+                <option value="{{ driver.id }}">{{ driver.fullname }}</option>
+                {% empty %}
+                <option value="">No drivers available</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Assign Driver</button> {% endcomment %}
+        </form>
+    </div>
+
+    {% comment %} <script>
+        function showPopup(bookingId) {
+            document.getElementById('bookingId').value = bookingId;
+            document.getElementById('popupOverlay').style.display = 'block';
+            document.getElementById('assignDriverPopup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+            document.getElementById('assignDriverPopup').style.display = 'none';
+        }
+    </script> {% endcomment %}
+</body>
+</html>

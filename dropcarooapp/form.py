@@ -21,7 +21,7 @@ class UserDetailsForm(forms.ModelForm):
 class VehicleRegistrationForm(forms.ModelForm):
     class Meta:
         model = VehicleRegistration
-        fields = ['vehicle_number', 'vehicle_model', 'contact']
+        fields = ['vehicle_number', 'vehicle_model', 'vehicle_address','contact','owner_name']
 
 
 

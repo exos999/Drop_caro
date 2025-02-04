@@ -193,7 +193,7 @@ def vehicle_reg(request):
             vehicle.owner=userds
             vehicle.save()
             messages.success(request, "Vehicle registered successfully!")
-            return redirect('user_dashboard')
+            return redirect('list_my_vehicles')
         else:
             print(form.errors)
             messages.error(request, "Please correct the errors below.")
@@ -385,9 +385,9 @@ def view_vehicle(request):
     vehicless = VehicleRegistration.objects.filter(owner__user=request.user)
     return render(request, 'driver_dashboard/view_vehicle.html', {"vehicless": vehicless})
 
-def my_maintance(request):
+def my_maintenance(request):
     bookmaintance=MaintenanceRequest.objects.all()    
-    return render(request, 'driver_dashboard/my_maintance.html',{"bookmaintance":bookmaintance})
+    return render(request, 'driver_dashboard/my_maintenance.html',{"bookmaintance":bookmaintance})
 
 
 @login_required
@@ -409,22 +409,16 @@ def driver_notification(request):
 
 
 def update_status(request):
-    if request.method == "POST":
-        # Create a notification
-        try:
-            Notification.objects.create(
-               user=request.user.username,  # The user who made the booking
-               title="Vehicle Delivery Sucessfully",
-               message="Maintance Booking Request Sent",
-               customer=request.user.username
+    Notification.objects.create(
+               user=request.user,  # The user who made the booking
+               title="yss",
+               message="",
+               customer=request.user
              )
-            print(f"Notification created: {notification}")  # Debug log
-        except Exception as e:
-            print(f"Error creating notification: {e}")  # Debug log for errors
-        return redirect('view_work')  # Redirect to the bookings page
-    else:
-        return redirect('view_work')  # Handle non-POST requests
+    return redirect('view_work')
 
+def maintenance_checklist(request):
+    return render(request, "driver_dashboard/maintenance_checklist.html")
 
 # admin_dashboard_view
 
@@ -607,3 +601,6 @@ def add_user(request):
 def feedback_list(request):
     feedbacks = Feedback.objects.all().order_by('-created_at')  # Fetch all feedbacks and order by latest
     return render(request, 'admin_dashboard/feedback_list.html', {'feedbacks': feedbacks})
+
+
+

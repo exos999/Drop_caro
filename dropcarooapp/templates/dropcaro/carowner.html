@@ -7,75 +7,125 @@
   <title>Customer Registration</title>
   <link rel="stylesheet" href="{% static 'css/carowners.css' %}">
   <script>
-    function validatePhoneNumber() {
-      const phoneInput = document.getElementById('id_phone');
-      const errorDiv = document.getElementById('phoneError');
-      const phonePattern = /^[0-9]{10}$/; // Assuming a 10-digit phone number
-
-      if (!phonePattern.test(phoneInput.value)) {
-        errorDiv.textContent = 'Please enter a valid 10-digit phone number.';
+    // Real-time validation function
+    function validateField(fieldId, errorId, message, condition) {
+      const field = document.getElementById(fieldId);
+      const errorDiv = document.getElementById(errorId);
+      if (condition(field.value)) {
+        errorDiv.textContent = message;
+        field.classList.add('invalid');
       } else {
         errorDiv.textContent = '';
+        field.classList.remove('invalid');
       }
     }
+
+    // Validation on form submit
+    function validateForm(event) {
+      let isValid = true;
+      
+      validateField('id_fullname', 'fullnameError', 'Full name is required.', value => value.trim() === '');
+      validateField('id_username', 'usernameError', 'Username is required.', value => value.trim() === '');
+      validateField('id_address_line1', 'addressError', 'Address is required.', value => value.trim() === '');
+      validateField('id_email', 'emailError', 'Enter a valid email address.', value => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+      validateField('password', 'passwordError', 'Password must be at least 6 characters long.', value => value.length < 6);
+      validateField('id_phone', 'phoneError', 'Please enter a valid 10-digit phone number.', value => !/^[0-9]{10}$/.test(value));
+      
+      // Prevent form submission if any validation fails
+      const invalidFields = document.querySelectorAll('.invalid');
+      if (invalidFields.length > 0) {
+        event.preventDefault();
+      }
+    }
+
+    // Real-time validation for each input field
+    function addRealTimeValidation() {
+      document.getElementById('id_fullname').addEventListener('input', function() {
+        validateField('id_fullname', 'fullnameError', 'Full name is required.', value => value.trim() === '');
+      });
+      
+      document.getElementById('id_username').addEventListener('input', function() {
+        validateField('id_username', 'usernameError', 'Username is required.', value => value.trim() === '');
+      });
+
+      document.getElementById('id_address_line1').addEventListener('input', function() {
+        validateField('id_address_line1', 'addressError', 'Address is required.', value => value.trim() === '');
+      });
+
+      document.getElementById('id_email').addEventListener('input', function() {
+        validateField('id_email', 'emailError', 'Enter a valid email address.', value => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
+      });
+
+      document.getElementById('password').addEventListener('input', function() {
+        validateField('password', 'passwordError', 'Password must be at least 6 characters long.', value => value.length < 6);
+      });
+
+      document.getElementById('id_phone').addEventListener('input', function() {
+        validateField('id_phone', 'phoneError', 'Please enter a valid 10-digit phone number.', value => !/^[0-9]{10}$/.test(value));
+      });
+    }
+
+    window.onload = addRealTimeValidation;
   </script>
   <style>
     .error {
       color: red;
       font-size: 0.9em;
+      display: block;
+      margin-top: 5px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+    }
+    .invalid {
+      border-color: red;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Customer Registration</h1>
-    <form id="registrationForm" method="post" action="{% url 'carowner' %}">
+    <form id="registrationForm" method="post" action="{% url 'carowner' %}" onsubmit="validateForm(event)">
       {% csrf_token %}
-
-      <!-- Full Name -->
-      <label for="id_fullname">Full Name:</label>
-      {% if form.fullname.errors %}
-        <div class="error">{{ form.fullname.errors|join:', ' }}</div>
-      {% endif %}
-      <input type="text" id="id_fullname" name="fullname" placeholder="Enter your full name" value="{{ form.fullname.value|default_if_none:'' }}" required>
-
-      <!-- User Name -->
-      <label for="id_username">User Name:</label>
-      {% if form.username.errors %}
-        <div class="error">{{ form.username.errors|join:', ' }}</div>
-      {% endif %}
-      <input type="text" id="id_username" name="username" placeholder="Enter your username" value="{{ form.username.value|default_if_none:'' }}" required>
       
-      <!-- Address -->
-      <label for="id_address_line1">Address:</label>
-      {% if form.address_line1.errors %}
-        <div class="error">{{ form.address_line1.errors|join:', ' }}</div>
-      {% endif %}
-      <textarea id="id_address_line1" name="address_line1" placeholder="Enter your address" rows="3" required>{{ form.address_line1.value|default_if_none:'' }}</textarea>
-
-      <!-- Email Address -->
-      <label for="id_email">Email Address:</label>
-      {% if form.email.errors %}
-        <div class="error">{{ form.email.errors|join:', ' }}</div>
-      {% endif %}
-      <input type="email" id="id_email" name="email" placeholder="Enter your email address" value="{{ form.email.value|default_if_none:'' }}" required>
-
-      <!-- Password Section -->
-      <label for="password">Password:</label>
-      {% if form.password.errors %}
-        <div class="error">{{ form.password.errors|join:', ' }}</div>
-      {% endif %}
-      <input type="password" id="password" name="password" placeholder="Create a password" required>
-
-      <!-- Phone Number -->
-      <label for="id_phone">Phone Number:</label>
-      <div id="phoneError" class="error"></div>
-      <input type="tel" id="id_phone" name="phone" placeholder="Enter your phone number" value="{{ form.phone.value|default_if_none:'' }}" required onblur="validatePhoneNumber()">
-      {% if form.phone.errors %}
-        <div class="error">{{ form.phone.errors|join:', ' }}</div>
-      {% endif %}
-
-      <!-- Submit -->
+      <div class="form-group">
+        <label for="id_fullname">Full Name:</label>
+        <input type="text" id="id_fullname" name="fullname" placeholder="Enter your full name" required>
+        <div id="fullnameError" class="error"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="id_username">User Name:</label>
+        <input type="text" id="id_username" name="username" placeholder="Enter your username" required>
+        <div id="usernameError" class="error"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="id_address_line1">Address:</label>
+        <textarea id="id_address_line1" name="address_line1" placeholder="Enter your address" rows="3" required></textarea>
+        <div id="addressError" class="error"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="id_email">Email Address:</label>
+        <input type="email" id="id_email" name="email" placeholder="Enter your email address" required>
+        <div id="emailError" class="error"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Create a password" required>
+        <div id="passwordError" class="error"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="id_phone">Phone Number:</label>
+        <input type="tel" id="id_phone" name="phone" placeholder="Enter your phone number" required>
+        <div id="phoneError" class="error"></div>
+      </div>
+      
       <button type="submit">Submit</button>
     </form>
   </div>
