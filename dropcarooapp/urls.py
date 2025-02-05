@@ -80,6 +80,7 @@ urlpatterns = [
     path('list_my_vehicles/', views.list_my_vehicles, name='list_my_vehicles'),
     path('payment_view/', views.payment_view, name='payment_view'),
     path('notification/', views.notification, name='notification'),
+    path('noty/', views.noty, name='noty'),
     path('add_user/', views.add_user, name='add_user'),
     path('feedback-list/', views.feedback_list, name='feedback_list'),
     path('driver_status_update/', views.driver_status_update, name='driver_status_update'),

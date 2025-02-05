@@ -10,6 +10,14 @@
 
     <!-- Link to external stylesheet -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Correct Font Awesome Link -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+      integrity="sha384-66j6f0Wz1Uau8dzZzFh1k6V9yxl4D30gdYqKkljFsy1YqCwFLMlLX9pQzqMfH6C1"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,7 +28,7 @@
         .dashboard-container {
             display: flex;
             height: 100vh;
-        }    
+        }
         .log {
             margin-top: 100%;
             position: relative;
@@ -72,6 +80,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         .dashboard-card h2 {
             font-size: 1.2em;
@@ -92,7 +101,6 @@
         .dashboard-card button:hover {
             background: #555;
         }
-
         .profile-container {
             background: #333;
             border-radius: 5px;
@@ -101,7 +109,6 @@
             text-align: center;
             width: 300px;
         }
-
         .profile-pic {
             width: 100px;
             height: 100px;
@@ -110,20 +117,17 @@
             margin: 0 auto 10px;
             border: 3px solid #4caf50;
         }
-
         .profile-pic img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .user-name {
             font-size: 1.5rem;
             font-weight: bold;
             color: #fff;
             margin: 10px 0;
         }
-
         .edit-button {
             display: inline-block;
             background-color: #4caf50;
@@ -135,21 +139,23 @@
             margin-top: 10px;
             cursor: pointer;
         }
-
         .edit-button:hover {
             background-color: #45a049;
         }
-
         .notification-bell {
             position: absolute;
             top: 20px;
             right: 20px;
             cursor: pointer;
         }
-
         .notification-bell img {
             width: 30px;
             height: 30px;
+        }
+        .dashboard-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: black; /* Set icon color to black */
         }
     </style>
 </head>
@@ -184,6 +190,7 @@
             <div class="dashboard-section">
                 <!-- Vehicle Management -->
                 <div class="dashboard-card" id="my-vehicles">
+                    <i class="fas fa-car"></i>
                     <h2>My Vehicles</h2>
                     <p>View and manage your registered vehicles.</p>
                     <a href="{% url 'list_my_vehicles' %}"><button>Vehicles</button></a>
@@ -191,6 +198,7 @@
 
                 <!-- Delivery Scheduling -->
                 <div class="dashboard-card" id="delivery-scheduling">
+                    <i class="fas fa-calendar-alt"></i>
                     <h2>Book a Driver</h2>
                     <p>Schedule pick-up and drop-off for your vehicle.</p>
                     <a href="{% url 'driverview' %}"><button>Book Now</button></a>
@@ -198,6 +206,7 @@
 
                 <!-- Maintenance Requests -->
                 <div class="dashboard-card" id="maintenance">
+                    <i class="fas fa-tools"></i>
                     <h2>Request Maintenance</h2>
                     <p>Choose cleaning, refueling, or repair services.</p>
                     <a href="{% url 'maintenance_reg' %}"><button>Request Services</button></a>
@@ -205,23 +214,25 @@
 
                 <!-- Payment Management -->
                 <div class="dashboard-card" id="payments">
+                    <i class="fas fa-credit-card"></i>
                     <h2>Payment</h2>
                     <p>View invoices and manage your payments.</p>
                     <a href="{% url 'payment' %}"><button>Payment</button></a>
                 </div>
 
-                 
-
                 <!-- Vehicle Tracking -->
                 <div class="dashboard-card" id="tracking">
+                    <i class="fas fa-location-arrow"></i>
                     <h2>Track My Vehicle</h2>
                     <p>Get real-time updates on your vehicle's status.</p>
                     <a href="{% url 'driver_booking_history' %}"><button>Track</button></a>
                 </div>
-                <!-- Notifications -->
+
+                <!-- Feedback -->
                 <div class="dashboard-card" id="notifications">
+                    <i class="fas fa-comments"></i>
                     <h2>Feedback</h2>
-                    <p>Give your experences</p>
+                    <p>Give your experiences</p>
                     <a href="{% url 'feedback' %}"><button>Feedback</button></a>
                 </div>
             </div>
