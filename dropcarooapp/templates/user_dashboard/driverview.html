@@ -121,16 +121,15 @@
     <div class="container">
         {% for item in drivers %}
         <div class="card">
-            <img src="{{ item.photoupload }}" alt="Driver Photo">
+            <img src="{% if item.photo %}{{ item.photo.url }}{% endif %}" alt="Driver Photo">
             <div class="card-content">
                 <strong>Driver Name: {{ item.fullname }}</strong>
                 <strong>City: {{ item.city }}</strong>
-                <strong>Photo: {{ item.photo }}</strong>
                 <div class="status {% if item.status == 'free' %}free{% else %}onwork{% endif %}">
                     Status: {% if item.is_free %} Free {% else %} On Duty {% endif %}
                 </div>
                 <a href="{% url 'book_driver' %}?driver_id={{ item.id }}&status={{ item.status }}">
-                    <button {% if item.status == 'onwork' %}disabled{% endif %}>Book Driver</button>
+                    <button {% if  item.is_free == False %}disabled{% endif %}>Book Driver</button>
                 </a>
                 
             </div>

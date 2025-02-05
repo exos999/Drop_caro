@@ -12,4 +12,5 @@ admin.site.register(DriverBooking)
 admin.site.register(Payment)
 admin.site.register(Location)
 admin.site.register(Feedback)
+admin.site.register(Notification)
 

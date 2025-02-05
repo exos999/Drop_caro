@@ -72,6 +72,7 @@ class DriverBooking(models.Model):
     pickup_time = models.TimeField()
     key_point = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
+    vehicle= models.ForeignKey(VehicleRegistration, on_delete=models.CASCADE,null=True,blank=True)
     
 class Payment(models.Model):
     PAYMENT_METHOD_CHOICES = [

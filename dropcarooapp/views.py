@@ -266,11 +266,16 @@ def book_driver(request):
     if request.method == "POST":
         driver = get_object_or_404(DriverDetails, id=driver_id)
         user = get_object_or_404(UserDetails, user=request.user)
+        vehicle_id = request.POST.get('vehicle')
+        vehicle=None
+        if vehicle_id:
+            vehicle = get_object_or_404(VehicleRegistration, id=vehicle_id)
         form = DriverBookingForm(request.POST)
         if form.is_valid():
             obj=form.save(commit=False)
             obj.driver=driver
             obj.user=user
+            obj.vehicle=vehicle 
             obj.save()
             Notification.objects.create(
                user=request.user,  # The user who made the booking
@@ -296,7 +301,8 @@ def book_driver(request):
         form = DriverBookingForm()
 
     drivers=DriverDetails.objects.all()
-    return render(request, 'dropcaro/book_driver.html', {'form': form,'drivers':drivers,'driver_id':driver_id,'status':status})
+    my_vehicles=VehicleRegistration.objects.filter(owner__user=request.user)
+    return render(request, 'dropcaro/book_driver.html', {'form': form,'drivers':drivers,'driver_id':driver_id,'status':status,'my_vehicles':my_vehicles})
 
 
 def share_location_view(request,task_id):
@@ -356,7 +362,7 @@ def driver_booking_history(request):
     return render(request, 'dropcaro/booking_history.html',{"driver_bookings":driver_bookings})
     
 def user_notification(request):
-    notifications=Notification.objects.filter(user=request.user)
+    notifications=Notification.objects.filter(customer=request.user)
     return render(request, 'dropcaro/user_notification.html',{"notifications":notifications})
 
 def feedback(request):
@@ -393,10 +399,10 @@ def view_work(request):
     work=DriverBooking.objects.filter(driver__user=request.user)
     return render(request, 'driver_dashboard/view_work.html',{"work":work})
 
-def view_vehicle(request):
-    # Filter by owner if the 'driver' field is not available
-    vehicless = VehicleRegistration.objects.filter(owner__user=request.user)
-    return render(request, 'driver_dashboard/view_vehicle.html', {"vehicless": vehicless})
+def view_vehicle(request,vehicle_id):
+    vehicle = get_object_or_404(VehicleRegistration, id=vehicle_id)
+    print(vehicle)
+    return render(request, 'driver_dashboard/view_vehicle.html',{"vehicle":vehicle})
 
 def my_maintenance(request):
     bookmaintance=MaintenanceRequest.objects.all()    
@@ -421,12 +427,13 @@ def driver_notification(request):
     return render(request, 'dropcaro/driver_notification.html',{"notifications":notifications})
 
 
-def update_status(request):
+def update_status(request,booking_id):
+    booking=get_object_or_404(DriverBooking,id=booking_id)
     Notification.objects.create(
-               user=request.user,  # The user who made the booking
+               user=request.user,
                title="yss",
                message="",
-               customer=request.user
+               customer=booking.user.user
              )
     return redirect('view_work')
 

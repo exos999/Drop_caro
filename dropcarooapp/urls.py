@@ -52,11 +52,11 @@ urlpatterns = [
     # driverdashboard
     
     path('view_work/', views.view_work, name='view_work'),
-    path('view_vehicle/', views.view_vehicle, name='view_vehicle'),
+    path('view_vehicle/<int:vehicle_id>/', views.view_vehicle, name='view_vehicle'),
     path('my_maintenance/', views.my_maintenance, name='my_maintenance'),
     path('edit_driver/', views.edit_driver, name='edit_driver'),
     path('driver_notification/', views.driver_notification, name='driver_notification'),
-    path('update_status/', views.update_status, name='update_status'),
+    path('update_status/<int:booking_id>/', views.update_status, name='update_status'),
     path('maintenance_checklist/', views.maintenance_checklist, name='maintenance_checklist'),
 
 

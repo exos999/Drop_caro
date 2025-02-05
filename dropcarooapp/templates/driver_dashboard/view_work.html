@@ -137,8 +137,8 @@
                     <td>{{ booking.pickup_time }}</td>
                     <td>{{ booking.key_point }}</td>
                     <td class="action-buttons">
-                        <a href="{% url 'view_vehicle' %}"><button>View Vehicle</button></a>
-                        <a href="{% url 'update_status'  %}"><button type="onclick>">Update Status</button></a>
+                        <a href="{% url 'view_vehicle' booking.vehicle.id %}"><button>View Vehicle</button></a>
+                        <a href="{% url 'update_status' booking.id  %}"><button type="onclick>">Update Status</button></a>
                         <a href="{% url 'share_location_view' booking.id %}"><button>Share Location</button></a>
                     </td>
                 </tr>
