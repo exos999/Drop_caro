@@ -207,6 +207,9 @@ def vehicle_reg(request):
 
     return render(request, 'dropcaro/vehicle_reg.html', {'form': form})
 
+
+
+
 def driverview(request):
     drivers=DriverDetails.objects.all()
     return render(request, 'user_dashboard/driverview.html',{"drivers":drivers})
@@ -217,47 +220,55 @@ def driver_status_update(request):
     driver.save()
     return redirect('driver_dashboard')
 
+
 # MaintenanceRequest view
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django import forms
+from .form import MaintenanceRequestForm
+from .models import VehicleRegistration, Notification, User
 
 def maintenance_reg(request):
     if request.method == "POST":
         form = MaintenanceRequestForm(request.POST)
         if form.is_valid():
-            vehicle_id=request.POST.get('vehicle')
-            maintenance_request = form.save(commit=False)
-            # Combine selected services into a comma-separated string
+            vehicle_id = request.POST.get('vehicle')
             services = request.POST.getlist('services')
-            maintenance_request.services = ','.join(services)
-            vehicle=get_object_or_404(VehicleRegistration,id=vehicle_id)
-            maintenance_request.vehicle=vehicle
-            maintenance_request.save()
-            Notification.objects.create(
-               user=request.user,  # The user who made the booking
-               title="Maintance Booking",
-               message="Maintance Booking Request Sent",
-               customer=request.user
-             )
-            admin_users = User.objects.filter(is_superuser=True)
-            for admin_user in admin_users:
-             Notification.objects.create(
-                user=admin_user,
-                title="New Maintance Booking Request",
-             message=f"A booking has been made by {request.user.username}",
-                customer=request.user
-                )
-            messages.success(request, "Your maintenance request has been submitted successfully!")
-            return redirect('user_dashboard')
+
+            # Store maintenance request details in session before redirection
+            request.session['maintenance_data'] = {
+                'vehicle_id': vehicle_id,
+                'services': ','.join(services)
+            }
+
+            messages.success(request, "Your maintenance request has been recorded! Please select a plan.")
+            return redirect('select_plan')  # Redirect to the select plan page
+        
         else:
             messages.error(request, "Please correct the errors below.")
     else:
         form = MaintenanceRequestForm()
 
-    vehicles=VehicleRegistration.objects.filter(owner__user=request.user)
-    return render(request, 'dropcaro/maintenance_reg.html', {'form': form,'vehicles':vehicles})
+    vehicles = VehicleRegistration.objects.filter(owner__user=request.user)
+    return render(request, 'dropcaro/maintenance_reg.html', {'form': form, 'vehicles': vehicles})
+
+
+# select plan
+from django.shortcuts import render
+
+def select_plan(request):
+    # Retrieve maintenance details from session
+    maintenance_data = request.session.get('maintenance_data', {})
+
+    return render(request, "dropcaro/select_plan.html", {"maintenance_data": maintenance_data})
+
 
 def admin_list_maintenance(request):
     maintenance_bookings = MaintenanceRequest.objects.all() 
     return render(request, 'dropcaro/admin_list_maintenance.html', {'maintenance_bookings': maintenance_bookings})
+
+
+
 
 # book_driver
 def book_driver(request):
@@ -625,6 +636,5 @@ def add_user(request):
 def feedback_list(request):
     feedbacks = Feedback.objects.all().order_by('-created_at')  # Fetch all feedbacks and order by latest
     return render(request, 'admin_dashboard/feedback_list.html', {'feedbacks': feedbacks})
-
 
 

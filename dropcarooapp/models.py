@@ -44,15 +44,6 @@ class MaintenanceRequest(models.Model):
     vehicle = models.ForeignKey(VehicleRegistration, on_delete=models.CASCADE,null=True,blank=True)
     driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
     services = models.TextField()
-    monthly_plan = models.CharField(
-        max_length=50,
-        choices=[
-            ('one_year', 'Monthly for One Year'),
-            ('six_months', 'Monthly for Six Months')
-        ],
-        null=True,
-        blank=True
-    )
       
     description = models.TextField(blank=True, null=True)
     request_date = models.DateField()

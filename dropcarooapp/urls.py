@@ -31,6 +31,8 @@ urlpatterns = [
      
      #  user dash board 
      path('maintenance_reg/', views.maintenance_reg, name='maintenance_reg'),
+     path('plans/', views.select_plan, name='select_plan'),
+
      path('book_driver/', views.book_driver, name='book_driver'),
      path('vehicle_reg/', views.vehicle_reg, name='vehicle_reg'),
      path('driverview/', views.driverview, name='driverview'),
@@ -100,4 +102,6 @@ urlpatterns = [
     path('get_live_location/<int:task_id>/', views.get_live_location, name='get_live_location'),
     path('view_live_location/<int:task_id>/', views.view_live_location, name='view_live_location'),
     path('maintainance_history/<int:vehicle_id>/', views.maintainance_history, name='maintainance_history'),
+
+
 ] 

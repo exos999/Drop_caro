@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select a Plan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 250px;
+            border: 2px solid #000;
+        }
+        .card h2 {
+            margin-bottom: 10px;
+        }
+        .button {
+            display: inline-block;
+            background: #000;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .button:hover {
+            background: #444;
+        }
+        .details {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select Your Plan</h1>
+
+    {% if maintenance_data %}
+        <div class="details">
+            <h2>Maintenance Details</h2>
+            <p><strong>Vehicle ID:</strong> {{ maintenance_data.vehicle_id }}</p>
+            <p><strong>Services:</strong> {{ maintenance_data.services }}</p>
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="card">
+            <h2>1 Month Plan</h2>
+            <p>Access for one month.</p>
+            <a href="{% url 'payment' %}" class="button">Buy Now</a>
+        </div>
+        <div class="card">
+            <h2>6 Months Plan</h2>
+            <p>Access for six months.</p>
+            <a href="{% url 'payment' %}" class="button">Buy Now</a>
+        </div>
+        <div class="card">
+            <h2>1 Year Plan</h2>
+            <p>Access for one year.</p>
+            <a href="{% url 'payment' %}" class="button">Buy Now</a>
+        </div>
+    </div>
+</body>
+</html>
