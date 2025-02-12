@@ -445,6 +445,7 @@ def view_vehicle(request,vehicle_id):
     print(vehicle)
     return render(request, 'driver_dashboard/view_vehicle.html',{"vehicle":vehicle})
 
+
 def my_maintenance(request):
     bookmaintance=MaintenanceRequest.objects.all()    
     return render(request, 'driver_dashboard/my_maintenance.html',{"bookmaintance":bookmaintance})
@@ -737,10 +738,10 @@ def complete_maintenance(request, request_id):
 
             # Send notification to the user who booked the maintenance
             Notification.objects.create(
-                user=maintenance_request.vehicle.owner.user,
+                user=maintenance_request.vehicle.owner.user if maintenance_request.vehicle.owner else None,
                 title="Maintenance Completed",
                 message=f"Your maintenance request for {maintenance_request.vehicle.vehicle_number} has been completed.",
-                customer=maintenance_request.vehicle.owner.user
+                customer=maintenance_request.vehicle.owner.user if maintenance_request.vehicle.owner else None
             )
 
             # Send notification to all admin users
@@ -750,7 +751,7 @@ def complete_maintenance(request, request_id):
                     user=admin_user,
                     title="Maintenance Completed",
                     message=f"Maintenance request for {maintenance_request.vehicle.vehicle_number} has been completed.",
-                    customer=maintenance_request.vehicle.owner.user
+                    customer=maintenance_request.vehicle.owner.user if maintenance_request.vehicle.owner else None
                 )
 
             return redirect('my_maintenance')  # Redirect to the maintenance list page
@@ -761,7 +762,6 @@ def complete_maintenance(request, request_id):
 
 
 # clear notification
-
 def clear_notifications(request):
     if request.method == 'POST':
         Notification.objects.filter(user=request.user).delete()
@@ -777,7 +777,7 @@ def clear_all_notifications(request):
 
 def clear_user_notifications(request):
     if request.method == 'POST':
-        Notification.objects.filter(user=request.user).delete()
+        Notification.objects.filter(customer=request.user).delete()
         return redirect('user_notification')  # Redirect to the notifications page
     return redirect('user_dashboard')  # Redirect to the notifications page with an error message
 
