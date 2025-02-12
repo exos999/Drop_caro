@@ -153,7 +153,7 @@
 <body>
   <div class="container">
     <h1>Driver Registration</h1>
-    <form id="driverRegistrationForm" method="post" enctype="multipart/form-data" action="{% url 'driver_reg' %}" onsubmit="return validateForm()">
+    <form id="driverRegistrationForm" method="post" enctype="multipart/form-data" action="{% url 'add_driver' %}" onsubmit="return validateForm()">
       {% csrf_token %}
 
       <label for="full_name">Full Name:</label>

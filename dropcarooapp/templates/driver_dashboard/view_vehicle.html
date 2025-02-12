@@ -85,6 +85,7 @@
                     <th>Vehicle Number</th>
                     <th>Owner Name</th>
                     <th>Vehicle Model</th>
+                    <th>Vehicle Address</th>
                     <th>Contact Number</th>
                 </tr>
             </thead>
@@ -93,6 +94,7 @@
                     <td>{{ vehicle.vehicle_number }}</td>
                     <td>{{ vehicle.owner.user.username }}</td> <!-- Assuming `owner` is a ForeignKey to `User` -->
                     <td>{{ vehicle.vehicle_model }}</td>
+                    <td>{{ vehicle.vehicle_address }}</td>
                     <td>{{ vehicle.contact }}</td>
                 </tr>
                

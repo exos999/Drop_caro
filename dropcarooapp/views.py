@@ -122,6 +122,34 @@ def driver_view(request):
         uesr_form = DriverDetailsForm() 
     return render(request,'dropcaro/driver_reg.html')
 
+def add_driver(request):
+    if request.method == 'POST':
+        data=request.POST.copy()
+        email=request.POST.get('email')
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        
+        try:
+            user=User.objects.create_user(username=username,password=password,email=email)
+        except Exception as e:
+            print(e)
+            return redirect('add_driver')
+        
+        driver_form=DriverDetailsForm(data,request.FILES)
+        if driver_form.is_valid():
+            driver_details=driver_form.save(commit=False)
+            print("driver") 
+            driver_details.user=user
+            driver_form.save()  
+            messages.success(request, 'Registration successful!')  
+            return redirect('manage_drivers')  
+        else:
+            print(driver_form.errors)
+            messages.error(request, 'Please correct the errors below.') 
+    else:
+        uesr_form = DriverDetailsForm() 
+    return render(request,'admin_dashboard/add_driver.html')
+
 
 def book_driver_view(request):
     return render(request,'dropcaro/bookdriver.html')
@@ -186,7 +214,6 @@ def map(request):
 
 
 # VehicleRegistration view
-
 def vehicle_reg(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -228,6 +255,8 @@ from django import forms
 from .form import MaintenanceRequestForm
 from .models import VehicleRegistration, Notification, User
 
+
+@login_required
 def maintenance_reg(request):
     if request.method == "POST":
         form = MaintenanceRequestForm(request.POST)
@@ -305,7 +334,7 @@ def book_driver(request):
                 customer=request.user
                 )
             messages.success(request, "Driver booked successfully!")
-            return redirect('user_dashboard')  # Redirect to prevent form resubmission
+            return redirect('bookdriver_payment')  # Redirect to prevent form resubmission
         else:
             print(form.errors)
             messages.error(request, "Please correct the errors in the form.")
@@ -439,15 +468,33 @@ def driver_notification(request):
     return render(request, 'dropcaro/driver_notification.html',{"notifications":notifications})
 
 
-def update_status(request,booking_id):
-    booking=get_object_or_404(DriverBooking,id=booking_id)
+from django.contrib.auth.models import User
+from .models import Notification, DriverBooking
+
+def update_status(request, booking_id):
+    booking = get_object_or_404(DriverBooking, id=booking_id)
+    booking.status = 'Updated'  # Update the status as needed
+    booking.save()
+
+    # Send notification to the user
     Notification.objects.create(
-               user=request.user,
-               title="yss",
-               message="",
-               customer=booking.user.user
-             )
-    return redirect('view_work')
+        user=booking.user.user,  # Ensure this is a User instance
+        title="Vehicle Delivery sucessfull",
+        message=f"Your booking status for {booking.vehicle.vehicle_number} has been updated.",
+        customer=booking.user.user  # Ensure this is a User instance
+    )
+
+    # Send notification to all admin users
+    admin_users = User.objects.filter(is_superuser=True)
+    for admin_user in admin_users:
+        Notification.objects.create(
+            user=admin_user,
+            title="Vehicle Delivery sucessfull",
+            message=f"Booking status for {booking.vehicle.vehicle_number} has been updated.",
+            customer=booking.user.user  # Ensure this is a User instance
+        )
+
+    return redirect('view_work')  # Redirect to the view work page
 
 def maintenance_checklist(request):
     return render(request, "driver_dashboard/maintenance_checklist.html")
@@ -476,18 +523,19 @@ def view_bookdriver(request):
 from django.db import transaction
 
 def delete_user(request, user_id):
-    with transaction.atomic():  # Use a transaction to ensure the deletion is committed
-        user = get_object_or_404(User, id=user_id)
-        user.delete()
-        messages.success(request, f"User '{user.username}' deleted successfully.")
-    return redirect('manage_users')
+    print(user_id)
+    user = get_object_or_404(UserDetails, id=user_id)
+    user.user.delete()
+    user.delete()
+    messages.success(request, f"User  deleted successfully.")
+    return redirect('manage_users')  # Redirect to the manage users page
 
 
 def delete_driver(request, driver_id):
-    driver = get_object_or_404(User, id=driver_id)
+    driver = get_object_or_404(DriverDetails, id=driver_id)
     driver.delete()
-    messages.success(request, f"User '{driver.username}' deleted successfully.")
-    return redirect('manage_driver')
+    messages.success(request, f"User  deleted successfully.")
+    return redirect('manage_drivers')
 
 
 def delete_payment(request, payment_id):
@@ -548,33 +596,72 @@ def noty(request):
     return render(request, 'admin_dashboard/noty.html',{"notifications":notifications})
 
 # payment
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from .models import Notification, User, MaintenanceRequest, VehicleRegistration
+from .form import PaymentForm
+from decimal import Decimal
+from datetime import date, datetime
+
 def payment(request):
+    price = request.GET.get('price', '0')
+
+    try:
+        price = Decimal(price)
+    except:
+        price = Decimal('0')
+
+    # Retrieve maintenance details from session
+    maintenance_data = request.session.get('maintenance_data', None)
+
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
-            user=get_object_or_404(UserDetails,user=request.user)
-            data=form.save(commit=False)
-            data.user=user
+            user = get_object_or_404(UserDetails, user=request.user)
+            data = form.save(commit=False)
+            data.user = user
+            data.amount = price
             data.save()
+
+            # Save Maintenance Request if data exists
+            if maintenance_data:
+                vehicle = get_object_or_404(VehicleRegistration, id=maintenance_data['vehicle_id'])
+                maintenance_request = MaintenanceRequest.objects.create(
+                    full_name=user.fullname,  # Assuming `UserDetails` has `full_name`
+                    vehicle=vehicle,
+                    services=maintenance_data['services'],
+                    request_date=date.today(),  # Automatically set request date
+                    request_time=datetime.now().time()  # Automatically set request time
+                )
+
+                # Clear session data
+                del request.session['maintenance_data']
+
+            # Notify user
             Notification.objects.create(
-               user=request.user,  # The user who made the booking
-               title="Payment Sucessfully",
-               message="",
-               customer=request.user
-             )
+                user=request.user,  
+                title="Payment Successful",
+                message=f"Payment of ₹{data.amount} received. Maintenance request has been saved.",
+                customer=request.user
+            )
+
+            # Notify Admins
             admin_users = User.objects.filter(is_superuser=True)
             for admin_user in admin_users:
-             Notification.objects.create(
-                user=admin_user,
-                title="Payment Sucessfull",
-             message=f"Payed by{request.user.username} amount: {data.amount}",
-                customer=request.user
-                )            
+                Notification.objects.create(
+                    user=admin_user,
+                    title="Payment Successful",
+                    message=f"Paid by {request.user.username}, Amount: ₹{data.amount}, Maintenance added.",
+                    customer=request.user
+                )
+
             return redirect('sucessfull_payment')
+
     else:
-        form = PaymentForm()
-    return render(request, 'payment/payment.html',{'form':form})
+        form = PaymentForm(initial={'amount': price})
+
+    return render(request, 'payment/payment.html', {'form': form, 'price': price})
+
 
 def sucessfull_payment(request):
     return render(request, 'payment/sucessfull_payment.html')
@@ -638,3 +725,62 @@ def feedback_list(request):
     return render(request, 'admin_dashboard/feedback_list.html', {'feedbacks': feedbacks})
 
 
+from django.contrib.auth.models import User
+from .models import Notification
+
+def complete_maintenance(request, request_id):
+    if request.method == 'POST':
+        try:
+            maintenance_request = MaintenanceRequest.objects.get(id=request_id)
+            maintenance_request.status = 'Completed'
+            maintenance_request.save()
+
+            # Send notification to the user who booked the maintenance
+            Notification.objects.create(
+                user=maintenance_request.vehicle.owner.user,
+                title="Maintenance Completed",
+                message=f"Your maintenance request for {maintenance_request.vehicle.vehicle_number} has been completed.",
+                customer=maintenance_request.vehicle.owner.user
+            )
+
+            # Send notification to all admin users
+            admin_users = User.objects.filter(is_superuser=True)
+            for admin_user in admin_users:
+                Notification.objects.create(
+                    user=admin_user,
+                    title="Maintenance Completed",
+                    message=f"Maintenance request for {maintenance_request.vehicle.vehicle_number} has been completed.",
+                    customer=maintenance_request.vehicle.owner.user
+                )
+
+            return redirect('my_maintenance')  # Redirect to the maintenance list page
+        except MaintenanceRequest.DoesNotExist:
+            return redirect('driver_dashboard')  # Redirect to the maintenance list page with an error message
+    return redirect('driver_dashboard')  # Redirect to the maintenance list page with an error message
+
+
+
+# clear notification
+
+def clear_notifications(request):
+    if request.method == 'POST':
+        Notification.objects.filter(user=request.user).delete()
+        return redirect('notification')  # Redirect to the notifications page
+    return redirect('notification')  # Redirect to the notifications page with an error message
+
+
+def clear_all_notifications(request):
+    if request.method == 'POST':
+        Notification.objects.filter(user=request.user).delete()
+        return redirect('driver_notification')  # Redirect to the notifications page
+    return redirect('driver_notification')  # Redirect to the notifications page with an error message
+
+def clear_user_notifications(request):
+    if request.method == 'POST':
+        Notification.objects.filter(user=request.user).delete()
+        return redirect('user_notification')  # Redirect to the notifications page
+    return redirect('user_dashboard')  # Redirect to the notifications page with an error message
+
+
+def bookdriver_payment(request):
+    return render(request,'payment/bookdriver_payment.html')

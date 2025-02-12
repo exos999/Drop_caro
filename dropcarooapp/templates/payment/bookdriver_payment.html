@@ -92,7 +92,7 @@
         <button type="submit" class="submit-btn">Pay</button>
     </form>
 
-    <script>
+    {% comment %} <script>
         // Get URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const price = urlParams.get('price');
@@ -101,7 +101,7 @@
         if (price) {
             document.getElementById('amount').value = price;
         }
-    </script>
+    </script> {% endcomment %}
 </body>
 
 </html>

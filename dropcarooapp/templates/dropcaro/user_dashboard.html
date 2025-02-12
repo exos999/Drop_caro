@@ -212,13 +212,13 @@
                     <a href="{% url 'maintenance_reg' %}"><button>Request Services</button></a>
                 </div>
 
-                <!-- Payment Management -->
+                {% comment %} <!-- Payment Management -->
                 <div class="dashboard-card" id="payments">
                     <i class="fas fa-credit-card"></i>
                     <h2>Payment</h2>
                     <p>View invoices and manage your payments.</p>
                     <a href="{% url 'payment' %}"><button>Payment</button></a>
-                </div>
+                </div> {% endcomment %}
 
                 <!-- Vehicle Tracking -->
                 <div class="dashboard-card" id="tracking">

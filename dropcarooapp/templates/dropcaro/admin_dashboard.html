@@ -187,30 +187,30 @@
                 </div>
 
                 <div class="dropdown">
-                    <button onclick="toggleDropdown('notifications')">
-                        <i class="fas fa-bell"></i> Notifications
-                    </button>
-                    <div class="dropdown-content" id="notifications">
+                    <a href="{% url 'notification' %}"> <button onclick="toggleDropdown('notifications')">
+                         <i class="fas fa-bell"></i> Notifications
+                    </button></a>
+                    {% comment %} <div class="dropdown-content" id="notifications">
                         <a href="{% url 'notification' %}">View Notifications</a>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
 
                 <div class="dropdown">
-                    <button onclick="toggleDropdown('paymentManagement')">
+                    <a href="{% url 'payment_view' %}"> <button onclick="toggleDropdown('paymentManagement')">
                         <i class="fas fa-credit-card"></i> Payment Management
-                    </button>
-                    <div class="dropdown-content" id="paymentManagement">
-                        <a href="{% url 'payment_view' %}">Manage Payments</a>
-                    </div>
+                    </button></a>
+                    {% comment %} <div class="dropdown-content" id="paymentManagement">
+                        Manage Payments</a>
+                    </div> {% endcomment %}
                 </div>
 
                 <div class="dropdown">
-                    <button onclick="toggleDropdown('feedbacks')">
+                    <a href="{% url 'feedback_list' %}"><button onclick="toggleDropdown('feedbacks')">
                         <i class="fas fa-comments"></i> Feedbacks
-                    </button>
-                    <div class="dropdown-content" id="feedbacks">
+                    </button></a>
+                    {% comment %} <div class="dropdown-content" id="feedbacks">
                         <a href="{% url 'feedback_list' %}">View Feedbacks</a>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
             <div class="h1">

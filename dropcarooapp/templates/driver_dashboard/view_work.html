@@ -9,60 +9,68 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
         }
 
         header {
             background-color: #000;
             color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 20px;
-        }
-
-        header a:hover {
-            text-decoration: underline;
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        h1 {
+            padding: 15px;
             text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            margin: 15px;
+            border-left: 5px solid #000;
+        }
+
+        .job-card h3 {
+            margin-top: 0;
             color: #333;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #fff;
+        .job-card p {
+            margin: 5px 0;
+            color: #555;
         }
 
-        table th, table td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        table th {
-            background-color: black;
-            color: #fcf7f7;
+        .action-buttons button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            flex: 1;
         }
 
-        table tr:nth-child(even) {
-            background-color: #f8f8f8;
-        }
+        .view-btn { background-color: #28a745; }
+        .update-btn { background-color: #ffc107; }
+        .share-btn { background-color: #17a2b8; }
+        .action-buttons button:hover { opacity: 0.8; }
 
         .footer {
             text-align: center;
@@ -72,84 +80,60 @@
             margin-top: 20px;
         }
 
-        .action-buttons a button {
-            padding: 8px 12px;
-            margin-right: 5px;
-            border: none;
-            border-radius: 4px;
+        .popup {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
             color: white;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .action-buttons a button:nth-child(1) {
-            background-color: #28a745; /* Green */
-        }
-
-        .action-buttons a button:nth-child(2) {
-            background-color: #ffc107; /* Yellow */
-        }
-
-        .action-buttons a button:nth-child(3) {
-            background-color: #17a2b8; /* Teal */
-        }
-
-        .action-buttons a button:hover {
-            opacity: 0.8;
-        }
-
-        /* Map modal styles */
-        #mapPopup {
-            height: 500px;
-            width: 100%;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
     </style>
+    <script>
+        function updateStatus(button) {
+            button.innerText = "Status Updated";
+            button.style.backgroundColor = "#28a745";
+            
+            let popup = document.createElement("div");
+            popup.classList.add("popup");
+            popup.innerText = "Status updated successfully!";
+            document.body.appendChild(popup);
+            popup.style.display = "block";
+            
+            setTimeout(() => {
+                popup.style.display = "none";
+                document.body.removeChild(popup);
+            }, 3000);
+        }
+    </script>
 </head>
 <body>
-    <header>
-        <div>
-            <span style="font-weight: bold; font-size: 1.2em;">Dropcaro</span>
+    <header>Dropcaro</header>
+    <div class="container">
+        {% for booking in work %}
+        <div class="job-card">
+            <h3>{{ booking.full_name }}</h3>
+            <p><strong>Contact:</strong> {{ booking.contact_number }}</p>
+            <p><strong>Pickup Location:</strong> {{ booking.pickup_location }}</p>
+            <p><strong>Dropoff Location:</strong> {{ booking.dropoff_location }}</p>
+            <p><strong>Pickup Date:</strong> {{ booking.pickup_date }}</p>
+            <p><strong>Pickup Time:</strong> {{ booking.pickup_time }}</p>
+            <p><strong>Key Point:</strong> {{ booking.key_point }}</p>
+            <div class="action-buttons">
+                <a href="{% url 'view_vehicle' booking.vehicle.id %}"><button class="view-btn">View Vehicle</button></a>
+                <a href="{% url 'update_status' booking.id %}"><button type="button" class="update-btn" onclick="updateStatus(this)">Update Status</button></a>
+                <a href="{% url 'share_location_view' booking.id %}"><button class="share-btn">Share Location</button></a>
+            </div>
         </div>
-    </header>
-    <main>
-        <h1>Vehicle Details</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Full Name</th>
-                    <th>Contact Number</th>
-                    <th>Pickup Location</th>
-                    <th>Dropoff Location</th>
-                    <th>Pickup Date</th>
-                    <th>Pickup Time</th>
-                    <th>Key Point</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for booking in work %}
-                <tr>
-                    <td>{{ booking.full_name }}</td>
-                    <td>{{ booking.contact_number }}</td>
-                    <td>{{ booking.pickup_location }}</td>
-                    <td>{{ booking.dropoff_location }}</td>
-                    <td>{{ booking.pickup_date }}</td>
-                    <td>{{ booking.pickup_time }}</td>
-                    <td>{{ booking.key_point }}</td>
-                    <td class="action-buttons">
-                        <a href="{% url 'view_vehicle' booking.vehicle.id %}"><button>View Vehicle</button></a>
-                        <a href="{% url 'update_status' booking.id  %}"><button type="onclick>">Update Status</button></a>
-                        <a href="{% url 'share_location_view' booking.id %}"><button>Share Location</button></a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="8" style="text-align: center;">No bookings available</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </main>
-
+        {% empty %}
+        <p style="text-align: center; width: 100%;">No bookings available</p>
+        {% endfor %}
+    </div>
+    <div class="footer">&copy; 2025 Dropcaro</div>
 </body>
 </html>

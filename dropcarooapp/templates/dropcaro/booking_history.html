@@ -128,12 +128,12 @@
     <header>
         <div class="logo">My Vehicles</div>
         <nav>
-            <ul>
+            {% comment %} <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="#">How It Works</a></li>
                 <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
                 <li><a href="#">About</a></li>
-            </ul>
+            </ul> {% endcomment %}
         </nav>
         <button class="logout-btn">Log Out</button>
     </header>
@@ -144,7 +144,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Vehicle Number</th>
+                        {% comment %} <th>Vehicle Number</th> {% endcomment %}
                         <th>Driver Name</th>
                         <th>Contact Number</th>
                         <th>Actions</th>
@@ -153,7 +153,7 @@
                 <tbody>
                     {% for booking in driver_bookings %}
                     <tr>
-                        <td>{{ booking.driver.phone }}</td>
+                        {% comment %} <td>{{ booking.driver.phone }}</td> {% endcomment %}
                         <td>{{ booking.driver.user.username  }}</td>
                         <td>{{ booking.driver.phone }}</td>
                         <td>

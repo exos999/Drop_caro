@@ -36,6 +36,7 @@ urlpatterns = [
      path('book_driver/', views.book_driver, name='book_driver'),
      path('vehicle_reg/', views.vehicle_reg, name='vehicle_reg'),
      path('driverview/', views.driverview, name='driverview'),
+     path('add_driver/', views.add_driver, name='add_driver'),
      path('edit_user/', views.edit_user, name='edit_user'),
      
      path('map/', views.map, name='map'),
@@ -58,8 +59,7 @@ urlpatterns = [
     path('my_maintenance/', views.my_maintenance, name='my_maintenance'),
     path('edit_driver/', views.edit_driver, name='edit_driver'),
     path('driver_notification/', views.driver_notification, name='driver_notification'),
-    path('update_status/<int:booking_id>/', views.update_status, name='update_status'),
-    path('maintenance_checklist/', views.maintenance_checklist, name='maintenance_checklist'),
+path('update_status/<int:booking_id>/', views.update_status, name='update_status'),    path('maintenance_checklist/', views.maintenance_checklist, name='maintenance_checklist'),
 
 
      
@@ -69,7 +69,7 @@ urlpatterns = [
     path('manage_users/', views.manage_users, name='manage_users'),
     path('manage_drivers/', views.manage_drivers, name='manage_drivers'),
     path('vehicle_details/', views.vehicle_details, name='vehicle_details'),
-    path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),  # Change deactivate to delete
+    path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('delete_driver/<int:driver_id>/', views.delete_driver, name='delete_driver'),  # Change deactivate to delete
     path('delete_vehicle/<int:vehicle_id>/', views.delete_vehicle, name='delete_vehicle'),
     path('delete_booking/<int:booking_id>/', views.delete_booking, name='delete_booking'),
@@ -102,6 +102,21 @@ urlpatterns = [
     path('get_live_location/<int:task_id>/', views.get_live_location, name='get_live_location'),
     path('view_live_location/<int:task_id>/', views.view_live_location, name='view_live_location'),
     path('maintainance_history/<int:vehicle_id>/', views.maintainance_history, name='maintainance_history'),
-
-
+    path('complete_maintenance/<int:request_id>/', views.complete_maintenance, name='complete_maintenance'),
+   
+#    clear_notifications
+    path('clear_notifications/', views.clear_notifications, name='clear_notifications'),
+    path('clear_all_notifications/', views.clear_all_notifications, name='clear_all_notifications'),
+    path('clear_user_notifications/', views.clear_user_notifications, name='clear_user_notifications'),
+    path('bookdriver_payment/', views.bookdriver_payment, name='bookdriver_payment'),
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
 ] 

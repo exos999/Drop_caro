@@ -4,124 +4,178 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Drivers</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f0f0f0;
+            color: black;
         }
 
         header {
-            background-color: #000;
-            color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 20px;
-        }
-
-        header a:hover {
-            text-decoration: underline;
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         main {
-            padding: 20px;
+            padding: 30px;
+            text-align: center;
         }
 
         h1 {
+            color: black;
+            font-weight: bold;
+            margin-bottom: 20px;
             text-align: center;
-            color: #333;
+        }
+
+        .card {
+            background: white;
+            width: 95%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-start; /* Move button to the left */
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            text-decoration: none;
+            color: white;
+            font-size: 1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        .btn.add {
+            background-color: #28a745; /* Green */
+        }
+
+        .btn.add:hover {
+            background-color: #218838;
+        }
+
+        .btn.delete {
+            background-color: #28a745; /* Green */
+        }
+
+        .btn.delete:hover {
+            background-color: #218838;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #fff;
-        }
-
-        table th, table td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
+            margin-top: 10px;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
         table th {
-            background-color: #f8f8f8;
+            background: black;
+            color: white;
+            padding: 14px;
+            text-align: left;
+            font-size: 1.1em;
+            text-transform: uppercase;
+        }
+
+        table td {
+            padding: 14px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
         }
 
         table tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background: #e0e0e0;
         }
 
-        .footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #000;
-            color: #fff;
-            margin-top: 20px;
+        table tr:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        img {
+            border-radius: 50%;
+            border: 3px solid black;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div>
-            <span style="font-weight: bold; font-size: 1.2em;">Dropcaro</span>
-        </div>
-    </header>
+    <header>Dropcaro</header>
     <main>
-        <h1>Manage Drivers</h1>
-        <a href="{% url 'driver_reg' %}"><button>Add Driver</button></a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Full Name</th>
-                    <th>User Name</th>
-                    <th>Email Address</th>
-                    <th>Password</th>
-                    <th>Phone Number</th>
-                    <th>Driver's License Number</th>
-                    <th>city</th>
-                    <th>Upload Driver Photo</th>
-                    <th>Date of Birth</th>
-                    
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for driver in drivers %}
-                <tr>
-                    <td>{{ driver.fullname }}</td>
-                    <td>{{ driver.user.username }}</td>
-                    <td>{{ driver.email }}</td>
-                    <td>{{ driver.password }}</td>
-                    <td>{{ driver.phone }}</td>
-                    <td>{{ driver.license_number }}</td>
-                    <td>{{ driver.city }}</td>
-                    <td>
-                        {% if driver.photo %}
-                        <img src="{{ driver.photo.url }}" alt="Driver Photo" style="width:50px;height:50px;">
-                        {% else %}
-                        No photo
-                        {% endif %}
-                    </td>
-                    <td>{{ driver.date_of_birth }}</td>
-                    <td>
-                        {% comment %} <a href="" class="edit-btn" style="padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-right: 5px;">Edit</a> {% endcomment %}
-                        <a href="{% url 'delete_driver' driver.id %}" class="delete-btn" style="padding: 5px 10px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px;">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="card">
+            <h1>Manage Drivers</h1>
+            <div class="button-container">
+                <a href="{% url 'add_driver' %}" class="btn add">Add Driver</a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>User Name</th>
+                        <th>Email Address</th>
+                        <th>Phone Number</th>
+                        <th>License Number</th>
+                        <th>City</th>
+                        <th>Photo</th>
+                        <th>Date of Birth</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for driver in drivers %}
+                    <tr>
+                        <td>{{ driver.fullname }}</td>
+                        <td>{{ driver.user.username }}</td>
+                        <td>{{ driver.email }}</td>
+                        <td>{{ driver.phone }}</td>
+                        <td>{{ driver.license_number }}</td>
+                        <td>{{ driver.city }}</td>
+                        <td>
+                            {% if driver.photo %}
+                            <img src="{{ driver.photo.url }}" alt="Driver Photo">
+                            {% else %}
+                            No photo
+                            {% endif %}
+                        </td>
+                        <td>{{ driver.date_of_birth }}</td>
+                        <td class="btn-group">
+                            <a href="{% url 'delete_driver' driver.id %}" class="btn delete">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </main>
 </body>
 </html>

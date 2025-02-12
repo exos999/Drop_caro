@@ -9,85 +9,127 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #fff;
+            color: #000;
         }
-
+        
         header {
             background-color: #000;
             color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
         }
-
-        header a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 20px;
-        }
-
-        header a:hover {
-            text-decoration: underline;
-        }
-
+        
         main {
             padding: 20px;
-        }
-
-        h1 {
             text-align: center;
+        }
+        
+        h1 {
+            color: #000;
+        }
+        
+        /* Move Add User button to the left */
+        .button-container {
+            display: flex;
+            justify-content: flex-start;
+            width: 90%;
+            margin: 10px auto;
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.9em;
+            display: inline-block;
+        }
+        
+        .btn.add {
+            background: #28a745; /* Green color */
+            margin-bottom: 10px; /* Space below the button */
+        }
+        
+        .btn.delete {
+            background: #dc3545; /* Red color */
+        }
+        
+        .btn:hover {
+            background: #218838;
+        }
+        
+        /* Table Styling */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+        }
+        
+        table th {
+            background: #000;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 1.1em;
+        }
+        
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
             color: #333;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #fff;
-        }
-
-        table th, table td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
-
-        table th {
-            background-color: black;
-        }
-
+        
         table tr:nth-child(even) {
-            background-color: #f8f8f8;
+            background: #f1f1f1;
         }
-
-        .footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #000;
-            color: #fff;
-            margin-top: 20px;
+        
+        table tr:hover {
+            background: #ddd;
+            transition: 0.3s;
         }
-    </style>
+        
+        /* Button Group */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Image Styling */
+        img {
+            border-radius: 50%;
+            border: 2px solid black;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+    </style>        
 </head>
 <body>
-    <header>
-        <div>
-            <span style="font-weight: bold; font-size: 1.2em;">Dropcaro</span>
-        </div>
-    </header>
+    <header>Dropcaro</header>
     <main>
         <h1>Manage Users</h1>
-        <a href="{% url 'add_user' %}"><button>Add user</button></a>
+        <div class="button-container">
+            <a href="{% url 'add_user' %}" class="btn add">Add User</a>
+        </div>
+        
         <table>
             <thead>
-                <tr style="color: #fcf7f7;">
+                <tr>
                     <th>Full Name</th>
                     <th>User Name</th>
                     <th>Address</th>
                     <th>Email Address</th>
                     <th>Status</th>
-                    <th>Password</th>
                     <th>Phone Number</th>
                     <th>Action</th>
                 </tr>
@@ -100,19 +142,14 @@
                     <td>{{ user.address_line1 }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.user.is_active|yesno:"Active,Inactive" }}</td>
-                    <td>{{ user.password }}</td> <!-- Consider not displaying plain text passwords -->
                     <td>{{ user.phone }}</td>
                     <td>
-                        {% comment %} <a href="" class="edit-btn" style="padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-right: 5px;">Edit</a> {% endcomment %}
-                        <a href="{% url 'delete_user' user.id %}"  class="delete-btn" style="padding: 5px 10px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px;">Delete</a>
+                        <a href="{% url 'delete_user' user.id %}" class="btn delete">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        
- 
     </main>
-
 </body>
 </html>
