@@ -447,7 +447,7 @@ def view_vehicle(request,vehicle_id):
 
 
 def my_maintenance(request):
-    bookmaintance=MaintenanceRequest.objects.all()    
+    bookmaintance=MaintenanceRequest.objects.filter(driver__user=request.user)    
     return render(request, 'driver_dashboard/my_maintenance.html',{"bookmaintance":bookmaintance})
 
 

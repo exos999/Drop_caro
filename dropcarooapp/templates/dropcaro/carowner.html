@@ -20,46 +20,41 @@
       }
     }
 
-    // Validation on form submit
     function validateForm(event) {
-      let isValid = true;
-      
-      validateField('id_fullname', 'fullnameError', 'Full name is required.', value => value.trim() === '');
-      validateField('id_username', 'usernameError', 'Username is required.', value => value.trim() === '');
+      validateField('id_fullname', 'fullnameError', 'Full name must contain only alphabets.', value => !/^[A-Za-z ]+$/.test(value.trim()));
+      validateField('id_username', 'usernameError', 'Username must contain only alphabets.', value => !/^[A-Za-z]+$/.test(value.trim()));
       validateField('id_address_line1', 'addressError', 'Address is required.', value => value.trim() === '');
       validateField('id_email', 'emailError', 'Enter a valid email address.', value => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
       validateField('password', 'passwordError', 'Password must be at least 6 characters long.', value => value.length < 6);
       validateField('id_phone', 'phoneError', 'Please enter a valid 10-digit phone number.', value => !/^[0-9]{10}$/.test(value));
       
-      // Prevent form submission if any validation fails
       const invalidFields = document.querySelectorAll('.invalid');
       if (invalidFields.length > 0) {
         event.preventDefault();
       }
     }
 
-    // Real-time validation for each input field
     function addRealTimeValidation() {
       document.getElementById('id_fullname').addEventListener('input', function() {
-        validateField('id_fullname', 'fullnameError', 'Full name is required.', value => value.trim() === '');
+        validateField('id_fullname', 'fullnameError', 'Full name must contain only alphabets.', value => !/^[A-Za-z ]+$/.test(value.trim()));
       });
       
       document.getElementById('id_username').addEventListener('input', function() {
-        validateField('id_username', 'usernameError', 'Username is required.', value => value.trim() === '');
+        validateField('id_username', 'usernameError', 'Username must contain only alphabets.', value => !/^[A-Za-z]+$/.test(value.trim()));
       });
-
+      
       document.getElementById('id_address_line1').addEventListener('input', function() {
         validateField('id_address_line1', 'addressError', 'Address is required.', value => value.trim() === '');
       });
-
+      
       document.getElementById('id_email').addEventListener('input', function() {
         validateField('id_email', 'emailError', 'Enter a valid email address.', value => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
       });
-
+      
       document.getElementById('password').addEventListener('input', function() {
         validateField('password', 'passwordError', 'Password must be at least 6 characters long.', value => value.length < 6);
       });
-
+      
       document.getElementById('id_phone').addEventListener('input', function() {
         validateField('id_phone', 'phoneError', 'Please enter a valid 10-digit phone number.', value => !/^[0-9]{10}$/.test(value));
       });

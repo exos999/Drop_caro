@@ -7,80 +7,6 @@
   <title>Driver Registration</title>
   <link rel="stylesheet" href="{% static 'css/newa.css' %}">
 
-  <script>
-    function validateField(fieldId, errorId, message, condition) {
-      const field = document.getElementById(fieldId);
-      const errorDiv = document.getElementById(errorId);
-      if (condition(field.value)) {
-        errorDiv.textContent = message;
-        field.classList.add('invalid');
-      } else {
-        errorDiv.textContent = '';
-        field.classList.remove('invalid');
-      }
-    }
-
-    function addRealTimeValidation() {
-      document.getElementById('full_name').addEventListener('input', function() {
-        validateField('full_name', 'fullNameErrorMessage', 'Full name is required.', value => value.trim() === '');
-      });
-
-      document.getElementById('id_username').addEventListener('input', function() {
-        validateField('id_username', 'usernameErrorMessage', 'Username is required.', value => value.trim() === '');
-      });
-
-      document.getElementById('email').addEventListener('input', function() {
-        validateField('email', 'emailErrorMessage', 'Please enter a valid email address.', value => !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value));
-      });
-
-      document.getElementById('password').addEventListener('input', function() {
-        validateField('password', 'passwordErrorMessage', 'Password must be at least 6 characters.', value => value.length < 6);
-      });
-
-      document.getElementById('phone').addEventListener('input', function() {
-        validateField('phone', 'phoneErrorMessage', 'Please enter a valid phone number.', value => !/^[0-9]{10}$/.test(value));
-      });
-
-      document.getElementById('license_number').addEventListener('input', function() {
-        validateField('license_number', 'licenseErrorMessage', 'License number must be exactly 16 characters.', value => value.trim().length !== 16);
-      });
-
-      document.getElementById('uploadPhoto').addEventListener('change', function() {
-        const errorDiv = document.getElementById('photoErrorMessage');
-        if (this.files.length === 0) {
-          errorDiv.textContent = 'Please upload a photo.';
-          this.classList.add('invalid');
-        } else {
-          errorDiv.textContent = '';
-          this.classList.remove('invalid');
-        }
-      });
-
-      document.getElementById('dob').addEventListener('input', function() {
-        validateField('dob', 'dobErrorMessage', 'Date of birth is required.', value => value === '');
-      });
-
-      document.getElementById('city').addEventListener('input', function() {
-        validateField('city', 'cityErrorMessage', 'City is required.', value => value.trim() === '');
-      });
-    }
-
-    function validatePhoneNumber() {
-      var phoneNumber = document.getElementById("phone").value;
-      var phoneErrorMessage = document.getElementById("phoneErrorMessage");
-      var phonePattern = /^[0-9]{10}$/;
-
-      if (!phonePattern.test(phoneNumber)) {
-        phoneErrorMessage.textContent = "Please enter a valid phone number";
-        phoneErrorMessage.style.color = "red";
-      } else {
-        phoneErrorMessage.textContent = "";
-      }
-    }
-
-    window.onload = addRealTimeValidation;
-  </script>
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -97,7 +23,6 @@
       width: 400px;
       background: white;
       padding: 20px;
-      padding-top: 500px; /* Added upper padding */
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
     }
@@ -148,12 +73,47 @@
       background: #218838;
     }
   </style>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      function validateField(field, errorId, message, pattern) {
+        const value = field.value.trim();
+        const errorElement = document.getElementById(errorId);
+        if (!pattern.test(value)) {
+          errorElement.textContent = message;
+          field.classList.add("invalid");
+        } else {
+          errorElement.textContent = "";
+          field.classList.remove("invalid");
+        }
+      }
+      
+      document.getElementById("full_name").addEventListener("input", function() {
+        validateField(this, "fullNameErrorMessage", "Only alphabets allowed", /^[A-Za-z ]+$/);
+      });
 
+      document.getElementById("id_username").addEventListener("input", function() {
+        validateField(this, "usernameErrorMessage", "Only alphabets allowed", /^[A-Za-z0-9]+$/);
+      });
+
+      document.getElementById("phone").addEventListener("input", function() {
+        validateField(this, "phoneErrorMessage", "Only 10 digit numbers allowed", /^[0-9]{10}$/);
+      });
+
+      document.getElementById("license_number").addEventListener("input", function() {
+        validateField(this, "licenseErrorMessage", "License must be 16 characters", /^[0-9]{16}$/);
+      });
+
+      document.getElementById("city").addEventListener("input", function() {
+        validateField(this, "cityErrorMessage", "Only alphabets allowed", /^[A-Za-z ]+$/);
+      });
+    });
+  </script>
 </head>
 <body>
   <div class="container">
     <h1>Driver Registration</h1>
-    <form id="driverRegistrationForm" method="post" enctype="multipart/form-data" action="{% url 'driver_reg' %}" onsubmit="return validateForm()">
+    <form id="driverRegistrationForm" method="post" enctype="multipart/form-data" action="{% url 'driver_reg' %}">
       {% csrf_token %}
 
       <label for="full_name">Full Name:</label>
@@ -173,7 +133,7 @@
       <span id="passwordErrorMessage" class="error"></span>
 
       <label for="phone">Phone Number:</label>
-      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required onblur="validatePhoneNumber()">
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
       <span id="phoneErrorMessage" class="error"></span>
 
       <label for="license_number">Driver's License Number:</label>

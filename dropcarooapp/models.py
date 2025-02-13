@@ -22,6 +22,7 @@ class UserDetails(models.Model):
     fullname = models.CharField(max_length=20, blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE,blank=True, null=True)
     email = models.EmailField(unique=True)
+    photo= models.ImageField(upload_to='user_photos/', blank=True, null=True)
     password = models.CharField(max_length=10, blank=True, null=True)
     phone = models.CharField(max_length=10, null=True, blank=True)
     address_line1 = models.TextField(null=True, blank=True)
@@ -45,7 +46,7 @@ class MaintenanceRequest(models.Model):
     driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
     services = models.TextField()
       
-    description = models.TextField(blank=True, null=True)
+    vehicle_address=models.CharField(max_length=255,blank=True, null=True)
     request_date = models.DateField()
     request_time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)

@@ -48,6 +48,22 @@
         padding-bottom: 16px;
       }
 
+      .header .actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .home-icon {
+        font-size: 24px;
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .home-icon:hover {
+        color: #0044cc;
+      }
+
       .clear-all {
         background-color: var(--danger-color);
         color: white;
@@ -59,6 +75,22 @@
 
       .clear-all:hover {
         background-color: #b91c1c;
+      }
+
+      .refresh-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .refresh-btn:hover {
+        background-color: #0044cc;
       }
 
       .notifications {
@@ -125,10 +157,24 @@
     <div class="notification-container">
       <div class="header">
         <h1>Notifications</h1>
-        <form method="post" action="{% url 'clear_all_notifications' %}">
-          {% csrf_token %}
-          <button type="submit" class="clear-all">Clear All</button>
-        </form>
+        <div class="actions">
+          <!-- Home Icon -->
+          <a href="{% url 'driver_dashboard' %}" class="home-icon" title="Home">
+            <i class="fas fa-home"></i>
+          </a>
+
+          <!-- Refresh Button -->
+          
+          <a href="{% url 'driver_dashboard' %}"><button type="button" class="refresh-btn" onclick="location.reload();">
+            <i class="fas fa-sync-alt"></i> Back
+          </button></a
+
+          <!-- Clear All Notifications Button -->
+          <form method="post" action="{% url 'clear_all_notifications' %}">
+            {% csrf_token %}
+            <button type="submit" class="clear-all">Clear All</button>
+          </form>
+        </div>
       </div>
 
       <ul class="notifications">
