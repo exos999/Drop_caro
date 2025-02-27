@@ -90,7 +90,8 @@ urlpatterns = [
     
     
     # payment
-    
+    path('view_payments/<int:driver_id>/', views.view_payments, name='view_payments'),
+
     path('payment/', views.payment, name='payment'),
     path('sucessfull_payment/', views.sucessfull_payment, name='sucessfull_payment'),
     path('delete_payment/<int:payment_id>/', views.delete_payment, name='delete_payment'),

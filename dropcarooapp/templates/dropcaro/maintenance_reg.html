@@ -74,9 +74,9 @@
                   <option value="six_months">Monthly for Six Months</option>
               </select> -->
 
-              <label for="description">Address:</label>
-              <textarea id="description" name="description" placeholder="Add your located address" rows="4" oninput="validateDescription()"></textarea>
-              <div id="description-error" class="error-message"></div>
+              <label for="address">Address:</label>
+              <textarea id="address" name="address" placeholder="Add your located address" rows="4" oninput="validateDescription()"></textarea>
+              <div id="address-error" class="error-message"></div>
 
               <label for="request-date">Preferred Date:</label>
               <input type="date" id="request-date" name="request_date" required oninput="validateRequestDate()">
@@ -104,11 +104,11 @@
         }
 
         // Real-time validation for Description
-        function validateDescription() {
-            const description = document.getElementById('description').value.trim();
-            const errorDiv = document.getElementById('description-error');
-            if (description.length < 10) {
-                errorDiv.textContent = 'Description should be at least 10 characters long.';
+        function validateAddress() {
+            const address = document.getElementById('address').value.trim();
+            const errorDiv = document.getElementById('address-error');
+            if (address.length < 10) {
+                errorDiv.textContent = 'Address should be at least 10 characters long.';
             } else {
                 errorDiv.textContent = '';
             }

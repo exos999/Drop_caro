@@ -45,8 +45,7 @@ class MaintenanceRequest(models.Model):
     vehicle = models.ForeignKey(VehicleRegistration, on_delete=models.CASCADE,null=True,blank=True)
     driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
     services = models.TextField()
-      
-    vehicle_address=models.CharField(max_length=255,blank=True, null=True)
+    address=models.CharField(max_length=255,blank=True, null=True)
     request_date = models.DateField()
     request_time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -74,6 +73,7 @@ class Payment(models.Model):
     ]
 
     user=models.ForeignKey(UserDetails,on_delete=models.CASCADE,null=True,blank=True)
+    driver = models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHOD_CHOICES)
     amount = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
     upi_id = models.CharField(max_length=100,null=True,blank=True)

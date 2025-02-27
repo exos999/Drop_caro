@@ -235,16 +235,16 @@
                 <!-- First card with Total Users and Total Drivers -->
                 <div class="dashboard-card">
                     <h2>User & Driver Count</h2>
-                    <p><strong>Total Users:</strong> 320</p>
-                    <p><strong>Total Drivers:</strong> 150</p>
+                    <p><strong>Total Users:</strong> {{ total_users }}</p>
+                    <p><strong>Total Drivers:</strong> {{ total_drivers }}</p>
                 </div>
-
-                <!-- Services card with Driver and Maintenance booked count -->
+                
                 <div class="dashboard-card">
                     <h2>Services</h2>
-                    <p><strong>Driver Booked Count:</strong> 80</p>
-                    <p><strong>Maintenance Booked Count:</strong> 40</p>
+                    <p><strong>Driver Booked Count:</strong> {{ driver_bookings }}</p>
+                    <p><strong>Maintenance Booked Count:</strong> {{ maintenance_bookings }}</p>
                 </div>
+                
 
                 <div class="dashboard-card">
                     <h2>Recent Activities</h2>

@@ -161,20 +161,54 @@ def book_maintance_view(request):
 def user_dashboard_view(request):
     return render(request,'dropcaro/user_dashboard.html')
 
+
+from datetime import date, timedelta
+
 @login_required
 def driver_dashboard_view(request):
-    driver=request.user.driverdetails
-    booking_count=DriverBooking.objects.filter(driver=driver).count()
-    maintance_count=MaintenanceRequest.objects.filter(driver=driver).count()
-    total_count=booking_count+maintance_count
-    return render(request,'dropcaro/driver_dashboard.html',{"booking_count":booking_count,"maintance_count":maintance_count,"total_count":total_count})
-
+    driver = request.user.driverdetails
+    
+    # Get current date info for template
+    today = date.today()
+    tomorrow = today + timedelta(days=1)
+    
+    # Get actual bookings and maintenance requests
+    driver_bookings = DriverBooking.objects.filter(driver=driver).order_by('-created_at')
+    maintenance_requests = MaintenanceRequest.objects.filter(driver=driver).order_by('-created_at')
+    
+    # Count for tabs
+    booking_count = driver_bookings.count()
+    maintance_count = maintenance_requests.count()
+    total_count = booking_count + maintance_count
+    
+    return render(request, 'dropcaro/driver_dashboard.html', {
+        "booking_count": booking_count,
+        "maintance_count": maintance_count,
+        "total_count": total_count,
+        "driver_bookings": driver_bookings,
+        "maintenance_requests": maintenance_requests,
+        "today": today,
+        "tomorrow": tomorrow
+    })
 
 @login_required
 def admin_dashboard_view(request):  
-    notifications=Notification.objects.filter(user=request.user)
-    return render(request,'dropcaro/admin_dashboard.html',{"notifications":notifications})
+    total_users = UserDetails.objects.count()  # Counts all registered users
+    total_drivers = DriverDetails.objects.count()  # Counts all registered drivers
+    driver_bookings = DriverBooking.objects.count()  # Count of booked drivers
+    maintenance_bookings = MaintenanceRequest.objects.count()  # Count of maintenance bookings
 
+    notifications = Notification.objects.filter(user=request.user)  # Fetch notifications for logged-in admin
+
+    context = {
+        "notifications": notifications,
+        "total_users": total_users,
+        "total_drivers": total_drivers,
+        "driver_bookings": driver_bookings,
+        "maintenance_bookings": maintenance_bookings,
+    }
+
+    return render(request, 'dropcaro/admin_dashboard.html', context)
 
 def list_my_vehicles(request):
     vehicles = VehicleRegistration.objects.filter(owner__user=request.user)
@@ -782,5 +816,37 @@ def clear_user_notifications(request):
     return redirect('user_dashboard')  # Redirect to the notifications page with an error message
 
 
+
+from django.contrib import messages
+from .models import Payment
+
+@login_required
 def bookdriver_payment(request):
-    return render(request,'payment/bookdriver_payment.html')
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            payment = form.save(commit=False)
+            payment.amount = 499  # Set the fixed price
+            payment.user = request.user
+            payment.save()
+            messages.success(request, 'Payment successful!')
+            return redirect('sucessfull_payment')  # Redirect to a success page
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = PaymentForm(initial={'amount': 499})  # Set the initial amount to 499
+
+    return render(request, 'payment/bookdriver_payment.html', {'form': form})
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import DriverDetails, Payment
+
+def view_payments(request, driver_id):
+    driver = get_object_or_404(DriverDetails, id=driver_id)
+    payments = Payment.objects.filter(driver=driver)
+    
+    return render(request, 'payment/view_payments.html', {
+        'driver': driver,
+        'payments': payments
+    })
