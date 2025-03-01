@@ -36,7 +36,7 @@ class MaintenanceRequestForm(forms.ModelForm):
                 ('engineStart', 'Engine Start'),
                 ('washing', 'Washing'),
             ]),
-            'description': forms.Textarea(attrs={'rows': 4}),
+            'address': forms.Textarea(attrs={'rows': 4}),
         }
 
 

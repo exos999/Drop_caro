@@ -6,12 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Maintenance Request</title>
   <link rel="stylesheet" href="{% static 'css/MaintenanceRegi.css' %}">
-  <style>
-    .error-message {
-      color: red;
-      font-size: 0.85rem;
-    }
-  </style>
 </head>
 <body>
     <header>
@@ -29,11 +23,10 @@
     <main>
         <section class="maintenance-container">
             <h1>Maintenance Request</h1>
-            <form method="POST" class="maintenance-form" action="{% url 'maintenance_reg'%}" onsubmit="return validateForm()">
+            <form method="POST" class="maintenance-form" action="{% url 'maintenance_reg'%}">
             {% csrf_token %}  
               <label for="full_name">Full Name:</label>
-              <input type="text" id="full-name" name="full_name" placeholder="Enter your full name" required oninput="validateFullName()">
-              <div id="full-name-error" class="error-message"></div>
+              <input type="text" id="full-name" name="full_name" placeholder="Enter your full name" required>
 
               <label for="vehicle-number">Vehicle Number:</label>
               <select id="vehicle-number" name="vehicle" required>
@@ -65,94 +58,18 @@
                 </div>
               </div>
               <br>
-
-              <!-- New Dropdown for Monthly Options
-              <label for="monthly-options">Monthly Plan:</label>
-              <select id="monthly-options" name="monthly_plan" required>
-                  <option value="" disabled selected>Select a plan</option>
-                  <option value="one_year">Monthly for One Year</option>
-                  <option value="six_months">Monthly for Six Months</option>
-              </select> -->
-
               <label for="address">Address:</label>
-              <textarea id="address" name="address" placeholder="Add your located address" rows="4" oninput="validateDescription()"></textarea>
-              <div id="address-error" class="error-message"></div>
-
+              <input type="text" id="address" name="address" placeholder="Enter your address" required>
+              
               <label for="request-date">Preferred Date:</label>
-              <input type="date" id="request-date" name="request_date" required oninput="validateRequestDate()">
-              <div id="request-date-error" class="error-message"></div>
-
+              <input type="date" id="request-date" name="request_date" required>
+              
               <label for="request-time">Preferred Time:</label>
-              <input type="time" id="request-time" name="request_time" required oninput="validateRequestTime()">
-              <div id="request-time-error" class="error-message"></div>
-
+              <input type="time" id="request-time" name="request_time" required>
+              
               <a href="#"><button type="submit" class="submit-btn">Select Plans</button></a>
             </form>
         </section>
     </main>
-
-    <script>
-        // Real-time validation for Full Name
-        function validateFullName() {
-            const fullName = document.getElementById('full-name').value.trim();
-            const errorDiv = document.getElementById('full-name-error');
-            if (fullName.length < 3) {
-                errorDiv.textContent = 'Full Name must be at least 3 characters long.';
-            } else {
-                errorDiv.textContent = '';
-            }
-        }
-
-        // Real-time validation for Description
-        function validateAddress() {
-            const address = document.getElementById('address').value.trim();
-            const errorDiv = document.getElementById('address-error');
-            if (address.length < 10) {
-                errorDiv.textContent = 'Address should be at least 10 characters long.';
-            } else {
-                errorDiv.textContent = '';
-            }
-        }
-
-        // Real-time validation for Preferred Date
-        function validateRequestDate() {
-            const requestDate = document.getElementById('request-date').value;
-            const errorDiv = document.getElementById('request-date-error');
-            const today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-            if (requestDate < today) {
-                errorDiv.textContent = 'Preferred Date must be today or a future date.';
-            } else {
-                errorDiv.textContent = '';
-            }
-        }
-
-        // Real-time validation for Preferred Time
-        function validateRequestTime() {
-            const requestTime = document.getElementById('request-time').value;
-            const errorDiv = document.getElementById('request-time-error');
-            if (!requestTime) {
-                errorDiv.textContent = 'Preferred Time is required.';
-            } else {
-                errorDiv.textContent = '';
-            }
-        }
-
-        // Validate form before submission
-        function validateForm() {
-            validateFullName();
-            validateDescription();
-            validateRequestDate();
-            validateRequestTime();
-            
-            // Check for errors and prevent form submission if any
-            const errorMessages = document.querySelectorAll('.error-message');
-            for (let error of errorMessages) {
-                if (error.textContent !== '') {
-                    return false;
-                }
-            }
-            return true;
-        }
-    </script>
 </body>
 </html>

@@ -41,14 +41,14 @@ class VehicleRegistration(models.Model):
 
 
 class MaintenanceRequest(models.Model):
-    full_name = models.CharField(max_length=20)
+    full_name = models.CharField(max_length=20,null=True,blank=True)
     vehicle = models.ForeignKey(VehicleRegistration, on_delete=models.CASCADE,null=True,blank=True)
     driver= models.ForeignKey(DriverDetails, on_delete=models.CASCADE,null=True,blank=True)
     services = models.TextField()
     address=models.CharField(max_length=255,blank=True, null=True)
-    request_date = models.DateField()
-    request_time = models.TimeField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    request_date = models.DateField(null=True,blank=True)
+    request_time = models.TimeField(null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
 
     
 

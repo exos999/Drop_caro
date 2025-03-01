@@ -135,8 +135,8 @@
                 <li><a href="#">About</a></li>
             </ul> {% endcomment %}
         </nav>
-        <button class="logout-btn">Log Out</button>
-    </header>
+        <a href="{% url 'user_dashboard' %}">
+            <button class="logout-btn">Log Out</button></a>    </header>
     <main>
         <section class="vehicle-list">
             <h1>Your Driver bookings</h1>

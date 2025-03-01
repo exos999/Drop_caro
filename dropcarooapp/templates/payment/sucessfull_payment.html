@@ -1,63 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Successful</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4eaf1 100%);
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f3f4f6;
+            padding: 20px;
         }
-        .container {
+
+        .success-container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .success-header {
+            background: linear-gradient(135deg, #0cce6b 0%, #05a54d 100%);
+            padding: 25px 0;
             text-align: center;
-            background: #fff;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
-        .success-image {
-            width: 150px;
-            margin-bottom: 20px;
+
+        .checkmark-circle {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(12, 206, 107, 0.3);
+            position: relative;
+            z-index: 1;
         }
-        .message {
-            font-size: 1.5rem;
-            color: #4285f4;
-            margin-bottom: 10px;
+
+        .checkmark-icon {
+            color: #0cce6b;
+            font-size: 40px;
         }
-        .details {
-            font-size: 1rem;
+
+        .success-confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .success-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .success-title {
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 20px 0 10px;
+        }
+
+        .success-message {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .transaction-details {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .transaction-details h3 {
+            text-align: left;
             color: #555;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
-        .button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: #fff;
-            background-color: #4285f4;
+
+        .transaction-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .transaction-info:last-child {
+            margin-bottom: 0;
+        }
+
+        .transaction-label {
+            color: #666;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .transaction-value {
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
             text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            display: inline-block;
+            text-align: center;
         }
-        .button:hover {
-            background-color: #357ae8;
+
+        .btn-primary {
+            background: #0cce6b;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(12, 206, 107, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #05a54d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(12, 206, 107, 0.25);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0cce6b;
+            border: 2px solid #0cce6b;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fff8;
+            transform: translateY(-2px);
+        }
+
+        .receipt-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 580px) {
+            .success-container {
+                max-width: 100%;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .success-title {
+                font-size: 24px;
+            }
+        }
+
+        /* Confetti Animation */
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confetti-fall 4s ease-out forwards;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="{% static 'images/i.jpg' %}" alt="Payment Successful" class="success-image">
-        <div class="message">Payment Successful</div>
-        <div class="details">Thank you for your payment via Google Pay. Your transaction has been completed successfully.</div>
-        <a href="{% url 'user_dashboard' %}"><button>Go to Homepage</button></a>
+    <div class="success-container">
+        <!-- Success Header with Checkmark -->
+        <div class="success-header">
+            <div class="checkmark-circle">
+                <i class="fas fa-check checkmark-icon"></i>
+            </div>
+            
+            <!-- Dynamic Confetti (added by JS) -->
+            <div class="success-confetti" id="confetti-container"></div>
+        </div>
+        
+        <!-- Success Content -->
+        <div class="success-content">
+            <h1 class="success-title">Payment Successful!</h1>
+            <p class="success-message">
+                Thank you for your payment. Your transaction has been processed successfully. 
+                A confirmation has been sent to your email.
+            </p>
+            
+            <!-- Transaction Details -->
+            <div class="transaction-details">
+                <h3>Transaction Details</h3>
+                
+                <div class="transaction-info">
+                    <span class="transaction-label">Transaction ID</span>
+                    <span class="transaction-value">TXN123456789</span>
+                </div>
+                
+                <div class="transaction-info">
+                    <span class="transaction-label">Date & Time</span>
+                    <span class="transaction-value" id="transaction-date">Loading...</span>
+                </div>
+                
+                <div class="transaction-info">
+                    <span class="transaction-label">Payment Method</span>
+                    <span class="transaction-value" id="payment-method">UPI</span>
+                </div>
+                
+                <div class="transaction-info">
+                    <span class="transaction-label">Amount Paid</span>
+                    <span class="transaction-value" id="amount-paid">₹0.00</span>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="{% url 'user_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+    
+                </a>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Set current date and time
+        const now = new Date();
+        document.getElementById('transaction-date').textContent = now.toLocaleString();
+        
+        // Get URL parameters for dynamic content
+        const urlParams = new URLSearchParams(window.location.search);
+        const amount = urlParams.get('amount') || '0.00';
+        const paymentMethod = urlParams.get('payment_method') || 'UPI';
+        
+        // Update with data from URL
+        document.getElementById('amount-paid').textContent = `₹${amount}`;
+        document.getElementById('payment-method').textContent = 
+            paymentMethod === 'gpay' ? 'Google Pay' : 
+            paymentMethod === 'paytm' ? 'Paytm' : 
+            paymentMethod === 'phonepe' ? 'PhonePe' : paymentMethod;
+        
+        // Create confetti animation
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#0cce6b', '#05a54d', '#ffffff', '#f3ff7d', '#c1ff7d'];
+            const shapes = ['circle', 'square', 'triangle'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetto = document.createElement('div');
+                confetto.className = 'confetti';
+                
+                // Random positioning
+                const left = Math.random() * 100;
+                confetto.style.left = `${left}%`;
+                
+                // Random delay
+                const delay = Math.random() * 3;
+                confetto.style.animationDelay = `${delay}s`;
+                
+                // Random color
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                confetto.style.backgroundColor = color;
+                
+                // Random shape
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                if (shape === 'circle') {
+                    confetto.style.borderRadius = '50%';
+                } else if (shape === 'triangle') {
+                    confetto.style.width = '0';
+                    confetto.style.height = '0';
+                    confetto.style.backgroundColor = 'transparent';
+                    confetto.style.borderLeft = '5px solid transparent';
+                    confetto.style.borderRight = '5px solid transparent';
+                    confetto.style.borderBottom = `10px solid ${color}`;
+                }
+                
+                // Random rotation
+                const rotation = Math.random() * 360;
+                confetto.style.transform = `rotate(${rotation}deg)`;
+                
+                container.appendChild(confetto);
+            }
+        }
+        
+        // Execute confetti animation on page load
+        window.onload = createConfetti;
+    </script>
 </body>
 </html>

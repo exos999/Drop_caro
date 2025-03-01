@@ -37,7 +37,7 @@ urlpatterns = [
      path('vehicle_reg/', views.vehicle_reg, name='vehicle_reg'),
      path('driverview/', views.driverview, name='driverview'),
      path('add_driver/', views.add_driver, name='add_driver'),
-     path('edit_user/', views.edit_user, name='edit_user'),
+     path('edit_user', views.edit_user, name='edit_user'),
      
      path('map/', views.map, name='map'),
      
