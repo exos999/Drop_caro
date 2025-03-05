@@ -228,7 +228,6 @@
             <h1 class="success-title">Payment Successful!</h1>
             <p class="success-message">
                 Thank you for your payment. Your transaction has been processed successfully. 
-                A confirmation has been sent to your email.
             </p>
             
             <!-- Transaction Details -->
@@ -251,8 +250,8 @@
                 </div>
                 
                 <div class="transaction-info">
-                    <span class="transaction-label">Amount Paid</span>
-                    <span class="transaction-value" id="amount-paid">₹0.00</span>
+                    <span class="transaction-label"></span>
+                    <span class="transaction-value" id="amount-paid"></span>
                 </div>
             </div>
             
@@ -272,11 +271,11 @@
         
         // Get URL parameters for dynamic content
         const urlParams = new URLSearchParams(window.location.search);
-        const amount = urlParams.get('amount') || '0.00';
+        const amount = urlParams.get('amount') || '';
         const paymentMethod = urlParams.get('payment_method') || 'UPI';
         
         // Update with data from URL
-        document.getElementById('amount-paid').textContent = `₹${amount}`;
+        document.getElementById('amount-paid').textContent = `${amount}`;
         document.getElementById('payment-method').textContent = 
             paymentMethod === 'gpay' ? 'Google Pay' : 
             paymentMethod === 'paytm' ? 'Paytm' : 

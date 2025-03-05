@@ -1,60 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Payment Invoices</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payments</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: #333;
+      background-color: #f5f5f5;
+      padding: 20px;
+      margin: 0;
+    }
     
-    <!-- Load static files -->
-    {% load static %}
-
-    <!-- Link to CSS -->
-    <link rel="stylesheet" href="{% static 'css/payment_view.css' %}">
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: #000;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    .payments-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    
+    .payments-table th {
+      background-color: #f8f8f8;
+      color: #000;
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 15px;
+      border-bottom: 2px solid #ddd;
+    }
+    
+    .payments-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+      color: #333;
+    }
+    
+    .payments-table tr:hover {
+      background-color: #f9f9f9;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 0;
+      color: #666;
+      font-style: italic;
+    }
+    
+    .payment-id {
+      font-family: monospace;
+      color: #000;
+    }
+    
+    .payment-amount {
+      font-weight: 600;
+    }
+    
+    .payment-date {
+      color: #666;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="logo">Dropcaro</div>
-    </header>
-    <main>
-        <section class="invoice-container">
-            <h1>Payment Invoices</h1>
-            
-            {% if viewpay %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Invoice ID</th>
-                            <th>Customer Name</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            {% comment %} <th>Status</th> {% endcomment %}
-                            {% comment %} <th>Action</th> {% endcomment %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for invoice in viewpay %}
-                            <tr>
-                                <td>{{ invoice.id }}</td>
-                                <td>{{ invoice.user.user.username }}</td>
-                                <td>{{ invoice.amount }}</td>
-                                <td>{{ invoice.createdat }}</td>
-                                {% comment %} <td>{{ invoice.status }}</td> {% endcomment %}
-                                
-                                    {% comment %} <a href="{% url 'invoice_detail' invoice.id %}" class="btn-view">View</a> {% endcomment %}
-                                
-                                {% comment %} <td>
-                                    <a href="{% url 'edit_maintenance' request.id %}">Edit</a> |
-                                    <a href="{% url 'delete_payment' payment_id=invoice.id %}"><button>Delete</button></a>
-                                </td> {% endcomment %}
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p class="no-data">No invoices found.</p>
-            {% endif %}
-            
-        </section>
-    </main>
+  <div class="container">
+    <h2>All Payments</h2>
+    
+    <table class="payments-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Payment Method</th>
+          <th>Amount</th>
+          <th>UPI ID</th>
+          <th>Form Version</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for payment in payments %}
+        <tr>
+          <td class="payment-id">{{ payment.id }}</td>
+          <td>{{ payment.get_payment_method_display }}</td>
+          <td class="payment-amount">₹{{ payment.amount }}</td>
+          <td>{{ payment.upi_id }}</td>
+          <td>{{ payment.get_form_version_display }}</td>
+          <td class="payment-date">{{ payment.created_at }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="empty-state">No payments found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>

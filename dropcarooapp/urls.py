@@ -47,6 +47,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('user_notification/', views.user_notification, name='user_notification'),
     path('feedback/', views.feedback, name='feedback'),
+    path('payment/standard/', views.standard_payment_view, name='standard_payment'),
+    path('payment/premium/', views.premium_payment_view, name='premium_payment'),
     
     
 
@@ -90,9 +92,9 @@ urlpatterns = [
     
     
     # payment
-    path('view_payments/<int:driver_id>/', views.view_payments, name='view_payments'),
+    path('view_payments', views.view_payments, name='view_payments'),
 
-    path('payment/', views.payment, name='payment'),
+    # path('payment/', views.payment, name='payment'),
     path('sucessfull_payment/', views.sucessfull_payment, name='sucessfull_payment'),
     path('delete_payment/<int:payment_id>/', views.delete_payment, name='delete_payment'),
     path('notification/', views.notification, name='notification'),
@@ -110,7 +112,7 @@ urlpatterns = [
     path('clear_notifications/', views.clear_notifications, name='clear_notifications'),
     path('clear_all_notifications/', views.clear_all_notifications, name='clear_all_notifications'),
     path('clear_user_notifications/', views.clear_user_notifications, name='clear_user_notifications'),
-    path('bookdriver_payment/', views.bookdriver_payment, name='bookdriver_payment'),
+    # path('bookdriver_payment/', views.bookdriver_payment, name='bookdriver_payment'),
      
      
      

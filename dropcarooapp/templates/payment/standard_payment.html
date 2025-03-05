@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --text-color: #1f2937;
+            --light-gray: #f9fafb;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+        }
+        
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f6f7ff 0%, #eef1ff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+        
+        .payment-form {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            width: 480px;
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-form::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-color), #818cf8);
+        }
+        
+        .payment-form h1 {
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: var(--text-color);
+            text-align: center;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 12px;
+        }
+        
+        .payment-form h1::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4b5563;
+            font-size: 15px;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: var(--light-gray);
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            background-color: #ffffff;
+        }
+        
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 18px;
+            padding-right: 45px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, var(--primary-color), #818cf8);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+        }
+
+        .submit-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .submit-btn:hover::after {
+            left: 100%;
+        }
+        
+        /* Payment methods styling */
+        .payment-method-logo {
+            display: flex;
+            justify-content: center;
+            margin: 0 0 30px;
+            gap: 20px;
+        }
+        
+        .payment-method-logo img {
+            height: 32px;
+            filter: grayscale(40%);
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        
+        .payment-method-logo img:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        /* Amount field styling */
+        #id_amount {
+            font-weight: 600;
+            font-size: 19px;
+            color: var(--text-color);
+            letter-spacing: 0.5px;
+        }
+        
+        /* Security badge */
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 25px;
+            padding: 12px;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            gap: 10px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .security-badge svg {
+            width: 16px;
+            height: 16px;
+            color: var(--primary-color);
+        }
+        
+        .messages {
+            margin-bottom: 20px;
+        }
+        
+        .alert {
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert::before {
+            content: "";
+            width: 20px;
+            height: 20px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .alert-success::before {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'%3e%3c/path%3e%3cpolyline points='22 4 12 14.01 9 11.01'%3e%3c/polyline%3e%3c/svg%3e");
+        }
+        
+        .alert-error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border-left: 4px solid var(--error-color);
+        }
+        
+        .alert-error::before {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3ccircle cx='12' cy='12' r='10'%3e%3c/circle%3e%3cline x1='12' y1='8' x2='12' y2='12'%3e%3c/line%3e%3cline x1='12' y1='16' x2='12.01' y2='16'%3e%3c/line%3e%3c/svg%3e");
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <form class="payment-form" action="{% url 'standard_payment' %}" method="POST">
+        {% csrf_token %}
+        <h1>Payment Form</h1>
+        
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="{{ form.payment_method.id_for_label }}">Payment Method</label>
+            {{ form.payment_method }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.amount.id_for_label }}">Amount</label>
+            {{ form.amount }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.upi_id.id_for_label }}">UPI ID</label>
+            {{ form.upi_id }}
+        </div>
+        
+        <button type="submit" class="submit-btn">Pay</button>
+    </form>
+</body>
+</html>

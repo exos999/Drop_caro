@@ -28,7 +28,7 @@ class VehicleRegistrationForm(forms.ModelForm):
 class MaintenanceRequestForm(forms.ModelForm):
     class Meta:
         model = MaintenanceRequest
-        fields = ['full_name', 'vehicle', 'services',  'address', 'request_date', 'request_time']
+        fields = ['full_name','contact', 'vehicle', 'services',  'address', 'request_date', 'request_time']
         widgets = {
             'services': forms.CheckboxSelectMultiple(choices=[
                 ('fuelRefill', 'Fuel Refill'),
@@ -51,12 +51,57 @@ class DriverBookingForm(forms.ModelForm):
         }
 
 
-class PaymentForm(forms.ModelForm):
+from django import forms
+from .models import Payment
+
+class StandardPaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = ['payment_method', 'amount', 'upi_id']
         widgets = {
-            'payment_method': forms.RadioSelect(choices=Payment.PAYMENT_METHOD_CHOICES),
-            'amount': forms.NumberInput(attrs={'placeholder': 'Enter the amount'}),
-            'upi_id': forms.TextInput(attrs={'placeholder': 'Enter your UPI ID'}),
+            'amount': forms.NumberInput(attrs={'readonly': True, 'step': '0.01', 'value': '499'}),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Basic styling for standard form
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
+        
+        # Add a hidden field for form version
+        self.initial['form_version'] = 'standard'
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.form_version = 'standard'
+        if commit:
+            instance.save()
+        return instance
+
+
+class PremiumPaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['payment_method', 'amount', 'upi_id']
+        widgets = {
+            'amount': forms.NumberInput(attrs={'readonly': True, 'step': '0.01'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Premium styling with enhanced attributes
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
+        
+        # Add specific attributes for the premium form
+        self.fields['upi_id'].widget.attrs.update({'placeholder': 'example@upi'})
+        
+        # Add a hidden field for form version
+        self.initial['form_version'] = 'premium'
+    
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.form_version = 'premium'
+        if commit:
+            instance.save()
+        return instance

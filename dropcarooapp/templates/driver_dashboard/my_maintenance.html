@@ -166,6 +166,7 @@
             <thead>
                 <tr>
                     <th>Full Name</th>
+                    <th>Contact</th>
                     <th>Vehicle Number</th>
                     <th>Services</th>
                     <th>Vehicle Address</th>
@@ -178,6 +179,7 @@
                 {% for request in bookmaintance %}
                 <tr>
                     <td>{{ request.full_name }}</td>
+                    <td>{{ request.contact }}</td>
                     <td>{{ request.vehicle }}</td>
                     <td>{{ request.services }}</td>
                     <td>{{ request.address }}</td>
@@ -188,6 +190,7 @@
                             {% csrf_token %}
                             <button type="submit" class="edit-btn">Completed</button>
                         </form>
+                        
                     </td>
                 </tr>
                 {% empty %}

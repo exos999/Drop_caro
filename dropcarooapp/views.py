@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from.models import*
-from.form import UserDetailsForm,DriverDetailsForm,VehicleRegistrationForm,MaintenanceRequestForm,DriverBookingForm,PaymentForm
+from.form import UserDetailsForm,DriverDetailsForm,VehicleRegistrationForm,MaintenanceRequestForm,DriverBookingForm,StandardPaymentForm,PremiumPaymentForm
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login,logout
@@ -295,18 +295,13 @@ def maintenance_reg(request):
     if request.method == "POST":
         form = MaintenanceRequestForm(request.POST)
         if form.is_valid():
-            vehicle_id = request.POST.get('vehicle')
-            services = request.POST.getlist('services')
+            maintenance_request = form.save(commit=False)
+            maintenance_request.user = request.user  # Assuming there is a user field
+            maintenance_request.save()
+            form.save_m2m()  # Save many-to-many relationships if any
 
-            # Store maintenance request details in session before redirection
-            request.session['maintenance_data'] = {
-                'vehicle_id': vehicle_id,
-                'services': ','.join(services)
-            }
-
-            messages.success(request, "Your maintenance request has been recorded! Please select a plan.")
+            messages.success(request, "Your maintenance request has been recorded!")
             return redirect('select_plan')  # Redirect to the select plan page
-        
         else:
             messages.error(request, "Please correct the errors below.")
     else:
@@ -314,6 +309,7 @@ def maintenance_reg(request):
 
     vehicles = VehicleRegistration.objects.filter(owner__user=request.user)
     return render(request, 'dropcaro/maintenance_reg.html', {'form': form, 'vehicles': vehicles})
+
 
 
 # select plan
@@ -368,7 +364,7 @@ def book_driver(request):
                 customer=request.user
                 )
             messages.success(request, "Driver booked successfully!")
-            return redirect('bookdriver_payment')  # Redirect to prevent form resubmission
+            return redirect('standard_payment')  # Redirect to prevent form resubmission
         else:
             print(form.errors)
             messages.error(request, "Please correct the errors in the form.")
@@ -481,8 +477,10 @@ def view_vehicle(request,vehicle_id):
 
 
 def my_maintenance(request):
-    bookmaintance=MaintenanceRequest.objects.filter(driver__user=request.user)    
-    return render(request, 'driver_dashboard/my_maintenance.html',{"bookmaintance":bookmaintance})
+    bookmaintance=MaintenanceRequest.objects.filter(driver__user=request.user)
+    bookmaintances=VehicleRegistration.objects.filter(owner__user=request.user)    
+        
+    return render(request, 'driver_dashboard/my_maintenance.html',{"bookmaintance":bookmaintance,"bookmaintances":bookmaintances})
 
 
 @login_required
@@ -617,8 +615,8 @@ def maintainance_history(request,vehicle_id):
 
 
 def payment_view(request):
-    viewpay=Payment.objects.all()
-    return render(request, 'admin_dashboard/payment_view.html',{"viewpay":viewpay})
+    payments=Payment.objects.all()
+    return render(request, 'admin_dashboard/payment_view.html',{"payments":payments})
 
 
 def notification(request):
@@ -631,71 +629,71 @@ def noty(request):
     return render(request, 'admin_dashboard/noty.html',{"notifications":notifications})
 
 # payment
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from .models import Notification, User, MaintenanceRequest, VehicleRegistration
-from .form import PaymentForm
-from decimal import Decimal
-from datetime import date, datetime
+# from django.shortcuts import render, get_object_or_404, redirect
+# from django.contrib import messages
+# from .models import Notification, User, MaintenanceRequest, VehicleRegistration
+# from .form import PaymentForm
+# from decimal import Decimal
+# from datetime import date, datetime
 
-def payment(request):
-    price = request.GET.get('price', '0')
+# def payment(request):
+#     price = request.GET.get('price', '0')
 
-    try:
-        price = Decimal(price)
-    except:
-        price = Decimal('0')
+#     try:
+#         price = Decimal(price)
+#     except:
+#         price = Decimal('0')
 
-    # Retrieve maintenance details from session
-    maintenance_data = request.session.get('maintenance_data', None)
+#     # Retrieve maintenance details from session
+#     maintenance_data = request.session.get('maintenance_data', None)
 
-    if request.method == 'POST':
-        form = PaymentForm(request.POST)
-        if form.is_valid():
-            user = get_object_or_404(UserDetails, user=request.user)
-            data = form.save(commit=False)
-            data.user = user
-            data.amount = price
-            data.save()
+#     if request.method == 'POST':
+#         form = PaymentForm(request.POST)
+#         if form.is_valid():
+#             user = get_object_or_404(UserDetails, user=request.user)
+#             data = form.save(commit=False)
+#             data.user = user
+#             data.amount = price
+#             data.save()
 
-            # Save Maintenance Request if data exists
-            if maintenance_data:
-                vehicle = get_object_or_404(VehicleRegistration, id=maintenance_data['vehicle_id'])
-                maintenance_request = MaintenanceRequest.objects.create(
-                    full_name=user.fullname,  # Assuming `UserDetails` has `full_name`
-                    vehicle=vehicle,
-                    services=maintenance_data['services'],
-                    request_date=date.today(),  # Automatically set request date
-                    request_time=datetime.now().time()  # Automatically set request time
-                )
+#             # Save Maintenance Request if data exists
+#             if maintenance_data:
+#                 vehicle = get_object_or_404(VehicleRegistration, id=maintenance_data['vehicle_id'])
+#                 maintenance_request = MaintenanceRequest.objects.create(
+#                     full_name=user.fullname,  # Assuming `UserDetails` has `full_name`
+#                     vehicle=vehicle,
+#                     services=maintenance_data['services'],
+#                     request_date=date.today(),  # Automatically set request date
+#                     request_time=datetime.now().time()  # Automatically set request time
+#                 )
 
-                # Clear session data
-                del request.session['maintenance_data']
+#                 # Clear session data
+#                 del request.session['maintenance_data']
 
-            # Notify user
-            Notification.objects.create(
-                user=request.user,  
-                title="Payment Successful",
-                message=f"Payment of ₹{data.amount} received. Maintenance request has been saved.",
-                customer=request.user
-            )
+#             # Notify user
+#             Notification.objects.create(
+#                 user=request.user,  
+#                 title="Payment Successful",
+#                 message=f"Payment of ₹{data.amount} received. Maintenance request has been saved.",
+#                 customer=request.user
+#             )
 
-            # Notify Admins
-            admin_users = User.objects.filter(is_superuser=True)
-            for admin_user in admin_users:
-                Notification.objects.create(
-                    user=admin_user,
-                    title="Payment Successful",
-                    message=f"Paid by {request.user.username}, Amount: ₹{data.amount}, Maintenance added.",
-                    customer=request.user
-                )
+#             # Notify Admins
+#             admin_users = User.objects.filter(is_superuser=True)
+#             for admin_user in admin_users:
+#                 Notification.objects.create(
+#                     user=admin_user,
+#                     title="Payment Successful",
+#                     message=f"Paid by {request.user.username}, Amount: ₹{data.amount}, Maintenance added.",
+#                     customer=request.user
+#                 )
 
-            return redirect('sucessfull_payment')
+#             return redirect('sucessfull_payment')
 
-    else:
-        form = PaymentForm(initial={'amount': price})
+    # else:
+    #     form = PaymentForm(initial={'amount': price})
 
-    return render(request, 'payment/payment.html', {'form': form, 'price': price})
+    # return render(request, 'payment/payment.html', {'form': form, 'price': price})
 
 
 def sucessfull_payment(request):
@@ -817,36 +815,87 @@ def clear_user_notifications(request):
 
 
 
-from django.contrib import messages
-from .models import Payment
+# from django.contrib import messages
+# from .models import Payment
 
-@login_required
-def bookdriver_payment(request):
-    if request.method == 'POST':
-        form = PaymentForm(request.POST)
-        if form.is_valid():
-            payment = form.save(commit=False)
-            payment.amount = 499  # Set the fixed price
-            payment.user = request.user
-            payment.save()
-            messages.success(request, 'Payment successful!')
-            return redirect('sucessfull_payment')  # Redirect to a success page
-        else:
-            messages.error(request, 'Please correct the errors below.')
-    else:
-        form = PaymentForm(initial={'amount': 499})  # Set the initial amount to 499
+# @login_required
+# def bookdriver_payment(request):
+#     if request.method == 'POST':
+#         form = PaymentForm(request.POST)
+#         if form.is_valid():
+#             payment = form.save(commit=False)
+#             payment.amount = 499  # Set the fixed price
+#             payment.user = request.user
+#             payment.save()
+#             messages.success(request, 'Payment successful!')
+#             return redirect('sucessfull_payment')  # Redirect to a success page
+#         else:
+#             messages.error(request, 'Please correct the errors below.')
+#     else:
+#         form = PaymentForm(initial={'amount': 499})  # Set the initial amount to 499
 
-    return render(request, 'payment/bookdriver_payment.html', {'form': form})
+#     return render(request, 'payment/bookdriver_payment.html', {'form': form})
 
 
 from django.shortcuts import render, get_object_or_404
 from .models import DriverDetails, Payment
 
-def view_payments(request, driver_id):
-    driver = get_object_or_404(DriverDetails, id=driver_id)
-    payments = Payment.objects.filter(driver=driver)
-    
+def view_payments(request):
+    # Get the current user's driver details
+    user_driver = request.user.driverdetails
+
+    # Fetch payments linked to the driver's bookings
+    payments = Payment.objects.filter(driver__driver=user_driver, form_version='standard')
+
     return render(request, 'payment/view_payments.html', {
-        'driver': driver,
         'payments': payments
     })
+
+
+def standard_payment_view(request):
+    """View for the standard payment page"""
+    if request.method == 'POST':
+        form = StandardPaymentForm(request.POST)
+        if form.is_valid():
+            payment = form.save(commit=False)  # Don't save yet
+
+            # Automatically assign the latest DriverBooking's driver
+            user_details = get_object_or_404(UserDetails, user=request.user)
+            driver_booking = DriverBooking.objects.filter(user=user_details).last()
+            if driver_booking and driver_booking.driver:
+                payment.driver = driver_booking  # Assign the booking
+                payment.user = user_details  # Assign the user
+
+            payment.save()  # Now save with the assigned driver
+
+            # Process payment logic here
+            messages.success(request, "Payment initiated successfully!")
+            return redirect('sucessfull_payment')
+    else:
+        # Default amount is 499 for standard form
+        initial_data = {'amount': 499}
+        if request.GET.get('amount'):
+            initial_data['amount'] = request.GET.get('amount')
+            
+        form = StandardPaymentForm(initial=initial_data)
+    
+    return render(request, 'payment/standard_payment.html', {'form': form})
+
+def premium_payment_view(request):
+    """View for the premium payment page"""
+    if request.method == 'POST':
+        form = PremiumPaymentForm(request.POST)
+        if form.is_valid():
+            payment = form.save()
+            # Process payment logic here
+            messages.success(request, "Payment initiated successfully!")
+            return redirect('sucessfull_payment')
+    else:
+        # Get price from URL parameter for premium form
+        initial_data = {}
+        if request.GET.get('price'):
+            initial_data['amount'] = request.GET.get('price')
+            
+        form = PremiumPaymentForm(initial=initial_data)
+    
+    return render(request, 'payment/premium_payment.html', {'form': form})

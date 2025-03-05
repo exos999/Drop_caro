@@ -591,12 +591,12 @@
     </div>
   </div>
   
-  <a href="#" class="menu-item">
+  {% comment %} <a href="#" class="menu-item">
     <i class="fas fa-history"></i>
     <span>Work History</span>
-  </a>
+  </a> {% endcomment %}
   
-  <a href="{% url 'view_payments' user.driverdetails.id %}" class="menu-item">
+  <a href="{% url 'view_payments'  %}" class="menu-item">
     <i class="fas fa-chart-line"></i>
     <span>View Payment</span>
 </a>
@@ -806,8 +806,8 @@ document.querySelector('.dropdown-content').addEventListener('click', (e) => {
       <!-- Work Tabs -->
       <div class="tabs">
         <div class="tab active">All Works ({{ total_count }})</div>
-        <div class="tab">Driver Bookings ({{ booking_count }})</div>
-        <div class="tab">Maintenance ({{ maintance_count }})</div>
+       {% comment %} <div class="tab">Driver Bookings ({{ booking_count }})</div>
+        <div        div class="tab">Maintenance ({{ maintance_count }})</div> {% endcomment %}
       </div>
       
      <!-- Work Cards -->

@@ -6,6 +6,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Maintenance Request</title>
   <link rel="stylesheet" href="{% static 'css/MaintenanceRegi.css' %}">
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector(".maintenance-form");
+        
+        form.addEventListener("input", function(event) {
+            validateField(event.target);
+        });
+
+        form.addEventListener("submit", function(event) {
+            let isValid = true;
+            form.querySelectorAll("input, select").forEach(input => {
+                if (!validateField(input)) {
+                    isValid = false;
+                }
+            });
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    function validateField(input) {
+        const errorSpan = input.nextElementSibling;
+        if (errorSpan && errorSpan.classList.contains("error")) {
+            errorSpan.remove();
+        }
+        
+        let valid = true;
+        let message = "";
+        
+        if (input.hasAttribute("required") && input.value.trim() === "") {
+            valid = false;
+            message = "This field is required.";
+        } else if (input.id === "full-name" && !/^[a-zA-Z ]+$/.test(input.value)) {
+            valid = false;
+            message = "Only alphabets are allowed.";
+        } else if (input.id === "vehicle-number" && input.value === "") {
+            valid = false;
+            message = "Please select a vehicle.";
+        } else if (input.id === "address" && input.value.trim().length < 5) {
+            valid = false;
+            message = "Address must be at least 5 characters long.";
+        } else if (input.id === "request-date" && new Date(input.value) < new Date()) {
+            valid = false;
+            message = "Please select a future date.";
+        }
+
+        if (!valid) {
+            const errorSpan = document.createElement("span");
+            errorSpan.classList.add("error");
+            errorSpan.style.color = "red";
+            errorSpan.textContent = message;
+            input.parentNode.insertBefore(errorSpan, input.nextSibling);
+        }
+        return valid;
+    }
+  </script>
 </head>
 <body>
     <header>
@@ -25,9 +82,9 @@
             <h1>Maintenance Request</h1>
             <form method="POST" class="maintenance-form" action="{% url 'maintenance_reg'%}">
             {% csrf_token %}  
-              <label for="full_name">Full Name:</label>
+              <label for="full-name">Full Name:</label>
               <input type="text" id="full-name" name="full_name" placeholder="Enter your full name" required>
-
+              
               <label for="vehicle-number">Vehicle Number:</label>
               <select id="vehicle-number" name="vehicle" required>
                   <option value="" disabled selected>Select your vehicle</option>
@@ -35,8 +92,9 @@
                       <option value="{{ vehicle.id }}">{{ vehicle.vehicle_number }}</option>
                   {% endfor %}
               </select>
-
-              <!-- Service Options -->
+              <label for="contact">Contact Number:</label> <!-- Added this line -->
+             <input type="text" id="contact" name="contact" placeholder="Enter your contact number" required> <!-- Added this line -->
+              
               <h2>Services</h2>
               <label for="services">Select Services:</label>
               <div class="checkbox-group">
@@ -67,7 +125,7 @@
               <label for="request-time">Preferred Time:</label>
               <input type="time" id="request-time" name="request_time" required>
               
-              <a href="#"><button type="submit" class="submit-btn">Select Plans</button></a>
+              <button type="submit" class="submit-btn">Select Plans</button>
             </form>
         </section>
     </main>
